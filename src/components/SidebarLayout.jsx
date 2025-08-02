@@ -43,13 +43,11 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
   };
 
   const drawerContent = (
-    <Box>
-      <Toolbar sx={{ backgroundColor: '#f8f9fa', borderBottom: '1px solid #e9ecef' }}>
+    <Box sx={{ backgroundColor: '#f8f9fa'}}>
+      <Toolbar >
         <DashboardIcon sx={{ mr: 1, color: '#6c757d' }} />
-        <Typography variant="h6" fontWeight="600" sx={{ color: '#495057' }}>
+        <Typography variant="h6" fontWeight="600" sx={{ color: '#495057',p: 2 }}>
           Commissions
-        </Typography>
-        <Typography variant="h6" fontWeight="400" sx={{ color: '#6c757d', ml: 0.5 }}>
           Dashboard
         </Typography>
       </Toolbar>
@@ -226,7 +224,7 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
   );
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex'}}>
       {/* AppBar para mobile */}
       {isMobile && (
         <AppBar
@@ -276,7 +274,7 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: 'border-box',
-            backgroundColor: '#ffffff',
+            backgroundColor: '#f8f9fa',
             borderRight: '1px solid #e9ecef',
             transition: theme.transitions.create('transform', {
               easing: theme.transitions.easing.sharp,
