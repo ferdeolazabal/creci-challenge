@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
 import CommissionDashboard from "./CommissionDashboard";
+import DashboardHeader from "./DashboardHeader";
 import SidebarLayout from "./SidebarLayout";
 
 const CommissionsScreen = () => {
@@ -14,7 +15,12 @@ const CommissionsScreen = () => {
 
   return (
     <SidebarLayout sidebarOpen={sidebarOpen} onToggleSidebar={handleToggleSidebar}>
-      <CommissionDashboard onToggleSidebar={handleToggleSidebar} isMobile={isMobile} />
+      <DashboardHeader 
+        onToggleSidebar={handleToggleSidebar} 
+        isMobile={isMobile}
+        title="Commission Batches Overview"
+      />
+      <CommissionDashboard />
     </SidebarLayout>
   );
 };

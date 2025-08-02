@@ -14,9 +14,7 @@ import {
   Button,
   Chip,
   Paper,
-  IconButton,
 } from "@mui/material";
-import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import BusinessIcon from '@mui/icons-material/Business';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PeopleIcon from '@mui/icons-material/People';
@@ -38,34 +36,10 @@ const statusColors = {
 /**
  * CommissionDashboard component
  * @param {Object} props
- * @param {Function} [props.onToggleSidebar] - Optional callback to toggle sidebar
- * @param {boolean} [props.isMobile] - Whether the device is mobile
  */
 const CommissionDashboard = (props = {}) => {
-  const { onToggleSidebar, isMobile = false } = props;
   return (
     <Box sx={{ p: 3, width: '100%', maxWidth: '100%' }}>
-      {/* Título con botón de toggle */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
-        {!isMobile && (
-          <IconButton
-            onClick={onToggleSidebar}
-            sx={{
-              color: '#6c757d',
-              p: 1,
-              '&:hover': {
-                backgroundColor: '#f8f9fa',
-              },
-            }}
-          >
-            <ViewModuleIcon />
-          </IconButton>
-        )}
-        <Typography variant="h6" sx={{ fontWeight: 600, color: '#333' }}>
-          Commission Batches Overview
-        </Typography>
-      </Box>
-
       {/* Cards de estadísticas */}
       <Box sx={{ 
         display: 'grid', 
