@@ -47,7 +47,7 @@ const CommissionBatches = () => {
   };
 
   return (
-    <Box sx={{ p: 3, width: '100%', maxWidth: '100%' }}>
+    <Box sx={{ p: 3, width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
       {/* Cards de estadísticas */}
       <Box sx={{ 
         display: 'grid', 
@@ -55,12 +55,14 @@ const CommissionBatches = () => {
         gridTemplateColumns: { 
           xs: 'repeat(1, 1fr)', 
           sm: 'repeat(2, 1fr)', 
-          md: 'repeat(4, 1fr)' 
+          md: 'repeat(2, 1fr)',
+          lg: 'repeat(4, 1fr)' 
         },
         mb: 4,
-        width: '100%'
+        width: '100%',
+        maxWidth: '100%'
       }}>
-        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', minWidth: 0 }}>
           <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
             <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
               Total Batches
@@ -74,7 +76,7 @@ const CommissionBatches = () => {
           </CardContent>
         </Card>
 
-        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', minWidth: 0 }}>
           <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
             <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
               Total Commissions
@@ -82,13 +84,13 @@ const CommissionBatches = () => {
             <AttachMoneyIcon sx={{ width: 16, height: 16, color: '#6c757d' }} />
           </CardContent>
           <CardContent sx={{ p: 3, pt: 0 }}>
-            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
+            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a', wordBreak: 'break-all' }}>
               ${stats.totalCommissions.toLocaleString()}
             </Typography>
           </CardContent>
         </Card>
 
-        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', minWidth: 0 }}>
           <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
             <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
               Total Employees
@@ -102,7 +104,7 @@ const CommissionBatches = () => {
           </CardContent>
         </Card>
 
-        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', minWidth: 0 }}>
           <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
             <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
               Total Deals
@@ -126,12 +128,16 @@ const CommissionBatches = () => {
               Search & Filter Batches
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
             <TextField
               placeholder="Search by batch ID, brand, period, or creator..."
               variant="outlined"
               size="small"
-              sx={{ flexGrow: 1 }}
+              sx={{ 
+                flexGrow: 1, 
+                minWidth: { xs: '100%', sm: '300px', md: '400px' },
+                mb: { xs: 1, md: 0 }
+              }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -140,50 +146,65 @@ const CommissionBatches = () => {
                 ),
               }}
             />
-            <FormControl size="small" sx={{ minWidth: 120 }}>
-              <Select
-                value="All Brands"
-                displayEmpty
-                sx={{ textTransform: 'none' }}
-              >
-                <MenuItem value="All Brands">All Brands</MenuItem>
-                <MenuItem value="Honda">Honda</MenuItem>
-                <MenuItem value="Acura">Acura</MenuItem>
-                <MenuItem value="Ford">Ford</MenuItem>
-                <MenuItem value="Mazda">Mazda</MenuItem>
-                <MenuItem value="Jeep">Jeep</MenuItem>
-                <MenuItem value="Volkswagen">Volkswagen</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl size="small" sx={{ minWidth: 120 }}>
-              <Select
-                value="All Statuses"
-                displayEmpty
-                sx={{ textTransform: 'none' }}
-              >
-                <MenuItem value="All Statuses">All Statuses</MenuItem>
-                <MenuItem value="Processed">Processed</MenuItem>
-                <MenuItem value="Processing">Processing</MenuItem>
-                <MenuItem value="Pending Review">Pending Review</MenuItem>
-              </Select>
-            </FormControl>
-            <IconButton sx={{ color: '#6c757d' }}>
-              <FilterListIcon />
-            </IconButton>
+            <Box sx={{ 
+              display: 'flex', 
+              gap: 1, 
+              alignItems: 'center',
+              flexWrap: { xs: 'wrap', sm: 'nowrap' },
+              width: { xs: '100%', md: 'auto' }
+            }}>
+              <FormControl size="small" sx={{ minWidth: 120, flex: { xs: '1 1 45%', sm: '0 0 auto' } }}>
+                <Select
+                  value="All Brands"
+                  displayEmpty
+                  sx={{ textTransform: 'none' }}
+                >
+                  <MenuItem value="All Brands">All Brands</MenuItem>
+                  <MenuItem value="Honda">Honda</MenuItem>
+                  <MenuItem value="Acura">Acura</MenuItem>
+                  <MenuItem value="Ford">Ford</MenuItem>
+                  <MenuItem value="Mazda">Mazda</MenuItem>
+                  <MenuItem value="Jeep">Jeep</MenuItem>
+                  <MenuItem value="Volkswagen">Volkswagen</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl size="small" sx={{ minWidth: 120, flex: { xs: '1 1 45%', sm: '0 0 auto' } }}>
+                <Select
+                  value="All Statuses"
+                  displayEmpty
+                  sx={{ textTransform: 'none' }}
+                >
+                  <MenuItem value="All Statuses">All Statuses</MenuItem>
+                  <MenuItem value="Processed">Processed</MenuItem>
+                  <MenuItem value="Processing">Processing</MenuItem>
+                  <MenuItem value="Pending Review">Pending Review</MenuItem>
+                </Select>
+              </FormControl>
+              <IconButton sx={{ color: '#6c757d' }}>
+                <FilterListIcon />
+              </IconButton>
+            </Box>
           </Box>
         </CardContent>
       </Card>
 
       {/* Tabla de Commission Batches */}
-      <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', width: '100%' }}>
-        <CardContent sx={{ p: 3 }}>
+      <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', width: '100%', overflow: 'hidden' }}>
+        <CardContent sx={{ p: 3, pb: 0 }}>
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a' }}>
             Commission Batches
           </Typography>
           <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
             Manage and track commission batch processing across all brands
           </Typography>
-          <TableContainer component={Paper} sx={{ boxShadow: 'none', border: '1px solid #e0e0e0', borderRadius: 1 }}>
+        </CardContent>
+        <Box sx={{ width: '100%', overflowX: 'auto' }}>
+          <TableContainer component={Paper} sx={{ 
+            boxShadow: 'none', 
+            border: '1px solid #e0e0e0', 
+            borderRadius: 0,
+            minWidth: '100%'
+          }}>
             <Table size="small" sx={{ minWidth: 1200 }}>
               <TableHead>
                 <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
@@ -307,7 +328,7 @@ const CommissionBatches = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        </CardContent>
+        </Box>
       </Card>
     </Box>
   );
