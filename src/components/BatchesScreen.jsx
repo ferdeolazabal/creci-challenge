@@ -20,6 +20,7 @@ const BatchesScreen = () => {
         onToggleSidebar={handleToggleSidebar}
         isMobile={isMobile}
         title="Commission Batches"
+        showCreateButton={true}
       />
       <CommissionBatches />
     </SidebarLayout>
