@@ -53,7 +53,7 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
   };
 
   const drawerContent = (
-    <Box sx={{ backgroundColor: '#f8f9fa'}}>
+    <Box sx={{ backgroundColor: '#f8f9fa', overflowX: 'hidden' }}>
       <Toolbar >
         <DashboardIcon sx={{ mr: 1, color: '#6c757d' }} />
         <Typography variant="h6" fontWeight="600" sx={{ color: '#495057',p: 2 }}>
@@ -62,7 +62,7 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
         </Typography>
       </Toolbar>
       
-      <List sx={{ py: 0 }}>
+      <List sx={{ py: 0, mb: 2 }}>
         <Typography 
           variant="overline" 
           sx={{ 
@@ -127,9 +127,7 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
         </ListItem>
       </List>
 
-      <Divider sx={{ mx: 2, borderColor: '#e9ecef' }} />
-
-      <List sx={{ py: 0 }}>
+      <List sx={{ py: 0, mb: 2 }}>
         <Typography 
           variant="overline" 
           sx={{ 
@@ -218,14 +216,12 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
         </ListItem>
       </List>
 
-      <Divider sx={{ mx: 2, borderColor: '#e9ecef' }} />
-
-      <List sx={{ py: 0 }}>
+      <List sx={{ py: 0, mb: 2 }}>
         <Typography 
           variant="overline" 
           sx={{ 
             pl: 2, 
-            pt: 2, 
+            pt: 3, 
             pb: 0.5, 
             color: '#6c757d',
             fontSize: '0.75rem',
@@ -316,6 +312,7 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
             boxSizing: 'border-box',
             backgroundColor: '#f8f9fa',
             borderRight: '1px solid #e9ecef',
+            overflowX: 'hidden',
             transition: theme.transitions.create('transform', {
               easing: theme.transitions.easing.sharp,
               duration: theme.transitions.duration.leavingScreen,
