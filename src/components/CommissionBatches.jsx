@@ -1,4 +1,5 @@
 // @ts-nocheck
+import React, { useState, useMemo } from 'react';
 import {
   Box,
   Card,
@@ -38,12 +39,44 @@ const statusColors = {
 };
 
 const CommissionBatches = () => {
-  // Calcular estadísticas totales
+  // Estados para los filtros
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedBrand, setSelectedBrand] = useState('All Brands');
+  const [selectedStatus, setSelectedStatus] = useState('All Statuses');
+
+  // Filtrar los datos basado en los criterios de búsqueda
+  const filteredBatches = useMemo(() => {
+    return commissionBatches.filter(batch => {
+      // Filtro de búsqueda por texto
+      const matchesSearch = searchQuery === '' || 
+        batch.batchId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        batch.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        batch.period.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        batch.createdBy.toLowerCase().includes(searchQuery.toLowerCase());
+
+      // Filtro por marca
+      const matchesBrand = selectedBrand === 'All Brands' || batch.brand === selectedBrand;
+
+      // Filtro por estado
+      const matchesStatus = selectedStatus === 'All Statuses' || batch.status === selectedStatus;
+
+      return matchesSearch && matchesBrand && matchesStatus;
+    });
+  }, [searchQuery, selectedBrand, selectedStatus]);
+
+  // Calcular estadísticas basadas en los datos filtrados
   const stats = {
-    totalBatches: commissionBatches.length,
-    totalCommissions: commissionBatches.reduce((sum, batch) => sum + batch.totalCommission, 0),
-    totalEmployees: commissionBatches.reduce((sum, batch) => sum + batch.employees, 0),
-    totalDeals: commissionBatches.reduce((sum, batch) => sum + batch.deals, 0),
+    totalBatches: filteredBatches.length,
+    totalCommissions: filteredBatches.reduce((sum, batch) => sum + batch.totalCommission, 0),
+    totalEmployees: filteredBatches.reduce((sum, batch) => sum + batch.employees, 0),
+    totalDeals: filteredBatches.reduce((sum, batch) => sum + batch.deals, 0),
+  };
+
+  // Función para limpiar todos los filtros
+  const clearFilters = () => {
+    setSearchQuery('');
+    setSelectedBrand('All Brands');
+    setSelectedStatus('All Statuses');
   };
 
   return (
@@ -127,12 +160,35 @@ const CommissionBatches = () => {
             <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
               Search & Filter Batches
             </Typography>
+            {(searchQuery || selectedBrand !== 'All Brands' || selectedStatus !== 'All Statuses') && (
+              <Chip
+                label={`${filteredBatches.length} de ${commissionBatches.length} registros`}
+                size="small"
+                color="primary"
+                variant="outlined"
+              />
+            )}
+            {(searchQuery || selectedBrand !== 'All Brands' || selectedStatus !== 'All Statuses') && (
+              <Button
+                size="small"
+                onClick={clearFilters}
+                sx={{ 
+                  textTransform: 'none',
+                  color: '#6c757d',
+                  fontSize: '0.875rem'
+                }}
+              >
+                Limpiar filtros
+              </Button>
+            )}
           </Box>
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
             <TextField
               placeholder="Search by batch ID, brand, period, or creator..."
               variant="outlined"
               size="small"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               sx={{ 
                 flexGrow: 1, 
                 minWidth: { xs: '100%', sm: '300px', md: '400px' },
@@ -155,7 +211,8 @@ const CommissionBatches = () => {
             }}>
               <FormControl size="small" sx={{ minWidth: 120, flex: { xs: '1 1 45%', sm: '0 0 auto' } }}>
                 <Select
-                  value="All Brands"
+                  value={selectedBrand}
+                  onChange={(e) => setSelectedBrand(e.target.value)}
                   displayEmpty
                   sx={{ textTransform: 'none' }}
                 >
@@ -170,7 +227,8 @@ const CommissionBatches = () => {
               </FormControl>
               <FormControl size="small" sx={{ minWidth: 120, flex: { xs: '1 1 45%', sm: '0 0 auto' } }}>
                 <Select
-                  value="All Statuses"
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
                   displayEmpty
                   sx={{ textTransform: 'none' }}
                 >
@@ -180,7 +238,11 @@ const CommissionBatches = () => {
                   <MenuItem value="Pending Review">Pending Review</MenuItem>
                 </Select>
               </FormControl>
-              <IconButton sx={{ color: '#6c757d' }}>
+              <IconButton 
+                sx={{ color: '#6c757d' }}
+                onClick={clearFilters}
+                title="Limpiar filtros"
+              >
                 <FilterListIcon />
               </IconButton>
             </Box>
@@ -247,84 +309,104 @@ const CommissionBatches = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {commissionBatches.map((batch, i) => (
-                  <TableRow key={i} sx={{ '&:hover': { backgroundColor: '#f9f9f9' } }}>
-                    <TableCell sx={{ py: 1.5, fontWeight: 600, color: '#1976d2' }}>
-                      {batch.batchId}
-                    </TableCell>
-                    <TableCell sx={{ py: 1.5, fontWeight: 600 }}>{batch.brand}</TableCell>
-                    <TableCell sx={{ py: 1.5 }}>{batch.period}</TableCell>
-                    <TableCell sx={{ py: 1.5 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <span style={{ fontSize: '12px', color: '#1976d2' }}>📅</span>
-                        {batch.createdDate}
-                      </Box>
-                    </TableCell>
-                    <TableCell sx={{ py: 1.5 }}>
-                      {batch.processedDate ? (
+                {filteredBatches.length > 0 ? (
+                  filteredBatches.map((batch, i) => (
+                    <TableRow key={i} sx={{ '&:hover': { backgroundColor: '#f9f9f9' } }}>
+                      <TableCell sx={{ py: 1.5, fontWeight: 600, color: '#1976d2' }}>
+                        {batch.batchId}
+                      </TableCell>
+                      <TableCell sx={{ py: 1.5, fontWeight: 600 }}>{batch.brand}</TableCell>
+                      <TableCell sx={{ py: 1.5 }}>{batch.period}</TableCell>
+                      <TableCell sx={{ py: 1.5 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                           <span style={{ fontSize: '12px', color: '#1976d2' }}>📅</span>
-                          {batch.processedDate}
+                          {batch.createdDate}
                         </Box>
-                      ) : (
-                        '-'
-                      )}
-                    </TableCell>
-                    <TableCell sx={{ py: 1.5 }}>{batch.employees}</TableCell>
-                    <TableCell sx={{ py: 1.5 }}>{batch.deals}</TableCell>
-                    <TableCell sx={{ py: 1.5, fontWeight: 600 }}>
-                      ${batch.totalCommission.toLocaleString()}
-                    </TableCell>
-                    <TableCell sx={{ py: 1.5 }}>
-                      ${batch.avgCommission.toFixed(2)}
-                    </TableCell>
-                    <TableCell sx={{ py: 1.5 }}>{batch.createdBy}</TableCell>
-                    <TableCell sx={{ py: 1.5 }}>
-                      <Chip
-                        label={batch.status}
-                        color={statusColors[batch.status] || "default"}
-                        size="small"
-                        sx={{ fontSize: '0.75rem' }}
-                      />
-                    </TableCell>
-                    <TableCell sx={{ py: 1.5 }}>
-                      <Box sx={{ display: 'flex', gap: 0.5 }}>
-                        <Button 
-                          size="small" 
-                          variant="outlined"
-                          sx={{ 
-                            textTransform: 'none',
-                            fontSize: '0.75rem',
-                            py: 0.25,
-                            px: 1,
-                            minWidth: 'auto'
-                          }}
-                        >
-                          View
-                        </Button>
-                        {batch.status === "Processing" && (
+                      </TableCell>
+                      <TableCell sx={{ py: 1.5 }}>
+                        {batch.processedDate ? (
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <span style={{ fontSize: '12px', color: '#1976d2' }}>📅</span>
+                            {batch.processedDate}
+                          </Box>
+                        ) : (
+                          '-'
+                        )}
+                      </TableCell>
+                      <TableCell sx={{ py: 1.5 }}>{batch.employees}</TableCell>
+                      <TableCell sx={{ py: 1.5 }}>{batch.deals}</TableCell>
+                      <TableCell sx={{ py: 1.5, fontWeight: 600 }}>
+                        ${batch.totalCommission.toLocaleString()}
+                      </TableCell>
+                      <TableCell sx={{ py: 1.5 }}>
+                        ${batch.avgCommission.toFixed(2)}
+                      </TableCell>
+                      <TableCell sx={{ py: 1.5 }}>{batch.createdBy}</TableCell>
+                      <TableCell sx={{ py: 1.5 }}>
+                        <Chip
+                          label={batch.status}
+                          color={statusColors[batch.status] || "default"}
+                          size="small"
+                          sx={{ fontSize: '0.75rem' }}
+                        />
+                      </TableCell>
+                      <TableCell sx={{ py: 1.5 }}>
+                        <Box sx={{ display: 'flex', gap: 0.5 }}>
                           <Button 
                             size="small" 
-                            variant="contained"
+                            variant="outlined"
                             sx={{ 
                               textTransform: 'none',
                               fontSize: '0.75rem',
                               py: 0.25,
                               px: 1,
-                              minWidth: 'auto',
-                              backgroundColor: '#1a1a1a',
-                              '&:hover': {
-                                backgroundColor: '#333'
-                              }
+                              minWidth: 'auto'
                             }}
                           >
-                            Process
+                            View
                           </Button>
-                        )}
-                      </Box>
+                          {batch.status === "Processing" && (
+                            <Button 
+                              size="small" 
+                              variant="contained"
+                              sx={{ 
+                                textTransform: 'none',
+                                fontSize: '0.75rem',
+                                py: 0.25,
+                                px: 1,
+                                minWidth: 'auto',
+                                backgroundColor: '#1a1a1a',
+                                '&:hover': {
+                                  backgroundColor: '#333'
+                                }
+                              }}
+                            >
+                              Process
+                            </Button>
+                          )}
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={12} sx={{ py: 3, textAlign: 'center' }}>
+                      <Typography variant="body2" color="textSecondary">
+                        No se encontraron registros que coincidan con los filtros aplicados.
+                      </Typography>
+                      <Button
+                        size="small"
+                        onClick={clearFilters}
+                        sx={{ 
+                          textTransform: 'none',
+                          mt: 1
+                        }}
+                      >
+                        Limpiar filtros
+                      </Button>
                     </TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </TableContainer>
