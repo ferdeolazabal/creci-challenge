@@ -1,5 +1,6 @@
 // @ts-nocheck
 import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Box,
   Drawer,
@@ -37,9 +38,18 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    if (isMobile) {
+      handleDrawerToggle();
+    }
   };
 
   const drawerContent = (
@@ -71,18 +81,23 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
           button 
           sx={{ 
             py: 0.5,
-            '&:hover': { backgroundColor: '#f8f9fa' }
+            backgroundColor: location.pathname === '/' ? '#e3f2fd' : 'transparent',
+            '&:hover': { backgroundColor: location.pathname === '/' ? '#e3f2fd' : '#f8f9fa' },
+            borderRadius: 1,
+            mx: 1,
+            cursor: 'pointer'
           }}
-          onClick={isMobile ? handleDrawerToggle : undefined}
+          onClick={() => handleNavigation('/')}
         >
-          <ListItemIcon sx={{ minWidth: 40, color: '#6c757d' }}>
+          <ListItemIcon sx={{ minWidth: 40, color: location.pathname === '/' ? '#1976d2' : '#6c757d' }}>
             <HomeIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText 
             primary="Home" 
             primaryTypographyProps={{ 
               fontSize: '0.875rem',
-              color: '#495057'
+              color: location.pathname === '/' ? '#1976d2' : '#495057',
+              fontWeight: location.pathname === '/' ? 600 : 400
             }}
           />
         </ListItem>
@@ -90,18 +105,23 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
           button 
           sx={{ 
             py: 0.5,
-            '&:hover': { backgroundColor: '#f8f9fa' }
+            backgroundColor: location.pathname === '/batches' ? '#e3f2fd' : 'transparent',
+            '&:hover': { backgroundColor: location.pathname === '/batches' ? '#e3f2fd' : '#f8f9fa' },
+            borderRadius: 1,
+            mx: 1,
+            cursor: 'pointer'
           }}
-          onClick={isMobile ? handleDrawerToggle : undefined}
+          onClick={() => handleNavigation('/batches')}
         >
-          <ListItemIcon sx={{ minWidth: 40, color: '#6c757d' }}>
+          <ListItemIcon sx={{ minWidth: 40, color: location.pathname === '/batches' ? '#1976d2' : '#6c757d' }}>
             <AssignmentIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText 
             primary="Commission Batches" 
             primaryTypographyProps={{ 
               fontSize: '0.875rem',
-              color: '#495057'
+              color: location.pathname === '/batches' ? '#1976d2' : '#495057',
+              fontWeight: location.pathname === '/batches' ? 600 : 400
             }}
           />
         </ListItem>
@@ -128,18 +148,23 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
           button 
           sx={{ 
             py: 0.5,
-            '&:hover': { backgroundColor: '#f8f9fa' }
+            backgroundColor: location.pathname === '/uploads' ? '#e3f2fd' : 'transparent',
+            '&:hover': { backgroundColor: location.pathname === '/uploads' ? '#e3f2fd' : '#f8f9fa' },
+            borderRadius: 1,
+            mx: 1,
+            cursor: 'pointer'
           }}
-          onClick={isMobile ? handleDrawerToggle : undefined}
+          onClick={() => handleNavigation('/uploads')}
         >
-          <ListItemIcon sx={{ minWidth: 40, color: '#6c757d' }}>
+          <ListItemIcon sx={{ minWidth: 40, color: location.pathname === '/uploads' ? '#1976d2' : '#6c757d' }}>
             <UploadIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText 
             primary="Uploads" 
             primaryTypographyProps={{ 
               fontSize: '0.875rem',
-              color: '#495057'
+              color: location.pathname === '/uploads' ? '#1976d2' : '#495057',
+              fontWeight: location.pathname === '/uploads' ? 600 : 400
             }}
           />
         </ListItem>
@@ -147,18 +172,23 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
           button 
           sx={{ 
             py: 0.5,
-            '&:hover': { backgroundColor: '#f8f9fa' }
+            backgroundColor: location.pathname === '/employees' ? '#e3f2fd' : 'transparent',
+            '&:hover': { backgroundColor: location.pathname === '/employees' ? '#e3f2fd' : '#f8f9fa' },
+            borderRadius: 1,
+            mx: 1,
+            cursor: 'pointer'
           }}
-          onClick={isMobile ? handleDrawerToggle : undefined}
+          onClick={() => handleNavigation('/employees')}
         >
-          <ListItemIcon sx={{ minWidth: 40, color: '#6c757d' }}>
+          <ListItemIcon sx={{ minWidth: 40, color: location.pathname === '/employees' ? '#1976d2' : '#6c757d' }}>
             <PeopleIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText 
             primary="Employees" 
             primaryTypographyProps={{ 
               fontSize: '0.875rem',
-              color: '#495057'
+              color: location.pathname === '/employees' ? '#1976d2' : '#495057',
+              fontWeight: location.pathname === '/employees' ? 600 : 400
             }}
           />
         </ListItem>
@@ -166,18 +196,23 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
           button 
           sx={{ 
             py: 0.5,
-            '&:hover': { backgroundColor: '#f8f9fa' }
+            backgroundColor: location.pathname === '/deals' ? '#e3f2fd' : 'transparent',
+            '&:hover': { backgroundColor: location.pathname === '/deals' ? '#e3f2fd' : '#f8f9fa' },
+            borderRadius: 1,
+            mx: 1,
+            cursor: 'pointer'
           }}
-          onClick={isMobile ? handleDrawerToggle : undefined}
+          onClick={() => handleNavigation('/deals')}
         >
-          <ListItemIcon sx={{ minWidth: 40, color: '#6c757d' }}>
+          <ListItemIcon sx={{ minWidth: 40, color: location.pathname === '/deals' ? '#1976d2' : '#6c757d' }}>
             <HandshakeIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText 
             primary="Deals" 
             primaryTypographyProps={{ 
               fontSize: '0.875rem',
-              color: '#495057'
+              color: location.pathname === '/deals' ? '#1976d2' : '#495057',
+              fontWeight: location.pathname === '/deals' ? 600 : 400
             }}
           />
         </ListItem>
@@ -204,18 +239,23 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
           button 
           sx={{ 
             py: 0.5,
-            '&:hover': { backgroundColor: '#f8f9fa' }
+            backgroundColor: location.pathname === '/rankings' ? '#e3f2fd' : 'transparent',
+            '&:hover': { backgroundColor: location.pathname === '/rankings' ? '#e3f2fd' : '#f8f9fa' },
+            borderRadius: 1,
+            mx: 1,
+            cursor: 'pointer'
           }}
-          onClick={isMobile ? handleDrawerToggle : undefined}
+          onClick={() => handleNavigation('/rankings')}
         >
-          <ListItemIcon sx={{ minWidth: 40, color: '#6c757d' }}>
+          <ListItemIcon sx={{ minWidth: 40, color: location.pathname === '/rankings' ? '#1976d2' : '#6c757d' }}>
             <EmojiEventsIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText 
             primary="Rankings" 
             primaryTypographyProps={{ 
               fontSize: '0.875rem',
-              color: '#495057'
+              color: location.pathname === '/rankings' ? '#1976d2' : '#495057',
+              fontWeight: location.pathname === '/rankings' ? 600 : 400
             }}
           />
         </ListItem>
