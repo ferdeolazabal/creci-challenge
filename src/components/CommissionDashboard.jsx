@@ -40,7 +40,7 @@ const statusColors = {
 const CommissionDashboard = (props = {}) => {
   const { onToggleSidebar, isMobile = false } = props;
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ p: 3, width: '100%', maxWidth: '100%' }}>
       {/* Título con botón de toggle */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
         {!isMobile && (
@@ -63,50 +63,50 @@ const CommissionDashboard = (props = {}) => {
       </Box>
 
       {/* Cards de estadísticas */}
-      <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item xs={12} md={3}>
-          <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-            <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-              <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+      <Grid container spacing={3} sx={{ mb: 4 }}>
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', height: '100%' }}>
+            <CardContent sx={{ p: 3, '&:last-child': { pb: 3 } }}>
+              <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
                 Total Brands
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 0.5 }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 1, color: '#1a1a1a' }}>
                 {stats.totalBrands}
               </Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={3}>
-          <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-            <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-              <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', height: '100%' }}>
+            <CardContent sx={{ p: 3, '&:last-child': { pb: 3 } }}>
+              <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
                 Active Batches
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 0.5 }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 1, color: '#1a1a1a' }}>
                 {stats.activeBatches}
               </Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={3}>
-          <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-            <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-              <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', height: '100%' }}>
+            <CardContent sx={{ p: 3, '&:last-child': { pb: 3 } }}>
+              <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
                 Total Employees
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 0.5 }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 1, color: '#1a1a1a' }}>
                 {stats.totalEmployees}
               </Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={3}>
-          <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-            <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-              <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', height: '100%' }}>
+            <CardContent sx={{ p: 3, '&:last-child': { pb: 3 } }}>
+              <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
                 Total Commissions
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 0.5 }}>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 1, color: '#1a1a1a' }}>
                 ${stats.totalCommissions.toLocaleString()}
               </Typography>
             </CardContent>
@@ -115,16 +115,16 @@ const CommissionDashboard = (props = {}) => {
       </Grid>
 
       {/* Tabla de marcas */}
-      <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-        <CardContent sx={{ p: 2 }}>
-          <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+      <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', width: '100%' }}>
+        <CardContent sx={{ p: 3 }}>
+          <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a' }}>
             Brand Commission Overview
           </Typography>
-          <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+          <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
             Commission batches and performance by automotive brand
           </Typography>
-          <TableContainer component={Paper} sx={{ boxShadow: 'none', border: '1px solid #e0e0e0' }}>
-            <Table size="small">
+          <TableContainer component={Paper} sx={{ boxShadow: 'none', border: '1px solid #e0e0e0', borderRadius: 1 }}>
+            <Table size="small" sx={{ minWidth: 800 }}>
               <TableHead>
                 <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
                   <TableCell sx={{ fontWeight: 600, py: 1.5 }}>

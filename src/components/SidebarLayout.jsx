@@ -291,7 +291,7 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
         component="main" 
         sx={{ 
           flexGrow: 1, 
-          p: 1,
+          width: '100%',
           marginTop: isMobile ? '64px' : 0, // Espacio para AppBar en mobile
           transition: theme.transitions.create(['margin-left'], {
             easing: theme.transitions.easing.sharp,
