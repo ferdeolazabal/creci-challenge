@@ -63,56 +63,69 @@ const CommissionDashboard = (props = {}) => {
       </Box>
 
       {/* Cards de estadísticas */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} lg={3}>
-          <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', height: '100%' }}>
-            <CardContent sx={{ p: 3, '&:last-child': { pb: 3 } }}>
-              <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
-                Total Brands
-              </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 1, color: '#1a1a1a' }}>
-                {stats.totalBrands}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} sm={6} lg={3}>
-          <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', height: '100%' }}>
-            <CardContent sx={{ p: 3, '&:last-child': { pb: 3 } }}>
-              <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
-                Active Batches
-              </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 1, color: '#1a1a1a' }}>
-                {stats.activeBatches}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} sm={6} lg={3}>
-          <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', height: '100%' }}>
-            <CardContent sx={{ p: 3, '&:last-child': { pb: 3 } }}>
-              <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
-                Total Employees
-              </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 1, color: '#1a1a1a' }}>
-                {stats.totalEmployees}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} sm={6} lg={3}>
-          <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', height: '100%' }}>
-            <CardContent sx={{ p: 3, '&:last-child': { pb: 3 } }}>
-              <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
-                Total Commissions
-              </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 1, color: '#1a1a1a' }}>
-                ${stats.totalCommissions.toLocaleString()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+      <Box sx={{ 
+        display: 'grid', 
+        gap: 2, 
+        gridTemplateColumns: { 
+          xs: 'repeat(1, 1fr)', 
+          sm: 'repeat(2, 1fr)', 
+          md: 'repeat(4, 1fr)' 
+        },
+        mb: 4,
+        width: '100%'
+      }}>
+        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+          <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
+              Total Brands
+            </Typography>
+          </CardContent>
+          <CardContent sx={{ p: 3, pt: 0 }}>
+            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
+              {stats.totalBrands}
+            </Typography>
+          </CardContent>
+        </Card>
+
+        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+          <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
+              Active Batches
+            </Typography>
+          </CardContent>
+          <CardContent sx={{ p: 3, pt: 0 }}>
+            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
+              {stats.activeBatches}
+            </Typography>
+          </CardContent>
+        </Card>
+
+        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+          <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
+              Total Employees
+            </Typography>
+          </CardContent>
+          <CardContent sx={{ p: 3, pt: 0 }}>
+            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
+              {stats.totalEmployees}
+            </Typography>
+          </CardContent>
+        </Card>
+
+        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+          <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
+              Total Commissions
+            </Typography>
+          </CardContent>
+          <CardContent sx={{ p: 3, pt: 0 }}>
+            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
+              ${stats.totalCommissions.toLocaleString()}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Box>
 
       {/* Tabla de marcas */}
       <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', width: '100%' }}>
