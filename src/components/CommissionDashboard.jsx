@@ -17,6 +17,10 @@ import {
   IconButton,
 } from "@mui/material";
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import BusinessIcon from '@mui/icons-material/Business';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import PeopleIcon from '@mui/icons-material/People';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import brandCommissions from "../helpers/mockBrandCommissions";
 
 const stats = {
@@ -79,6 +83,7 @@ const CommissionDashboard = (props = {}) => {
             <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
               Total Brands
             </Typography>
+            <BusinessIcon sx={{ width: 16, height: 16, color: '#6c757d' }} />
           </CardContent>
           <CardContent sx={{ p: 3, pt: 0 }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
@@ -92,6 +97,7 @@ const CommissionDashboard = (props = {}) => {
             <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
               Active Batches
             </Typography>
+            <TrendingUpIcon sx={{ width: 16, height: 16, color: '#6c757d' }} />
           </CardContent>
           <CardContent sx={{ p: 3, pt: 0 }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
@@ -105,6 +111,7 @@ const CommissionDashboard = (props = {}) => {
             <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
               Total Employees
             </Typography>
+            <PeopleIcon sx={{ width: 16, height: 16, color: '#6c757d' }} />
           </CardContent>
           <CardContent sx={{ p: 3, pt: 0 }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
@@ -118,6 +125,7 @@ const CommissionDashboard = (props = {}) => {
             <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
               Total Commissions
             </Typography>
+            <AttachMoneyIcon sx={{ width: 16, height: 16, color: '#6c757d' }} />
           </CardContent>
           <CardContent sx={{ p: 3, pt: 0 }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
