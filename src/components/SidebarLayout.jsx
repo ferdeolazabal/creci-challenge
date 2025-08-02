@@ -45,12 +45,7 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
   const drawerContent = (
     <Box>
       <Toolbar sx={{ backgroundColor: '#f8f9fa', borderBottom: '1px solid #e9ecef' }}>
-        <IconButton
-          onClick={isMobile ? handleDrawerToggle : onToggleSidebar}
-          sx={{ mr: 1, color: '#6c757d', p: 0.5 }}
-        >
-          <DashboardIcon />
-        </IconButton>
+        <DashboardIcon sx={{ mr: 1, color: '#6c757d' }} />
         <Typography variant="h6" fontWeight="600" sx={{ color: '#495057' }}>
           Commissions
         </Typography>
@@ -232,27 +227,6 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
 
   return (
     <Box sx={{ display: 'flex' }}>
-      {/* Botón flotante para abrir sidebar en desktop cuando está cerrado */}
-      {!isMobile && !sidebarOpen && (
-        <IconButton
-          onClick={onToggleSidebar}
-          sx={{
-            position: 'fixed',
-            top: 16,
-            left: 16,
-            zIndex: theme.zIndex.drawer + 1,
-            backgroundColor: '#f8f9fa',
-            color: '#6c757d',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-            '&:hover': {
-              backgroundColor: '#e9ecef',
-            },
-          }}
-        >
-          <DashboardIcon />
-        </IconButton>
-      )}
-
       {/* AppBar para mobile */}
       {isMobile && (
         <AppBar
@@ -294,12 +268,20 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
           keepMounted: true, // Mejor rendimiento en mobile
         }}
         sx={{
-          width: drawerWidth,
+          width: sidebarOpen ? drawerWidth : 0,
+          transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: 'border-box',
             backgroundColor: '#ffffff',
             borderRight: '1px solid #e9ecef',
+            transition: theme.transitions.create('transform', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
           },
         }}
       >
@@ -313,14 +295,12 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
           flexGrow: 1, 
           p: 1,
           marginTop: isMobile ? '64px' : 0, // Espacio para AppBar en mobile
-          marginLeft: !isMobile && !sidebarOpen ? 0 : !isMobile ? `${drawerWidth}px` : 0,
-          transition: theme.transitions.create(['margin'], {
+          transition: theme.transitions.create(['margin-left'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
           }),
         }}
       >
-        {!isMobile && <Toolbar />}
         {children}
       </Box>
     </Box>
