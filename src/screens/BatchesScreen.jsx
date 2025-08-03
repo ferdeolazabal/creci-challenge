@@ -1,9 +1,9 @@
 // @ts-nocheck
 import React, { useState } from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
-import SidebarLayout from './SidebarLayout';
-import DashboardHeader from './DashboardHeader';
-import CommissionBatches from './CommissionBatches';
+import SidebarLayout from '../components/SidebarLayout';
+import DashboardHeader from '../components/DashboardHeader';
+import CommissionBatches from '../components/CommissionBatches';
 
 const BatchesScreen = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);

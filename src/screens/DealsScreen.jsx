@@ -1,9 +1,9 @@
 // @ts-nocheck
 import React, { useState } from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
-import SidebarLayout from './SidebarLayout';
-import DashboardHeader from './DashboardHeader';
-import DealsPage from './DealsPage';
+import SidebarLayout from '../components/SidebarLayout';
+import DashboardHeader from '../components/DashboardHeader';
+import DealsPage from '../components/DealsPage';
 
 const DealsScreen = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);

@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMediaQuery, useTheme, Button } from '@mui/material';
-import SidebarLayout from './SidebarLayout';
-import DashboardHeader from './DashboardHeader';
-import EmployeeProfile from './EmployeeProfile';
+import SidebarLayout from '../components/SidebarLayout';
+import DashboardHeader from '../components/DashboardHeader';
+import EmployeeProfile from '../components/EmployeeProfile';
 import { employees } from '../helpers/mockEmployeeData';
 
 const EmployeeProfileScreen = () => {

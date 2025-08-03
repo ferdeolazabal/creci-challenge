@@ -1,10 +1,11 @@
-import { useState } from 'react';
+// @ts-nocheck
+import React, { useState } from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
-import CommissionDashboard from "./CommissionDashboard";
-import DashboardHeader from "./DashboardHeader";
-import SidebarLayout from "./SidebarLayout";
+import SidebarLayout from '../components/SidebarLayout';
+import DashboardHeader from '../components/DashboardHeader';
+import RankingsPage from '../components/RankingsPage';
 
-const CommissionsScreen = () => {
+const RankingsScreen = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -16,13 +17,13 @@ const CommissionsScreen = () => {
   return (
     <SidebarLayout sidebarOpen={sidebarOpen} onToggleSidebar={handleToggleSidebar}>
       <DashboardHeader 
-        onToggleSidebar={handleToggleSidebar} 
+        onToggleSidebar={handleToggleSidebar}
         isMobile={isMobile}
-        title="Commission Batches Overview"
+        title="Performance Rankings"
       />
-      <CommissionDashboard />
+      <RankingsPage />
     </SidebarLayout>
   );
 };
 
-export default CommissionsScreen;
+export default RankingsScreen;

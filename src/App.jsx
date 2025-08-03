@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import BatchesScreen from './components/BatchesScreen';
-import CommissionsScreen from "./components/CommissionsScreen";
-import DealsScreen from './components/DealsScreen';
-import EmployeeProfileScreen from './components/EmployeeProfileScreen';
-import EmployeeScreen from './components/EmployeeScreen';
-import RankingsScreen from './components/RankingsScreen';
-import UploadScreen from './components/UploadScreen';
+import BatchesScreen from './screens/BatchesScreen';
+import CommissionsScreen from "./screens/CommissionsScreen";
+import DealsScreen from './screens/DealsScreen';
+import EmployeeProfileScreen from './screens/EmployeeProfileScreen';
+import EmployeeScreen from './screens/EmployeeScreen';
+import RankingsScreen from './screens/RankingsScreen';
+import UploadScreen from './screens/UploadScreen';
 
 function App() {
   return (
