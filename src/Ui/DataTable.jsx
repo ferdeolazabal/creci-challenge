@@ -17,19 +17,23 @@ import {
  * @param {function} props.renderRow - Función para renderizar cada fila
  * @param {Object} props.sx - Estilos adicionales
  * @param {number} props.minWidth - Ancho mínimo de la tabla
+ * @param {string} props.headerBackgroundColor - Color de fondo del header
+ * @param {Object} props.containerSx - Estilos adicionales para el container
  */
 const DataTable = ({ 
   columns = [], 
   data = [], 
   renderRow, 
   sx = {},
-  minWidth = 1200 
+  minWidth = 1200,
+  headerBackgroundColor = '#f8f9fa',
+  containerSx = {}
 }) => {
   return (
-    <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0', ...sx }}>
-      <Table sx={{ minWidth }}>
+    <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0', ...containerSx }}>
+      <Table sx={{ minWidth, ...sx }}>
         <TableHead>
-          <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
+          <TableRow sx={{ backgroundColor: headerBackgroundColor }}>
             {columns.map((column, index) => (
               <TableCell 
                 key={column.key || index}
