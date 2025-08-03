@@ -51,19 +51,11 @@ const DealsPage = () => {
     'Mark Thompson', 'Maria Garcia', 'Rachel Green', 'Kevin Chang'
   ];
 
-  // Default filter values
   const defaultFilters = {
     search: '',
     brand: brandOptions[0], // 'All Brands'
     employee: employeeOptions[0] // 'All Employees'
   };
-
-  // Reusable MenuItem component
-  const FilterMenuItem = ({ value }) => (
-    <MenuItem value={value} sx={{ fontSize: '0.875rem' }}>
-      {value}
-    </MenuItem>
-  );
 
   // Reusable FilterSelect component
   const FilterSelect = ({ value, onChange, options, minWidth = 100 }) => (
@@ -89,10 +81,11 @@ const DealsPage = () => {
             py: 1
           }
         }}
-        IconComponent={KeyboardArrowDownIcon}
       >
         {options.map((option) => (
-          <FilterMenuItem key={option} value={option} />
+          <MenuItem key={option} value={option} sx={{ fontSize: '0.875rem' }}>
+            {option}
+          </MenuItem>
         ))}
       </Select>
     </FormControl>
