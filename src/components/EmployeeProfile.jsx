@@ -35,6 +35,86 @@ const EmployeeProfile = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(0);
 
+  const InfoItem = ({ icon: Icon, label, value, subLabel }) => (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+      <Icon sx={{ color: '#6c757d', fontSize: '1.25rem' }} />
+      <Box>
+        <Typography variant="body2" sx={{ 
+          color: '#1a1a1a', 
+          fontSize: '0.875rem',
+          fontWeight: label === employee.name ? 600 : 'normal'
+        }}>
+          {value}
+        </Typography>
+        <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
+          {subLabel}
+        </Typography>
+      </Box>
+    </Box>
+  );
+
+  const SectionHeader = ({ icon, title, subtitle }) => (
+    <Box sx={{ mb: 3 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: subtitle ? 1 : 3 }}>
+        {typeof icon === 'string' ? (
+          <Typography component="span" sx={{ fontSize: '1.2rem' }}>{icon}</Typography>
+        ) : (
+          React.createElement(icon, { sx: { color: '#6c757d' } })
+        )}
+        <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
+          {title}
+        </Typography>
+      </Box>
+      {subtitle && (
+        <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem', mb: 3 }}>
+          {subtitle}
+        </Typography>
+      )}
+    </Box>
+  );
+
+  const StatCard = ({ label, value }) => (
+    <Box sx={{ textAlign: 'left', p: 2, border: '1px solid #e9ecef', borderRadius: 1 }}>
+      <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.75rem', mb: 1 }}>
+        {label}
+      </Typography>
+      <Typography variant="h5" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
+        {value}
+      </Typography>
+    </Box>
+  );
+
+  const TableHeaderCell = ({ children }) => (
+    <TableCell sx={{ 
+      fontWeight: 600, 
+      color: '#495057',
+      backgroundColor: '#f8f9fa',
+      border: 'none',
+      py: 1.5,
+      fontSize: '0.75rem',
+      textTransform: 'uppercase',
+      letterSpacing: '0.5px'
+    }}>
+      {children}
+    </TableCell>
+  );
+
+  // Reusable TableDataCell component
+  const TableDataCell = ({ children, sx = {}, ...props }) => (
+    <TableCell 
+      sx={{ 
+        border: 'none', 
+        py: 1.5, 
+        color: '#6c757d', 
+        fontSize: '0.875rem',
+        ...sx 
+      }}
+      {...props}
+    >
+      {children}
+    </TableCell>
+  );
+
   const employee = employees.find(emp => emp.id === parseInt(id));
 
   if (!employee) {
@@ -53,71 +133,57 @@ const EmployeeProfile = () => {
     navigate('/employees');
   };
 
+  // Table column configuration
+  const dealsColumns = [
+    { key: 'dealNo', label: 'Deal No' },
+    { key: 'date', label: 'Date' },
+    { key: 'customer', label: 'Customer' },
+    { key: 'vehicle', label: 'Vehicle' },
+    { key: 'vin', label: 'VIN' },
+    { key: 'price', label: 'Price' },
+    { key: 'commission', label: 'Commission' },
+    { key: 'status', label: 'Status' }
+  ];
+
   return (
     <Box sx={getContainerStyles()}>
       {/* Basic Information Card */}
       <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', mb: 3 }}>
         <CardContent sx={{ p: 3 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-            <PersonIcon sx={{ color: '#6c757d' }} />
-            <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-              Basic Information
-            </Typography>
-          </Box>
+          <SectionHeader 
+            icon={PersonIcon}
+            title="Basic Information"
+          />
           
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 4 }}>
             {/* Left Column */}
             <Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                <PersonIcon sx={{ color: '#6c757d', fontSize: '1.25rem' }} />
-                <Box>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-                    {employee.name}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-                    Employee ID: EMP001
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                <EmailIcon sx={{ color: '#6c757d', fontSize: '1.25rem' }} />
-                <Box>
-                  <Typography variant="body2" sx={{ color: '#1a1a1a', fontSize: '0.875rem' }}>
-                    {employee.email}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-                    Primary Email
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <PhoneIcon sx={{ color: '#6c757d', fontSize: '1.25rem' }} />
-                <Box>
-                  <Typography variant="body2" sx={{ color: '#1a1a1a', fontSize: '0.875rem' }}>
-                    {employee.phone}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-                    Work Phone
-                  </Typography>
-                </Box>
-              </Box>
+              <InfoItem
+                icon={PersonIcon}
+                value={employee.name}
+                subLabel="Employee ID: EMP001"
+              />
+              
+              <InfoItem
+                icon={EmailIcon}
+                value={employee.email}
+                subLabel="Primary Email"
+              />
+              
+              <InfoItem
+                icon={PhoneIcon}
+                value={employee.phone}
+                subLabel="Work Phone"
+              />
             </Box>
 
             {/* Right Column */}
             <Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                <BusinessIcon sx={{ color: '#6c757d', fontSize: '1.25rem' }} />
-                <Box>
-                  <Typography variant="body2" sx={{ color: '#1a1a1a', fontSize: '0.875rem', fontWeight: 500 }}>
-                    {employee.dealer}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-                    Dealer Code: HD01
-                  </Typography>
-                </Box>
-              </Box>
+              <InfoItem
+                icon={BusinessIcon}
+                value={employee.dealer}
+                subLabel="Dealer Code: HD01"
+              />
 
               <Box sx={{ mb: 3 }}>
                 <Chip
@@ -134,17 +200,11 @@ const EmployeeProfile = () => {
                 />
               </Box>
 
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <CalendarTodayIcon sx={{ color: '#6c757d', fontSize: '1.25rem' }} />
-                <Box>
-                  <Typography variant="body2" sx={{ color: '#1a1a1a', fontSize: '0.875rem' }}>
-                    2022-03-15
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-                    Hire Date
-                  </Typography>
-                </Box>
-              </Box>
+              <InfoItem
+                icon={CalendarTodayIcon}
+                value="2022-03-15"
+                subLabel="Hire Date"
+              />
             </Box>
           </Box>
         </CardContent>
@@ -153,14 +213,11 @@ const EmployeeProfile = () => {
       {/* Pay Plan Card */}
       <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', mb: 3 }}>
         <CardContent sx={{ p: 3 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
-            <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-              📋 Pay Plan
-            </Typography>
-          </Box>
-          <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem', mb: 3 }}>
-            Current compensation structure and commission plan
-          </Typography>
+          <SectionHeader
+            icon="📋"
+            title="Pay Plan"
+            subtitle="Current compensation structure and commission plan"
+          />
 
           <Box sx={{ 
             display: 'flex', 
@@ -207,41 +264,10 @@ const EmployeeProfile = () => {
               md: 'repeat(4, 1fr)' 
             }
           }}>
-            <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e9ecef', borderRadius: 1 }}>
-              <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.75rem', mb: 1 }}>
-                Total Deals
-              </Typography>
-              <Typography variant="h5" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-                45
-              </Typography>
-            </Box>
-            
-            <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e9ecef', borderRadius: 1 }}>
-              <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.75rem', mb: 1 }}>
-                Total Commissions
-              </Typography>
-              <Typography variant="h5" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-                $12,500
-              </Typography>
-            </Box>
-            
-            <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e9ecef', borderRadius: 1 }}>
-              <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.75rem', mb: 1 }}>
-                Pending Adjustments
-              </Typography>
-              <Typography variant="h5" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-                2
-              </Typography>
-            </Box>
-            
-            <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e9ecef', borderRadius: 1 }}>
-              <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.75rem', mb: 1 }}>
-                Last Commission
-              </Typography>
-              <Typography variant="h5" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-                2024-01-15
-              </Typography>
-            </Box>
+            <StatCard label="Total Deals" value="45" />
+            <StatCard label="Total Commissions" value="$12,500" />
+            <StatCard label="Pending Adjustments" value="2" />
+            <StatCard label="Last Commission" value="2024-01-15" />
           </Box>
         </CardContent>
       </Card>
@@ -272,41 +298,21 @@ const EmployeeProfile = () => {
         <CardContent sx={{ p: 3 }}>
           {activeTab === 0 && (
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a', mb: 3 }}>
-                Employee Deals
-              </Typography>
-              <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem', mb: 3 }}>
-                All deals associated with this employee
-              </Typography>
+              <SectionHeader
+                icon="🚗"
+                title="Employee Deals"
+                subtitle="All deals associated with this employee"
+              />
 
               <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0' }}>
                 <Table>
                   <TableHead>
                     <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', borderBottom: '1px solid #dee2e6' }}>
-                        Deal No
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', borderBottom: '1px solid #dee2e6' }}>
-                        Date
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', borderBottom: '1px solid #dee2e6' }}>
-                        Customer
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', borderBottom: '1px solid #dee2e6' }}>
-                        Vehicle
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', borderBottom: '1px solid #dee2e6' }}>
-                        VIN
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', borderBottom: '1px solid #dee2e6' }}>
-                        Price
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', borderBottom: '1px solid #dee2e6' }}>
-                        Commission
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', borderBottom: '1px solid #dee2e6' }}>
-                        Status
-                      </TableCell>
+                      {dealsColumns.map((column) => (
+                        <TableHeaderCell key={column.key}>
+                          {column.label}
+                        </TableHeaderCell>
+                      ))}
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -318,42 +324,28 @@ const EmployeeProfile = () => {
                           borderBottom: '1px solid #e9ecef'
                         }}
                       >
-                        <TableCell sx={{ borderBottom: '1px solid #e9ecef' }}>
-                          <Typography variant="body2" sx={{ fontWeight: 500, color: '#1a1a1a' }}>
-                            {deal.dealNo}
-                          </Typography>
-                        </TableCell>
-                        <TableCell sx={{ borderBottom: '1px solid #e9ecef' }}>
-                          <Typography variant="body2" sx={{ fontSize: '0.875rem', color: '#1a1a1a' }}>
-                            {deal.date}
-                          </Typography>
-                        </TableCell>
-                        <TableCell sx={{ borderBottom: '1px solid #e9ecef' }}>
-                          <Typography variant="body2" sx={{ fontSize: '0.875rem', color: '#1a1a1a' }}>
-                            {deal.customer}
-                          </Typography>
-                        </TableCell>
-                        <TableCell sx={{ borderBottom: '1px solid #e9ecef' }}>
-                          <Typography variant="body2" sx={{ fontSize: '0.875rem', color: '#1a1a1a' }}>
-                            {deal.vehicle}
-                          </Typography>
-                        </TableCell>
-                        <TableCell sx={{ borderBottom: '1px solid #e9ecef' }}>
-                          <Typography variant="body2" sx={{ fontSize: '0.875rem', color: '#6c757d' }}>
-                            {deal.vin}
-                          </Typography>
-                        </TableCell>
-                        <TableCell sx={{ borderBottom: '1px solid #e9ecef' }}>
-                          <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#1a1a1a' }}>
-                            {deal.price}
-                          </Typography>
-                        </TableCell>
-                        <TableCell sx={{ borderBottom: '1px solid #e9ecef' }}>
-                          <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#1a1a1a' }}>
-                            {deal.commission}
-                          </Typography>
-                        </TableCell>
-                        <TableCell sx={{ borderBottom: '1px solid #e9ecef' }}>
+                        <TableDataCell sx={{ fontWeight: 500, color: '#1a1a1a' }}>
+                          {deal.dealNo}
+                        </TableDataCell>
+                        <TableDataCell>
+                          {deal.date}
+                        </TableDataCell>
+                        <TableDataCell>
+                          {deal.customer}
+                        </TableDataCell>
+                        <TableDataCell>
+                          {deal.vehicle}
+                        </TableDataCell>
+                        <TableDataCell sx={{ color: '#6c757d' }}>
+                          {deal.vin}
+                        </TableDataCell>
+                        <TableDataCell sx={{ fontWeight: 500, color: '#1a1a1a' }}>
+                          {deal.price}
+                        </TableDataCell>
+                        <TableDataCell sx={{ fontWeight: 500, color: '#1a1a1a' }}>
+                          {deal.commission}
+                        </TableDataCell>
+                        <TableDataCell>
                           <Chip
                             label={deal.status}
                             size="small"
@@ -364,7 +356,7 @@ const EmployeeProfile = () => {
                               fontSize: '0.75rem'
                             }}
                           />
-                        </TableCell>
+                        </TableDataCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -375,23 +367,21 @@ const EmployeeProfile = () => {
 
           {activeTab === 1 && (
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a', mb: 2 }}>
-                Commission History
-              </Typography>
-              <Typography variant="body2" sx={{ color: '#6c757d' }}>
-                Commission details will be displayed here.
-              </Typography>
+              <SectionHeader
+                icon="💰"
+                title="Commission History"
+                subtitle="Commission details will be displayed here."
+              />
             </Box>
           )}
 
           {activeTab === 2 && (
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a', mb: 2 }}>
-                Adjustment History
-              </Typography>
-              <Typography variant="body2" sx={{ color: '#6c757d' }}>
-                Adjustment details will be displayed here.
-              </Typography>
+              <SectionHeader
+                icon="📝"
+                title="Adjustment History"
+                subtitle="Adjustment details will be displayed here."
+              />
             </Box>
           )}
         </CardContent>
