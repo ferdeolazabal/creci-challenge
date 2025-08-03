@@ -18,14 +18,20 @@ import {
   Tab,
   Tabs,
 } from '@mui/material';
+import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
+import StatCard from '../Ui/StatCard';
+import { employees, employeeDeals, employeeCommissions, employeeAdjustments } from '../helpers/mockEmployeeData';
+
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import BusinessIcon from '@mui/icons-material/Business';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import GetAppIcon from '@mui/icons-material/GetApp';
-import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
-import { employees, employeeDeals, employeeCommissions, employeeAdjustments } from '../helpers/mockEmployeeData';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import PendingIcon from '@mui/icons-material/Pending';
+import ScheduleIcon from '@mui/icons-material/Schedule';
 
 const EmployeeProfile = () => {
 
@@ -70,17 +76,6 @@ const EmployeeProfile = () => {
           {subtitle}
         </Typography>
       )}
-    </Box>
-  );
-
-  const StatCard = ({ label, value }) => (
-    <Box sx={{ textAlign: 'left', p: 2, border: '1px solid #e9ecef', borderRadius: 1 }}>
-      <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.75rem', mb: 1 }}>
-        {label}
-      </Typography>
-      <Typography variant="h5" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-        {value}
-      </Typography>
     </Box>
   );
 
@@ -288,10 +283,10 @@ const EmployeeProfile = () => {
               md: 'repeat(4, 1fr)' 
             }
           }}>
-            <StatCard label="Total Deals" value="45" />
-            <StatCard label="Total Commissions" value="$12,500" />
-            <StatCard label="Pending Adjustments" value="2" />
-            <StatCard label="Last Commission" value="2024-01-15" />
+            <StatCard title="Total Deals" value="45" icon={ReceiptIcon} />
+            <StatCard title="Total Commissions" value="$12,500" icon={AttachMoneyIcon} />
+            <StatCard title="Pending Adjustments" value="2" icon={PendingIcon} />
+            <StatCard title="Last Commission" value="2024-01-15" icon={ScheduleIcon} />
           </Box>
         </CardContent>
       </Card>
