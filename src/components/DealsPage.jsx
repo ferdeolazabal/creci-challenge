@@ -8,18 +8,12 @@ import {
   TableCell,
   TableRow,
   Chip,
-  Button,
-  TextField,
-  InputAdornment,
-  IconButton,
-  MenuItem,
-  Select,
-  FormControl,
 } from '@mui/material';
+import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import StatCard from '../Ui/StatCard';
 import DataTable from '../Ui/DataTable';
 import SectionHeader from '../Ui/SectionHeader';
-import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
+import SearchAndFilter from '../Ui/SearchAndFilter';
 import { deals, dealsStatusColors } from "../helpers/mockDealsData";
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -57,40 +51,6 @@ const DealsPage = () => {
     brand: brandOptions[0], // 'All Brands'
     employee: employeeOptions[0] // 'All Employees'
   };
-
-  // Reusable FilterSelect component
-  const FilterSelect = ({ value, onChange, options, minWidth = 100 }) => (
-    <FormControl size="small" sx={{ minWidth }}>
-      <Select
-        value={value}
-        onChange={onChange}
-        displayEmpty
-        sx={{ 
-          height: '36px',
-          backgroundColor: '#fff',
-          fontSize: '0.875rem',
-          '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#e0e0e0',
-          },
-          '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#1976d2',
-          },
-          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#1976d2',
-          },
-          '& .MuiSelect-select': {
-            py: 1
-          }
-        }}
-      >
-        {options.map((option) => (
-          <MenuItem key={option} value={option} sx={{ fontSize: '0.875rem' }}>
-            {option}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  );
 
   const tableColumns = [
     { key: 'dealNo', label: 'Deal No', align: 'left', headerStyle: { fontWeight: 600 } },
@@ -209,188 +169,55 @@ const DealsPage = () => {
   return (
     <Box sx={getContainerStyles()}>
       {/* Search and Filter Section */}
-      <Card sx={getCardStyles()}>
-        <CardContent sx={getCardContentStyles()}>
-          {/* Header Section */}
-          <SectionHeader
-            icon={SearchIcon}
-            title="Search & Filter Deals"
-            subtitle="Search by deal number, customer name, VIN, make, model, or dealer; filter by brand and employee."
-          />
-          {/* Search Bar */}
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
-            <TextField
-              placeholder="Search deals..."
-              variant="outlined"
-              size="small"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              sx={{ 
-                flex: 1,
-                '& .MuiOutlinedInput-root': {
-                  height: '40px',
-                  backgroundColor: '#fff',
-                  '& fieldset': {
-                    borderColor: '#e0e0e0',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#1976d2',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#1976d2',
-                  },
-                }
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{ color: '#9e9e9e', fontSize: '1.2rem' }} />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      size="small"
-                      sx={{
-                        backgroundColor: '#f5f5f5',
-                        color: '#666',
-                        width: 28,
-                        height: 28,
-                        '&:hover': { backgroundColor: '#e0e0e0' }
-                      }}
-                    >
-                      <SearchIcon sx={{ fontSize: '0.9rem' }} />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Box>
-          
-          {/* Filters Row */}
-          <Box sx={{ 
-            display: 'flex', 
-            gap: 1.5, 
-            alignItems: 'center',
-            flexWrap: 'wrap'
-          }}>
-            <FilterSelect
-              value={brandFilter}
-              onChange={(e) => setBrandFilter(e.target.value)}
-              options={brandOptions}
-              minWidth={100}
-            />
-
-            <FilterSelect
-              value={employeeFilter}
-              onChange={(e) => setEmployeeFilter(e.target.value)}
-              options={employeeOptions}
-              minWidth={120}
-            />
-
-            <Button
-              variant="text"
-              startIcon={<span style={{ fontSize: '0.9rem' }}>✕</span>}
-              onClick={() => {
-                setSearchQuery(defaultFilters.search);
-                setBrandFilter(defaultFilters.brand);
-                setEmployeeFilter(defaultFilters.employee);
-              }}
-              sx={{
-                textTransform: 'none',
-                color: '#666',
-                fontSize: '0.875rem',
-                fontWeight: 400,
-                minWidth: 'auto',
-                px: 1.5,
-                py: 0.75,
-                height: '36px',
-                '&:hover': { 
-                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                  color: '#333'
-                }
-              }}
-            >
-              Clear Filters
-            </Button>
-
-            <IconButton
-              sx={{
-                color: '#666',
-                backgroundColor: '#fff',
-                border: '1px solid #e0e0e0',
-                borderRadius: 1,
-                width: 36,
-                height: 36,
-                '&:hover': { 
-                  backgroundColor: '#f5f5f5', 
-                  borderColor: '#1976d2',
-                  color: '#1976d2'
-                }
-              }}
-            >
-              <FilterListIcon sx={{ fontSize: '1.1rem' }} />
-            </IconButton>
-          </Box>
-
-          {/* Active Filters */}
-          {(searchQuery || brandFilter !== 'All Brands' || employeeFilter !== 'All Employees') && (
-            <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-              <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-                Active filters:
-              </Typography>
-              
-              {brandFilter !== 'All Brands' && (
-                <Chip
-                  label={`Brand: ${brandFilter}`}
-                  size="small"
-                  onDelete={() => setBrandFilter('All Brands')}
-                  sx={{
-                    backgroundColor: '#e3f2fd',
-                    color: '#1976d2',
-                    '& .MuiChip-deleteIcon': {
-                      color: '#1976d2',
-                      fontSize: '0.875rem'
-                    }
-                  }}
-                />
-              )}
-              
-              {employeeFilter !== 'All Employees' && (
-                <Chip
-                  label={`Employee: ${employeeFilter}`}
-                  size="small"
-                  onDelete={() => setEmployeeFilter('All Employees')}
-                  sx={{
-                    backgroundColor: '#f3e5f5',
-                    color: '#7b1fa2',
-                    '& .MuiChip-deleteIcon': {
-                      color: '#7b1fa2',
-                      fontSize: '0.875rem'
-                    }
-                  }}
-                />
-              )}
-              
-              {searchQuery && (
-                <Chip
-                  label={`Search: "${searchQuery}"`}
-                  size="small"
-                  onDelete={() => setSearchQuery('')}
-                  sx={{
-                    backgroundColor: '#e8f5e8',
-                    color: '#2e7d32',
-                    '& .MuiChip-deleteIcon': {
-                      color: '#2e7d32',
-                      fontSize: '0.875rem'
-                    }
-                  }}
-                />
-              )}
-            </Box>
-          )}
-        </CardContent>
-      </Card>
+      <SearchAndFilter
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        searchPlaceholder="Search deals..."
+        title="Search & Filter Deals"
+        subtitle="Search by deal number, customer name, VIN, make, model, or dealer; filter by brand and employee."
+        icon={SearchIcon}
+        filters={[
+          {
+            key: 'brand',
+            value: brandFilter,
+            onChange: (e) => setBrandFilter(e.target.value),
+            options: brandOptions,
+            minWidth: 100
+          },
+          {
+            key: 'employee',
+            value: employeeFilter,
+            onChange: (e) => setEmployeeFilter(e.target.value),
+            options: employeeOptions,
+            minWidth: 120
+          }
+        ]}
+        onClearFilters={() => {
+          setSearchQuery(defaultFilters.search);
+          setBrandFilter(defaultFilters.brand);
+          setEmployeeFilter(defaultFilters.employee);
+        }}
+        defaultFilters={defaultFilters}
+        activeFilters={[
+          ...(brandFilter !== 'All Brands' ? [{
+            label: `Brand: ${brandFilter}`,
+            onDelete: () => setBrandFilter('All Brands'),
+            color: { bg: '#e3f2fd', text: '#1976d2' }
+          }] : []),
+          ...(employeeFilter !== 'All Employees' ? [{
+            label: `Employee: ${employeeFilter}`,
+            onDelete: () => setEmployeeFilter('All Employees'),
+            color: { bg: '#f3e5f5', text: '#7b1fa2' }
+          }] : []),
+          ...(searchQuery ? [{
+            label: `Search: "${searchQuery}"`,
+            onDelete: () => setSearchQuery(''),
+            color: { bg: '#e8f5e8', text: '#2e7d32' }
+          }] : [])
+        ]}
+        cardStyles={getCardStyles()}
+        cardContentStyles={getCardContentStyles()}
+      />
 
       {/* Statistics Cards */}
       <Box sx={getGridStyles(4)}>
