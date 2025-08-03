@@ -160,7 +160,10 @@ const CommissionDashboard = (props = {}) => {
                         label={row.status}
                         color={statusColors[row.status] || "default"}
                         size="small"
-                        sx={{ fontSize: '0.75rem' }}
+                        sx={{ 
+                          fontSize: '0.75rem',
+                          textTransform: 'capitalize'
+                        }}
                       />
                     </TableCell>
                     <TableCell sx={{ py: 1.5 }}>
