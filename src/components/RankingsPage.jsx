@@ -14,13 +14,9 @@ import {
   Button,
   ButtonGroup,
 } from '@mui/material';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import PeopleIcon from '@mui/icons-material/People';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import StatCard from '../Ui/StatCard';
+import SectionHeader from '../Ui/SectionHeader';
+import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import { 
   salesExecutivesData, 
   salesManagersData,
@@ -29,9 +25,15 @@ import {
   badgeColors
 } from '../helpers/mockRankingsData';
 
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import PeopleIcon from '@mui/icons-material/People';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+
 const RankingsPage = () => {
 
-  const { getContainerStyles } = useAdaptiveStyles();
+  const { getContainerStyles, getCardStyles, getCardContentStyles } = useAdaptiveStyles();
   
   const [activeTab, setActiveTab] = useState(0);
   
@@ -120,12 +122,11 @@ const RankingsPage = () => {
 
   const RankingTable = ({ title, subtitle, columns, data, renderRow }) => (
     <>
-      <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a', display: 'flex', alignItems: 'center', gap: 1 }}>
-        🏆 {title}
-      </Typography>
-      <Typography variant="body2" color="textSecondary" sx={{ mb: 3, fontSize: '0.875rem' }}>
-        {subtitle}
-      </Typography>
+      <SectionHeader 
+        title={title}
+        subtitle={subtitle}
+        icon={EmojiEventsIcon}
+      />
       <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0' }}>
         <Table size="small">
           <TableHeader columns={columns} />
@@ -251,7 +252,6 @@ const RankingsPage = () => {
 
   return (
     <Box sx={getContainerStyles()}>
-      {/* Performance Statistics */}
       <Box sx={{ 
         display: 'grid', 
         gap: 2, 
@@ -260,7 +260,7 @@ const RankingsPage = () => {
           sm: 'repeat(2, 1fr)', 
           md: 'repeat(4, 1fr)' 
         },
-        mb: 4,
+        mb: 2,
         width: '100%'
       }}>
         <StatCard 
@@ -293,15 +293,7 @@ const RankingsPage = () => {
         />
       </Box>
 
-      {/* Button Group and Rankings Table */}
-      <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', width: '100%' }}>
-        <CardContent sx={{ p: 3 }}>
-          {/* Button Group */}
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'flex-start',
-            mb: 3
-          }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
             <ButtonGroup 
               variant="outlined"
               sx={{
@@ -351,8 +343,8 @@ const RankingsPage = () => {
               </Button>
             </ButtonGroup>
           </Box>
-
-          {/* Table Content */}
+      <Card sx={getCardStyles()}>
+        <CardContent sx={{ ...getCardContentStyles(), p: 0, mx: 2 }}>
           {activeTab === 0 && (
             <RankingTable
               title="Sales Executives Rankings"
