@@ -7,13 +7,8 @@ import {
   CardContent,
   Typography,
   Button,
-  Avatar,
   Chip,
-  Table,
-  TableBody,
   TableCell,
-  TableContainer,
-  TableHead,
   TableRow,
   Tab,
   Tabs,
@@ -21,6 +16,7 @@ import {
 import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import StatCard from '../Ui/StatCard';
 import SectionHeader from '../Ui/SectionHeader';
+import DataTable from '../Ui/DataTable';
 import { employees, employeeDeals, employeeCommissions, employeeAdjustments } from '../helpers/mockEmployeeData';
 
 import PersonIcon from '@mui/icons-material/Person';
@@ -60,37 +56,6 @@ const EmployeeProfile = () => {
     </Box>
   );
 
-  const TableHeaderCell = ({ children }) => (
-    <TableCell sx={{ 
-      fontWeight: 600, 
-      color: '#495057',
-      backgroundColor: '#f8f9fa',
-      border: 'none',
-      py: 1.5,
-      fontSize: '0.75rem',
-      textTransform: 'uppercase',
-      letterSpacing: '0.5px'
-    }}>
-      {children}
-    </TableCell>
-  );
-
-  // Reusable TableDataCell component
-  const TableDataCell = ({ children, sx = {}, ...props }) => (
-    <TableCell 
-      sx={{ 
-        border: 'none', 
-        py: 1.5, 
-        color: '#6c757d', 
-        fontSize: '0.875rem',
-        ...sx 
-      }}
-      {...props}
-    >
-      {children}
-    </TableCell>
-  );
-
   const employee = employees.find(emp => emp.id === parseInt(id));
 
   if (!employee) {
@@ -109,41 +74,145 @@ const EmployeeProfile = () => {
     navigate('/employees');
   };
 
-  // Table column configuration
   const dealsColumns = [
-    { key: 'dealNo', label: 'Deal No' },
-    { key: 'date', label: 'Date' },
-    { key: 'customer', label: 'Customer' },
-    { key: 'vehicle', label: 'Vehicle' },
-    { key: 'vin', label: 'VIN' },
-    { key: 'price', label: 'Price' },
-    { key: 'commission', label: 'Commission' },
-    { key: 'status', label: 'Status' }
+    { key: 'dealNo', label: 'Deal No', align: 'left', headerStyle: { fontWeight: 600 } },
+    { key: 'date', label: 'Date', align: 'left' },
+    { key: 'customer', label: 'Customer', align: 'left' },
+    { key: 'vehicle', label: 'Vehicle', align: 'left' },
+    { key: 'vin', label: 'VIN', align: 'left' },
+    { key: 'price', label: 'Price', align: 'left' },
+    { key: 'commission', label: 'Commission', align: 'center' },
+    { key: 'status', label: 'Status', align: 'center' }
   ];
 
   const commissionsColumns = [
-    { key: 'commissionId', label: 'Commission ID' },
-    { key: 'period', label: 'Period' },
-    { key: 'batchId', label: 'Batch ID' },
-    { key: 'dealCount', label: 'Deal Count' },
-    { key: 'grossCommission', label: 'Gross Commission' },
-    { key: 'deductions', label: 'Deductions' },
-    { key: 'netCommission', label: 'Net Commission' },
-    { key: 'paidDate', label: 'Paid Date' },
-    { key: 'status', label: 'Status' }
+    { key: 'commissionId', label: 'Commission ID', align: 'left', headerStyle: { fontWeight: 600 } },
+    { key: 'period', label: 'Period', align: 'left' },
+    { key: 'batchId', label: 'Batch ID', align: 'left' },
+    { key: 'dealCount', label: 'Deal Count', align: 'center' },
+    { key: 'grossCommission', label: 'Gross Commission', align: 'center' },
+    { key: 'deductions', label: 'Deductions', align: 'left' },
+    { key: 'netCommission', label: 'Net Commission', align: 'left' },
+    { key: 'paidDate', label: 'Paid Date', align: 'left' },
+    { key: 'status', label: 'Status', align: 'center' }
   ];
 
   const adjustmentsColumns = [
-    { key: 'adjustmentId', label: 'Adjustment ID' },
-    { key: 'date', label: 'Date' },
-    { key: 'dealNumber', label: 'Deal Number' },
-    { key: 'type', label: 'Type' },
-    { key: 'originalAmount', label: 'Original Amount' },
-    { key: 'adjustedAmount', label: 'Adjusted Amount' },
-    { key: 'difference', label: 'Difference' },
-    { key: 'reason', label: 'Reason' },
-    { key: 'status', label: 'Status' }
+    { key: 'adjustmentId', label: 'Adjustment ID', align: 'left', headerStyle: { fontWeight: 600 } },
+    { key: 'date', label: 'Date', align: 'center' },
+    { key: 'dealNumber', label: 'Deal Number', align: 'left' },
+    { key: 'type', label: 'Type', align: 'center' },
+    { key: 'originalAmount', label: 'Original Amount', align: 'left' },
+    { key: 'adjustedAmount', label: 'Adjusted Amount', align: 'left' },
+    { key: 'difference', label: 'Difference', align: 'left' },
+    { key: 'reason', label: 'Reason', align: 'left' },
+    { key: 'status', label: 'Status', align: 'center' }
   ];
+
+  const renderDealsRow = (deal, index) => (
+    <TableRow key={index} sx={{ '&:hover': { backgroundColor: '#f8f9fa' }}}>
+      <TableCell>{deal.dealNo}</TableCell>
+      <TableCell>{deal.date}</TableCell>
+      <TableCell>{deal.customer}</TableCell>
+      <TableCell>{deal.vehicle}</TableCell>
+      <TableCell>{deal.vin}</TableCell>
+      <TableCell>{deal.price}</TableCell>
+      <TableCell>{deal.commission}</TableCell>
+      <TableCell>
+        <Chip
+          label={deal.status}
+          size="small"
+          sx={{
+            backgroundColor: deal.status === 'Complete' ? '#e8f5e8' : '#fff3cd',
+            color: deal.status === 'Complete' ? '#2e7d32' : '#856404',
+            fontWeight: 500,
+            fontSize: '0.75rem'
+          }}
+        />
+      </TableCell>
+    </TableRow>
+  );
+
+  const renderCommissionsRow = (commission, index) => (
+    <TableRow key={index} sx={{ '&:hover': { backgroundColor: '#f8f9fa' }}}>
+      <TableCell sx={{ fontWeight: 500, color: '#007bff' }}>{commission.commissionId}</TableCell>
+      <TableCell>{commission.period}</TableCell>
+      <TableCell>{commission.batchId}</TableCell>
+      <TableCell>{commission.dealCount}</TableCell>
+      <TableCell sx={{ fontWeight: 500, color: '#1a1a1a' }}>
+        {commission.grossCommission}
+      </TableCell>
+      <TableCell sx={{ color: '#dc3545' }}>{commission.deductions}</TableCell>
+      <TableCell sx={{ fontWeight: 600, color: '#1a1a1a' }}>{commission.netCommission}</TableCell>
+      <TableCell>{commission.paidDate}</TableCell>
+      <TableCell>
+        <Chip
+          label={commission.status}
+          size="small"
+          sx={{
+            backgroundColor: commission.status === 'Paid' ? '#1a1a1a' : '#fff3cd',
+            color: commission.status === 'Paid' ? 'white' : '#856404',
+            fontWeight: 500,
+            fontSize: '0.75rem'
+          }}
+        />
+      </TableCell>
+    </TableRow>
+  );
+
+  const renderAdjustmentsRow = (adjustment, index) => (
+    <TableRow key={index} sx={{ '&:hover': { backgroundColor: '#f8f9fa' }}}>
+      <TableCell sx={{ fontWeight: 500, color: '#007bff' }}>
+        {adjustment.adjustmentId}
+      </TableCell>
+      <TableCell>{adjustment.date}</TableCell>
+      <TableCell sx={{ fontWeight: 500, color: '#1a1a1a' }}>{adjustment.dealNumber}</TableCell>
+      <TableCell sx={{ textAlign: 'center' }}>
+        <Chip
+          label={adjustment.type}
+          size="small"
+          sx={{
+            backgroundColor: adjustment.type === 'Commission Correction' ? '#e3f2fd' : 
+                            adjustment.type === 'Bonus Adjustment' ? '#f3e5f5' : '#e8f5e8',
+            color: adjustment.type === 'Commission Correction' ? '#1976d2' : 
+                   adjustment.type === 'Bonus Adjustment' ? '#7b1fa2' : '#2e7d32',
+            fontWeight: 500,
+            fontSize: '0.75rem'
+          }}
+        />
+      </TableCell>
+      <TableCell sx={{ textAlign: 'center', fontWeight: 500, color: '#6c757d' }}>
+        {adjustment.originalAmount}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'center', fontWeight: 500, color: '#1a1a1a' }}>
+        {adjustment.adjustedAmount}
+      </TableCell>
+      <TableCell sx={{ 
+        textAlign: 'center',
+        fontWeight: 600, 
+        color: adjustment.difference.startsWith('+') ? '#2e7d32' : '#dc3545' 
+      }}>
+        {adjustment.difference}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'left', maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        {adjustment.reason}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'center' }}>
+        <Chip
+          label={adjustment.status}
+          size="small"
+          sx={{
+            backgroundColor: adjustment.status === 'Approved' ? '#e8f5e8' : 
+                            adjustment.status === 'Pending' ? '#fff3cd' : '#f8d7da',
+            color: adjustment.status === 'Approved' ? '#2e7d32' : 
+                   adjustment.status === 'Pending' ? '#856404' : '#721c24',
+            fontWeight: 500,
+            fontSize: '0.75rem'
+          }}
+        />
+      </TableCell>
+    </TableRow>
+  );
 
   return (
     <Box sx={getContainerStyles()}>
@@ -304,64 +373,12 @@ const EmployeeProfile = () => {
                 subtitle="All deals associated with this employee"
               />
 
-              <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0' }}>
-                <Table>
-                  <TableHead>
-                    <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
-                      {dealsColumns.map((column) => (
-                        <TableHeaderCell key={column.key}>
-                          {column.label}
-                        </TableHeaderCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {employeeDeals.map((deal, index) => (
-                      <TableRow 
-                        key={index}
-                        sx={{ 
-                          '&:hover': { backgroundColor: '#f8f9fa' },
-                          borderBottom: '1px solid #e9ecef'
-                        }}
-                      >
-                        <TableDataCell sx={{ fontWeight: 500, color: '#1a1a1a' }}>
-                          {deal.dealNo}
-                        </TableDataCell>
-                        <TableDataCell>
-                          {deal.date}
-                        </TableDataCell>
-                        <TableDataCell>
-                          {deal.customer}
-                        </TableDataCell>
-                        <TableDataCell>
-                          {deal.vehicle}
-                        </TableDataCell>
-                        <TableDataCell sx={{ color: '#6c757d' }}>
-                          {deal.vin}
-                        </TableDataCell>
-                        <TableDataCell sx={{ fontWeight: 500, color: '#1a1a1a' }}>
-                          {deal.price}
-                        </TableDataCell>
-                        <TableDataCell sx={{ fontWeight: 500, color: '#1a1a1a' }}>
-                          {deal.commission}
-                        </TableDataCell>
-                        <TableDataCell>
-                          <Chip
-                            label={deal.status}
-                            size="small"
-                            sx={{
-                              backgroundColor: deal.status === 'Complete' ? '#e8f5e8' : '#fff3cd',
-                              color: deal.status === 'Complete' ? '#2e7d32' : '#856404',
-                              fontWeight: 500,
-                              fontSize: '0.75rem'
-                            }}
-                          />
-                        </TableDataCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <DataTable
+                columns={dealsColumns}
+                data={employeeDeals}
+                renderRow={renderDealsRow}
+                minWidth={800}
+              />
             </Box>
           )}
 
@@ -373,67 +390,12 @@ const EmployeeProfile = () => {
                 subtitle="Monthly commission payments and details"
               />
 
-              <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0' }}>
-                <Table>
-                  <TableHead>
-                    <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
-                      {commissionsColumns.map((column) => (
-                        <TableHeaderCell key={column.key}>
-                          {column.label}
-                        </TableHeaderCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {employeeCommissions.map((commission, index) => (
-                      <TableRow 
-                        key={index}
-                        sx={{ 
-                          '&:hover': { backgroundColor: '#f8f9fa' },
-                          borderBottom: '1px solid #e9ecef'
-                        }}
-                      >
-                        <TableDataCell sx={{ fontWeight: 500, color: '#007bff' }}>
-                          {commission.commissionId}
-                        </TableDataCell>
-                        <TableDataCell>
-                          {commission.period}
-                        </TableDataCell>
-                        <TableDataCell>
-                          {commission.batchId}
-                        </TableDataCell>
-                        <TableDataCell sx={{ textAlign: 'center' }}>
-                          {commission.dealCount}
-                        </TableDataCell>
-                        <TableDataCell sx={{ fontWeight: 500, color: '#1a1a1a' }}>
-                          {commission.grossCommission}
-                        </TableDataCell>
-                        <TableDataCell sx={{ color: '#dc3545' }}>
-                          {commission.deductions}
-                        </TableDataCell>
-                        <TableDataCell sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-                          {commission.netCommission}
-                        </TableDataCell>
-                        <TableDataCell>
-                          {commission.paidDate}
-                        </TableDataCell>
-                        <TableDataCell>
-                          <Chip
-                            label={commission.status}
-                            size="small"
-                            sx={{
-                              backgroundColor: commission.status === 'Paid' ? '#1a1a1a' : '#fff3cd',
-                              color: commission.status === 'Paid' ? 'white' : '#856404',
-                              fontWeight: 500,
-                              fontSize: '0.75rem'
-                            }}
-                          />
-                        </TableDataCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <DataTable
+                columns={commissionsColumns}
+                data={employeeCommissions}
+                renderRow={renderCommissionsRow}
+                minWidth={900}
+              />
             </Box>
           )}
 
@@ -445,83 +407,12 @@ const EmployeeProfile = () => {
                 subtitle="Commission adjustments and corrections"
               />
 
-              <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0' }}>
-                <Table>
-                  <TableHead>
-                    <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
-                      {adjustmentsColumns.map((column) => (
-                        <TableHeaderCell key={column.key}>
-                          {column.label}
-                        </TableHeaderCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {employeeAdjustments.map((adjustment, index) => (
-                      <TableRow 
-                        key={index}
-                        sx={{ 
-                          '&:hover': { backgroundColor: '#f8f9fa' },
-                          borderBottom: '1px solid #e9ecef'
-                        }}
-                      >
-                        <TableDataCell sx={{ fontWeight: 500, color: '#007bff' }}>
-                          {adjustment.adjustmentId}
-                        </TableDataCell>
-                        <TableDataCell>
-                          {adjustment.date}
-                        </TableDataCell>
-                        <TableDataCell sx={{ fontWeight: 500, color: '#1a1a1a' }}>
-                          {adjustment.dealNumber}
-                        </TableDataCell>
-                        <TableDataCell>
-                          <Chip
-                            label={adjustment.type}
-                            size="small"
-                            sx={{
-                              backgroundColor: adjustment.type === 'Commission Correction' ? '#e3f2fd' : 
-                                              adjustment.type === 'Bonus Adjustment' ? '#f3e5f5' : '#e8f5e8',
-                              color: adjustment.type === 'Commission Correction' ? '#1976d2' : 
-                                     adjustment.type === 'Bonus Adjustment' ? '#7b1fa2' : '#2e7d32',
-                              fontWeight: 500,
-                              fontSize: '0.75rem'
-                            }}
-                          />
-                        </TableDataCell>
-                        <TableDataCell sx={{ fontWeight: 500, color: '#6c757d' }}>
-                          {adjustment.originalAmount}
-                        </TableDataCell>
-                        <TableDataCell sx={{ fontWeight: 500, color: '#1a1a1a' }}>
-                          {adjustment.adjustedAmount}
-                        </TableDataCell>
-                        <TableDataCell sx={{ 
-                          fontWeight: 600, 
-                          color: adjustment.difference.startsWith('+') ? '#2e7d32' : '#dc3545' 
-                        }}>
-                          {adjustment.difference}
-                        </TableDataCell>
-                        <TableDataCell sx={{ maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                          {adjustment.reason}
-                        </TableDataCell>
-                        <TableDataCell>
-                          <Chip
-                            label={adjustment.status}
-                            size="small"
-                            sx={{
-                              backgroundColor: adjustment.status === 'Approved' ? '#e8f5e8' : 
-                                              adjustment.status === 'Pending' ? '#fff3cd' : '#f8d7da',
-                              color: adjustment.status === 'Approved' ? '#2e7d32' : 
-                                     adjustment.status === 'Pending' ? '#856404' : '#721c24',
-                              fontWeight: 500,
-                              fontSize: '0.75rem'
-                            }}
-                          />
-                        </TableDataCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <DataTable
+                columns={adjustmentsColumns}
+                data={employeeAdjustments}
+                renderRow={renderAdjustmentsRow}
+                minWidth={1000}
+              />
             </Box>
           )}
         </CardContent>
