@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import StatCard from '../Ui/StatCard';
 import DataTable from '../Ui/DataTable';
+import SectionHeader from '../Ui/SectionHeader';
 import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import { deals, dealsStatusColors } from "../helpers/mockDealsData";
 
@@ -91,7 +92,6 @@ const DealsPage = () => {
     </FormControl>
   );
 
-  // Table column definitions for better organization
   const tableColumns = [
     { key: 'dealNo', label: 'Deal No', align: 'left', headerStyle: { fontWeight: 600 } },
     { key: 'date', label: 'Date', align: 'left' },
@@ -212,14 +212,11 @@ const DealsPage = () => {
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
           {/* Header Section */}
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, color: '#333', mb: 1 , mt:3}}>
-              🔍 Search & Filter Deals
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-              Search by deal number, customer name, VIN, make, model, or dealer; filter by brand and employee.
-            </Typography>
-          </Box>
+          <SectionHeader
+            icon={SearchIcon}
+            title="Search & Filter Deals"
+            subtitle="Search by deal number, customer name, VIN, make, model, or dealer; filter by brand and employee."
+          />
           {/* Search Bar */}
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
             <TextField
@@ -424,12 +421,11 @@ const DealsPage = () => {
       {/* Deal Details Table */}
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
-          <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a' }}>
-            Deal Details
-          </Typography>
-          <Typography variant="body2" color="textSecondary" sx={{ mb: 3, fontSize: '0.875rem' }}>
-            Comprehensive deal information with all financial details
-          </Typography>
+          <SectionHeader
+            icon={ReceiptIcon}
+            title="Deal Details"
+            subtitle="Comprehensive deal information with all financial details"
+          />
           
           <Box sx={{ width: '100%', overflowX: 'auto' }}>
             {filteredDeals.length > 0 ? (
