@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import { useSidebar } from '../contexts/SidebarContext';
+import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import {
   Box,
   Typography,
@@ -30,6 +31,16 @@ const DashboardHeader = ({
   rightContent
 }) => {
   const { toggleSidebar, toggleMobile, isMobile: isMobileContext } = useSidebar();
+  
+  const { getContainerStyles, styles } = useAdaptiveStyles();
+  
+  const containerPadding = getContainerStyles().p;
+  
+  const titleStyles = {
+    fontWeight: 600, 
+    color: '#333',
+    fontSize: '1rem' 
+  };
 
   const handleToggle = () => {
     if (isMobileContext) {
@@ -46,8 +57,10 @@ const DashboardHeader = ({
         alignItems: 'center', 
         justifyContent: 'space-between',
         gap: 1, 
-        p: 3, 
-        pb: 2,
+        p: containerPadding, 
+        pb: typeof containerPadding === 'object' 
+          ? { xs: containerPadding.xs / 2, md: containerPadding.md / 2 }
+          : containerPadding / 2,
         width: '100%'
       }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -55,25 +68,25 @@ const DashboardHeader = ({
             onClick={handleToggle}
             sx={{
               color: '#6c757d',
-              p: 1,
+              p: 0.8,
               '&:hover': {
                 backgroundColor: '#f8f9fa',
               },
             }}
           >
-            <ViewModuleIcon />
+            <ViewModuleIcon sx={{ fontSize: styles.iconSize }} />
           </IconButton>
           {onBackClick && (
             <Button
               onClick={onBackClick}
               variant="text"
-              startIcon={<ArrowBackIcon sx={{ fontSize: '16px' }} />}
+              startIcon={<ArrowBackIcon sx={{ fontSize: '12.8px' }} />}
               sx={{
                 color: '#6c757d',
                 textTransform: 'none',
-                fontSize: '14px',
+                fontSize: '11.2px',
                 fontWeight: 400,
-                p: '4px 8px',
+                p: '3.2px 6.4px',
                 minWidth: 'auto',
                 backgroundColor: 'transparent',
                 border: '1px solid #d0d0d0',
@@ -87,7 +100,7 @@ const DashboardHeader = ({
               {backText || 'Back'}
             </Button>
           )}
-          <Typography variant="h6" sx={{ fontWeight: 600, color: '#333' }}>
+          <Typography variant="h6" sx={titleStyles}>
             {title}
           </Typography>
         </Box>
@@ -100,9 +113,14 @@ const DashboardHeader = ({
               color: 'white',
               textTransform: 'none',
               fontWeight: 500,
-              px: 3,
-              py: 1,
+              px: typeof containerPadding === 'object' 
+                ? { xs: containerPadding.xs * 0.8, md: containerPadding.md * 0.8 }
+                : containerPadding * 0.8,
+              py: typeof containerPadding === 'object'
+                ? { xs: (containerPadding.xs / 3) * 0.8, md: (containerPadding.md / 4) * 0.8 }
+                : (containerPadding / 4) * 0.8,
               borderRadius: 1,
+              fontSize: '0.7rem',
               '&:hover': {
                 backgroundColor: '#2a2a2a',
               },
