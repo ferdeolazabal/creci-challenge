@@ -8,6 +8,7 @@ import {
   Button,
 } from '@mui/material';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 /**
  * DashboardHeader component
@@ -16,8 +17,19 @@ import ViewModuleIcon from '@mui/icons-material/ViewModule';
  * @param {boolean} [props.isMobile] - Whether the device is mobile
  * @param {string} [props.title] - Header title
  * @param {boolean} [props.showCreateButton] - Whether to show the Create New Batch button
+ * @param {Function} [props.onBackClick] - Optional callback for back button
+ * @param {string} [props.backText] - Optional back button text
+ * @param {React.ReactNode} [props.rightContent] - Optional content for right side
  */
-const DashboardHeader = ({ onToggleSidebar, isMobile = false, title = "Commission Batches Overview", showCreateButton = false }) => {
+const DashboardHeader = ({ 
+  onToggleSidebar, 
+  isMobile = false, 
+  title = "Commission Batches Overview", 
+  showCreateButton = false,
+  onBackClick,
+  backText,
+  rightContent
+}) => {
   return (
     <Box sx={{ width: '100%', backgroundColor: '#fff' }}>
       {/* Título con botón de toggle */}
@@ -45,6 +57,30 @@ const DashboardHeader = ({ onToggleSidebar, isMobile = false, title = "Commissio
               <ViewModuleIcon />
             </IconButton>
           )}
+          {onBackClick && (
+            <Button
+              onClick={onBackClick}
+              variant="text"
+              startIcon={<ArrowBackIcon sx={{ fontSize: '16px' }} />}
+              sx={{
+                color: '#6c757d',
+                textTransform: 'none',
+                fontSize: '14px',
+                fontWeight: 400,
+                p: '4px 8px',
+                minWidth: 'auto',
+                backgroundColor: 'transparent',
+                border: '1px solid #d0d0d0',
+                borderRadius: '4px',
+                '&:hover': {
+                  backgroundColor: 'rgba(108, 117, 125, 0.08)',
+                  borderColor: '#b0b0b0',
+                },
+              }}
+            >
+              {backText || 'Back'}
+            </Button>
+          )}
           <Typography variant="h6" sx={{ fontWeight: 600, color: '#333' }}>
             {title}
           </Typography>
@@ -69,6 +105,8 @@ const DashboardHeader = ({ onToggleSidebar, isMobile = false, title = "Commissio
             Create New Batch
           </Button>
         )}
+        
+        {rightContent && rightContent}
       </Box>
       
       <Divider sx={{ borderColor: '#e0e0e0' }} />
