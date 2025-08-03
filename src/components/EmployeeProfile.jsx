@@ -24,14 +24,17 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import BusinessIcon from '@mui/icons-material/Business';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import GetAppIcon from '@mui/icons-material/GetApp';
+import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import { employees, employeeDeals } from '../helpers/mockEmployeeData';
 
 const EmployeeProfile = () => {
+
+  const { getContainerStyles } = useAdaptiveStyles();
+  
   const { id } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(0);
 
-  // Find employee by ID
   const employee = employees.find(emp => emp.id === parseInt(id));
 
   if (!employee) {
@@ -51,7 +54,7 @@ const EmployeeProfile = () => {
   };
 
   return (
-    <Box sx={{ p: 3, width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+    <Box sx={getContainerStyles()}>
       {/* Basic Information Card */}
       <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', mb: 3 }}>
         <CardContent sx={{ p: 3 }}>
