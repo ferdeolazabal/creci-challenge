@@ -5,15 +5,11 @@ import {
   CardContent,
   Grid,
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Button,
   Chip,
   Paper,
+  TableCell,
+  TableRow,
 } from "@mui/material";
 import BusinessIcon from '@mui/icons-material/Business';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -21,6 +17,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import StatCard from '../Ui/StatCard';
+import DataTable from '../Ui/DataTable';
 import brandCommissions from "../helpers/mockBrandCommissions";
 
 const stats = {
@@ -50,7 +47,6 @@ const CommissionDashboard = (props = {}) => {
     getGridStyles
   } = useAdaptiveStyles();
 
-  // Datos de las cards de estadísticas
   const statsCards = [
     {
       title: "Total Brands",
@@ -74,78 +70,82 @@ const CommissionDashboard = (props = {}) => {
     }
   ];
 
-  // Configuración de columnas de la tabla
   const tableColumns = [
-    { label: "Brand", align: "left", key: "brand", fontWeight: 500 },
-    { label: "Active Batches", align: "center", key: "activeBatches" },
-    { label: "Employees", align: "center", key: "employees" },
-    { label: "Total Commissions", align: "center", key: "totalCommissions", fontWeight: 500, format: (value) => `$${value.toLocaleString()}` },
-    { label: "Avg Commission", align: "center", key: "avgCommission", format: (value) => `$${value.toFixed(2)}` },
-    { label: "Status", align: "center", key: "status", isChip: true },
-    { label: "Actions", align: "center", key: "actions", isAction: true }
+    { label: "Brand", key: "brand", align: "left", headerStyle: { fontWeight: 500 } },
+    { label: "Active Batches", key: "activeBatches", align: "center" },
+    { label: "Employees", key: "employees", align: "center" },
+    { label: "Total Commissions", key: "totalCommissions", align: "center", headerStyle: { fontWeight: 500 }},
+    { label: "Avg Commission", key: "avgCommission", align: "center" },
+    { label: "Status", key: "status", align: "center" },
+    { label: "Actions", key: "actions", align: "center" },
   ];
 
-  // Función para renderizar una celda de la tabla
-  const renderTableCell = (column, row, index) => {
-    const cellStyles = {
-      ...getTableStyles().bodyCell,
-      textAlign: column.align,
-      ...(column.fontWeight && { fontWeight: column.fontWeight })
-    };
-
-    if (column.isChip) {
-      return (
-        <TableCell key={column.key} sx={cellStyles}>
-          <Chip
-            label={row[column.key]}
-            size="small"
-            sx={{ 
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              textTransform: 'capitalize',
-              backgroundColor: row[column.key] === 'active' ? '#3b82f6' : '#6b7280',
-              color: 'white'
-            }}
-          />
-        </TableCell>
-      );
-    }
-
-    if (column.isAction) {
-      return (
-        <TableCell key={column.key} sx={cellStyles}>
-          <Button 
-            size="small" 
-            variant="contained" 
-            sx={{ 
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              textTransform: 'none',
-              height: 36,
-              borderRadius: 1,
-              px: getTableStyles().buttonPadding,
-              backgroundColor: '#3b82f6',
-              '&:hover': { backgroundColor: 'rgba(59, 130, 246, 0.9)' }
-            }}
-          >
-            View Batches
-          </Button>
-        </TableCell>
-      );
-    }
-
-    const value = column.format ? column.format(row[column.key]) : row[column.key];
-    
-    return (
-      <TableCell key={column.key} sx={cellStyles}>
-        {value}
+  const renderRow = (row, index) => (
+    <TableRow 
+      key={index} 
+      sx={{ 
+        borderBottom: '1px solid #e2e8f0',
+        transition: 'colors',
+        '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' }
+      }}
+    >
+      <TableCell sx={{ textAlign: 'left', fontWeight: 500 }}>
+        {row.brand}
       </TableCell>
-    );
-  };
+      
+      <TableCell sx={{ textAlign: 'center' }}>
+        {row.activeBatches}
+      </TableCell>
+      
+      <TableCell sx={{ textAlign: 'center' }}>
+        {row.employees}
+      </TableCell>
+      
+      <TableCell sx={{ textAlign: 'center', fontWeight: 500 }}>
+        ${row.totalCommissions.toLocaleString()}
+      </TableCell>
+      
+      <TableCell sx={{ textAlign: 'center' }}>
+        ${row.avgCommission.toFixed(2)}
+      </TableCell>
+      
+      <TableCell sx={{ textAlign: 'center' }}>
+        <Chip
+          label={row.status}
+          size="small"
+          sx={{ 
+            fontSize: '0.75rem',
+            fontWeight: 600,
+            textTransform: 'capitalize',
+            backgroundColor: row.status === 'active' ? '#3b82f6' : '#6b7280',
+            color: 'white'
+          }}
+        />
+      </TableCell>
+      
+      <TableCell sx={{ textAlign: 'center' }}>
+        <Button 
+          size="small" 
+          variant="contained" 
+          sx={{ 
+            fontSize: '0.875rem',
+            fontWeight: 500,
+            textTransform: 'none',
+            height: 36,
+            borderRadius: 1,
+            px: getTableStyles().buttonPadding,
+            backgroundColor: '#3b82f6',
+            '&:hover': { backgroundColor: 'rgba(59, 130, 246, 0.9)' }
+          }}
+        >
+          View Batches
+        </Button>
+      </TableCell>
+    </TableRow>
+  );
 
   return (
     <Box sx={getContainerStyles()}>
-      {/* Cards de estadísticas */}
       <Box sx={getGridStyles(4)}>
         {statsCards.map((cardData, index) => (
           <StatCard
@@ -157,7 +157,6 @@ const CommissionDashboard = (props = {}) => {
         ))}
       </Box>
 
-      {/* Table Card */}
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
           <Typography sx={{ 
@@ -169,47 +168,16 @@ const CommissionDashboard = (props = {}) => {
           }}>
             Brand Commission Overview
           </Typography>
-          <Typography sx={{ 
-            fontSize: '0.875rem',
-            color: '#6b7280'
-          }}>
+          <Typography sx={{ fontSize: '0.875rem',color: '#6b7280',mt:1, mb: 2}}>
             Commission batches and performance by automotive brand
           </Typography>
         </CardContent>
         <CardContent sx={{ ...getCardContentStyles(), pt: 0 }}>
-          <TableContainer sx={getTableStyles().container}>
-            <Table sx={getTableStyles().table}>
-              <TableHead>
-                <TableRow sx={{ borderBottom: '1px solid #e2e8f0' }}>
-                  {tableColumns.map((column) => (
-                    <TableCell 
-                      key={column.key}
-                      sx={{ 
-                        ...getTableStyles().headerCell,
-                        textAlign: column.align
-                      }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {brandCommissions.map((row, i) => (
-                  <TableRow 
-                    key={i} 
-                    sx={{ 
-                      borderBottom: '1px solid #e2e8f0',
-                      transition: 'colors',
-                      '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' }
-                    }}
-                  >
-                    {tableColumns.map((column) => renderTableCell(column, row, i))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <DataTable
+            columns={tableColumns}
+            data={brandCommissions}
+            renderRow={renderRow}
+          />
         </CardContent>
       </Card>
     </Box>
