@@ -335,6 +335,63 @@ const DealsPage = () => {
               <FilterListIcon sx={{ fontSize: '1.1rem' }} />
             </IconButton>
           </Box>
+
+          {/* Active Filters */}
+          {(searchQuery || brandFilter !== 'All Brands' || employeeFilter !== 'All Employees') && (
+            <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+              <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
+                Active filters:
+              </Typography>
+              
+              {brandFilter !== 'All Brands' && (
+                <Chip
+                  label={`Brand: ${brandFilter}`}
+                  size="small"
+                  onDelete={() => setBrandFilter('All Brands')}
+                  sx={{
+                    backgroundColor: '#e3f2fd',
+                    color: '#1976d2',
+                    '& .MuiChip-deleteIcon': {
+                      color: '#1976d2',
+                      fontSize: '0.875rem'
+                    }
+                  }}
+                />
+              )}
+              
+              {employeeFilter !== 'All Employees' && (
+                <Chip
+                  label={`Employee: ${employeeFilter}`}
+                  size="small"
+                  onDelete={() => setEmployeeFilter('All Employees')}
+                  sx={{
+                    backgroundColor: '#f3e5f5',
+                    color: '#7b1fa2',
+                    '& .MuiChip-deleteIcon': {
+                      color: '#7b1fa2',
+                      fontSize: '0.875rem'
+                    }
+                  }}
+                />
+              )}
+              
+              {searchQuery && (
+                <Chip
+                  label={`Search: "${searchQuery}"`}
+                  size="small"
+                  onDelete={() => setSearchQuery('')}
+                  sx={{
+                    backgroundColor: '#e8f5e8',
+                    color: '#2e7d32',
+                    '& .MuiChip-deleteIcon': {
+                      color: '#2e7d32',
+                      fontSize: '0.875rem'
+                    }
+                  }}
+                />
+              )}
+            </Box>
+          )}
         </CardContent>
       </Card>
 
