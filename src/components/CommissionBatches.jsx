@@ -30,6 +30,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PeopleIcon from '@mui/icons-material/People';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import commissionBatches from "../helpers/mockCommissionBatches";
 
 const statusColors = {
@@ -39,6 +40,17 @@ const statusColors = {
 };
 
 const CommissionBatches = () => {
+  // Hook para estilos adaptativos
+  const {
+    getContainerStyles,
+    getCardStyles,
+    getCardContentStyles,
+    getIconStyles,
+    getMainTextStyles,
+    getTableStyles,
+    getGridStyles
+  } = useAdaptiveStyles();
+
   // Estados para los filtros
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('All Brands');
@@ -72,6 +84,169 @@ const CommissionBatches = () => {
     totalDeals: filteredBatches.reduce((sum, batch) => sum + batch.deals, 0),
   };
 
+  // Datos de las cards de estadísticas
+  const statsCards = [
+    {
+      title: "Total Batches",
+      value: stats.totalBatches,
+      icon: BusinessIcon
+    },
+    {
+      title: "Total Commissions",
+      value: `$${stats.totalCommissions.toLocaleString()}`,
+      icon: AttachMoneyIcon
+    },
+    {
+      title: "Total Employees",
+      value: stats.totalEmployees,
+      icon: PeopleIcon
+    },
+    {
+      title: "Total Deals",
+      value: stats.totalDeals,
+      icon: TrendingUpIcon
+    }
+  ];
+
+  // Función para renderizar una card de estadística
+  const renderStatCard = (cardData, index) => {
+    const IconComponent = cardData.icon;
+    
+    return (
+      <Card key={index} sx={getCardStyles()}>
+        <CardContent sx={getCardContentStyles(true)}>
+          <Typography sx={{ 
+            fontSize: '0.875rem',
+            fontWeight: 500,
+            letterSpacing: '-0.025em'
+          }}>
+            {cardData.title}
+          </Typography>
+          <IconComponent sx={getIconStyles()} />
+        </CardContent>
+        <CardContent sx={getCardContentStyles()}>
+          <Typography sx={getMainTextStyles()}>
+            {cardData.value}
+          </Typography>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  // Configuración de columnas de la tabla
+  const tableColumns = [
+    { label: "Batch ID", align: "left", key: "batchId", fontWeight: 600, color: '#1976d2' },
+    { label: "Brand", align: "left", key: "brand", fontWeight: 600 },
+    { label: "Period", align: "left", key: "period" },
+    { label: "Created Date", align: "left", key: "createdDate", isDate: true },
+    { label: "Processed Date", align: "left", key: "processedDate", isProcessedDate: true },
+    { label: "Employees", align: "center", key: "employees" },
+    { label: "Deals", align: "center", key: "deals" },
+    { label: "Total Commission", align: "right", key: "totalCommission", fontWeight: 600, format: (value) => `$${value.toLocaleString()}` },
+    { label: "Avg Commission", align: "right", key: "avgCommission", format: (value) => `$${value.toFixed(2)}` },
+    { label: "Created By", align: "left", key: "createdBy" },
+    { label: "Status", align: "center", key: "status", isChip: true },
+    { label: "Actions", align: "center", key: "actions", isAction: true }
+  ];
+
+  // Función para renderizar una celda de la tabla
+  const renderTableCell = (column, row, index) => {
+    const cellStyles = {
+      ...getTableStyles().bodyCell,
+      textAlign: column.align,
+      ...(column.fontWeight && { fontWeight: column.fontWeight }),
+      ...(column.color && { color: column.color })
+    };
+
+    if (column.isDate) {
+      return (
+        <TableCell key={column.key} sx={cellStyles}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <span style={{ fontSize: '12px', color: '#1976d2' }}>📅</span>
+            {row[column.key]}
+          </Box>
+        </TableCell>
+      );
+    }
+
+    if (column.isProcessedDate) {
+      return (
+        <TableCell key={column.key} sx={cellStyles}>
+          {row[column.key] ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              <span style={{ fontSize: '12px', color: '#1976d2' }}>📅</span>
+              {row[column.key]}
+            </Box>
+          ) : (
+            '-'
+          )}
+        </TableCell>
+      );
+    }
+
+    if (column.isChip) {
+      return (
+        <TableCell key={column.key} sx={cellStyles}>
+          <Chip
+            label={row[column.key]}
+            color={statusColors[row[column.key]] || "default"}
+            size="small"
+            sx={{ fontSize: '0.75rem' }}
+          />
+        </TableCell>
+      );
+    }
+
+    if (column.isAction) {
+      return (
+        <TableCell key={column.key} sx={cellStyles}>
+          <Box sx={{ display: 'flex', gap: 0.5 }}>
+            <Button 
+              size="small" 
+              variant="outlined"
+              sx={{ 
+                textTransform: 'none',
+                fontSize: '0.75rem',
+                py: 0.25,
+                px: getTableStyles().buttonPadding,
+                minWidth: 'auto'
+              }}
+            >
+              View
+            </Button>
+            {row.status === "Processing" && (
+              <Button 
+                size="small" 
+                variant="contained"
+                sx={{ 
+                  textTransform: 'none',
+                  fontSize: '0.75rem',
+                  py: 0.25,
+                  px: getTableStyles().buttonPadding,
+                  minWidth: 'auto',
+                  backgroundColor: '#1a1a1a',
+                  '&:hover': {
+                    backgroundColor: '#333'
+                  }
+                }}
+              >
+                Process
+              </Button>
+            )}
+          </Box>
+        </TableCell>
+      );
+    }
+
+    const value = column.format ? column.format(row[column.key]) : row[column.key];
+    
+    return (
+      <TableCell key={column.key} sx={cellStyles}>
+        {value}
+      </TableCell>
+    );
+  };
+
   // Función para limpiar todos los filtros
   const clearFilters = () => {
     setSearchQuery('');
@@ -80,81 +255,15 @@ const CommissionBatches = () => {
   };
 
   return (
-    <Box sx={{ p: 3, width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+    <Box sx={getContainerStyles()}>
       {/* Cards de estadísticas */}
-      <Box sx={{ 
-        display: 'grid', 
-        gap: 2, 
-        gridTemplateColumns: { 
-          xs: 'repeat(1, 1fr)', 
-          sm: 'repeat(2, 1fr)', 
-          md: 'repeat(2, 1fr)',
-          lg: 'repeat(4, 1fr)' 
-        },
-        mb: 4,
-        width: '100%',
-        maxWidth: '100%'
-      }}>
-        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', minWidth: 0 }}>
-          <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
-            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
-              Total Batches
-            </Typography>
-            <BusinessIcon sx={{ width: 16, height: 16, color: '#6c757d' }} />
-          </CardContent>
-          <CardContent sx={{ p: 3, pt: 0 }}>
-            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
-              {stats.totalBatches}
-            </Typography>
-          </CardContent>
-        </Card>
-
-        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', minWidth: 0 }}>
-          <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
-            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
-              Total Commissions
-            </Typography>
-            <AttachMoneyIcon sx={{ width: 16, height: 16, color: '#6c757d' }} />
-          </CardContent>
-          <CardContent sx={{ p: 3, pt: 0 }}>
-            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a', wordBreak: 'break-all' }}>
-              ${stats.totalCommissions.toLocaleString()}
-            </Typography>
-          </CardContent>
-        </Card>
-
-        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', minWidth: 0 }}>
-          <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
-            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
-              Total Employees
-            </Typography>
-            <PeopleIcon sx={{ width: 16, height: 16, color: '#6c757d' }} />
-          </CardContent>
-          <CardContent sx={{ p: 3, pt: 0 }}>
-            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
-              {stats.totalEmployees}
-            </Typography>
-          </CardContent>
-        </Card>
-
-        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', minWidth: 0 }}>
-          <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
-            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#666' }}>
-              Total Deals
-            </Typography>
-            <TrendingUpIcon sx={{ width: 16, height: 16, color: '#6c757d' }} />
-          </CardContent>
-          <CardContent sx={{ p: 3, pt: 0 }}>
-            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
-              {stats.totalDeals}
-            </Typography>
-          </CardContent>
-        </Card>
+      <Box sx={getGridStyles(4)}>
+        {statsCards.map((cardData, index) => renderStatCard(cardData, index))}
       </Box>
 
       {/* Barra de búsqueda y filtros */}
-      <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', mb: 3 }}>
-        <CardContent sx={{ p: 3 }}>
+      <Card sx={getCardStyles()}>
+        <CardContent sx={getCardContentStyles()}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
             <SearchIcon sx={{ color: '#6c757d' }} />
             <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
@@ -251,8 +360,8 @@ const CommissionBatches = () => {
       </Card>
 
       {/* Tabla de Commission Batches */}
-      <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', width: '100%', overflow: 'hidden' }}>
-        <CardContent sx={{ p: 3, pb: 0 }}>
+      <Card sx={getCardStyles()}>
+        <CardContent sx={getCardContentStyles()}>
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a' }}>
             Commission Batches
           </Typography>
@@ -261,131 +370,28 @@ const CommissionBatches = () => {
           </Typography>
         </CardContent>
         <Box sx={{ width: '100%', overflowX: 'auto' }}>
-          <TableContainer component={Paper} sx={{ 
-            boxShadow: 'none', 
-            border: '1px solid #e0e0e0', 
-            borderRadius: 0,
-            minWidth: '100%'
-          }}>
-            <Table size="small" sx={{ minWidth: 1200 }}>
+          <TableContainer sx={getTableStyles().container}>
+            <Table sx={{ ...getTableStyles().table, minWidth: 1200 }}>
               <TableHead>
                 <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                  <TableCell sx={{ fontWeight: 600, py: 1.5 }}>
-                    Batch ID
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 1.5 }}>
-                    Brand
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 1.5 }}>
-                    Period
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 1.5 }}>
-                    Created Date
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 1.5 }}>
-                    Processed Date
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 1.5 }}>
-                    Employees
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 1.5 }}>
-                    Deals
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 1.5 }}>
-                    Total Commission
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 1.5 }}>
-                    Avg Commission
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 1.5 }}>
-                    Created By
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 1.5 }}>
-                    Status
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 1.5 }}>
-                    Actions
-                  </TableCell>
+                  {tableColumns.map((column) => (
+                    <TableCell 
+                      key={column.key}
+                      sx={{ 
+                        ...getTableStyles().headerCell,
+                        textAlign: column.align
+                      }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
                 </TableRow>
               </TableHead>
               <TableBody>
                 {filteredBatches.length > 0 ? (
                   filteredBatches.map((batch, i) => (
                     <TableRow key={i} sx={{ '&:hover': { backgroundColor: '#f9f9f9' } }}>
-                      <TableCell sx={{ py: 1.5, fontWeight: 600, color: '#1976d2' }}>
-                        {batch.batchId}
-                      </TableCell>
-                      <TableCell sx={{ py: 1.5, fontWeight: 600 }}>{batch.brand}</TableCell>
-                      <TableCell sx={{ py: 1.5 }}>{batch.period}</TableCell>
-                      <TableCell sx={{ py: 1.5 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <span style={{ fontSize: '12px', color: '#1976d2' }}>📅</span>
-                          {batch.createdDate}
-                        </Box>
-                      </TableCell>
-                      <TableCell sx={{ py: 1.5 }}>
-                        {batch.processedDate ? (
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <span style={{ fontSize: '12px', color: '#1976d2' }}>📅</span>
-                            {batch.processedDate}
-                          </Box>
-                        ) : (
-                          '-'
-                        )}
-                      </TableCell>
-                      <TableCell sx={{ py: 1.5 }}>{batch.employees}</TableCell>
-                      <TableCell sx={{ py: 1.5 }}>{batch.deals}</TableCell>
-                      <TableCell sx={{ py: 1.5, fontWeight: 600 }}>
-                        ${batch.totalCommission.toLocaleString()}
-                      </TableCell>
-                      <TableCell sx={{ py: 1.5 }}>
-                        ${batch.avgCommission.toFixed(2)}
-                      </TableCell>
-                      <TableCell sx={{ py: 1.5 }}>{batch.createdBy}</TableCell>
-                      <TableCell sx={{ py: 1.5 }}>
-                        <Chip
-                          label={batch.status}
-                          color={statusColors[batch.status] || "default"}
-                          size="small"
-                          sx={{ fontSize: '0.75rem' }}
-                        />
-                      </TableCell>
-                      <TableCell sx={{ py: 1.5 }}>
-                        <Box sx={{ display: 'flex', gap: 0.5 }}>
-                          <Button 
-                            size="small" 
-                            variant="outlined"
-                            sx={{ 
-                              textTransform: 'none',
-                              fontSize: '0.75rem',
-                              py: 0.25,
-                              px: 1,
-                              minWidth: 'auto'
-                            }}
-                          >
-                            View
-                          </Button>
-                          {batch.status === "Processing" && (
-                            <Button 
-                              size="small" 
-                              variant="contained"
-                              sx={{ 
-                                textTransform: 'none',
-                                fontSize: '0.75rem',
-                                py: 0.25,
-                                px: 1,
-                                minWidth: 'auto',
-                                backgroundColor: '#1a1a1a',
-                                '&:hover': {
-                                  backgroundColor: '#333'
-                                }
-                              }}
-                            >
-                              Process
-                            </Button>
-                          )}
-                        </Box>
-                      </TableCell>
+                      {tableColumns.map((column) => renderTableCell(column, batch, i))}
                     </TableRow>
                   ))
                 ) : (
