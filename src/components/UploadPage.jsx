@@ -28,6 +28,7 @@ import ProcessingIcon from '@mui/icons-material/Sync';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import PersonIcon from '@mui/icons-material/Person';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import { 
   documentTypes, 
   uploadHistory, 
@@ -38,6 +39,16 @@ import {
 } from '../helpers/mockUploadData';
 
 const UploadPage = () => {
+  // Hook para estilos adaptativos
+  const {
+    getContainerStyles,
+    getCardStyles,
+    getCardContentStyles,
+    getIconStyles,
+    getMainTextStyles,
+    getTableStyles
+  } = useAdaptiveStyles();
+
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   const handleFileSelect = () => {
@@ -57,10 +68,10 @@ const UploadPage = () => {
   };
 
   return (
-    <Box sx={{ p: 3, width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+    <Box sx={getContainerStyles()}>
       {/* Upload Multiple Documents Section */}
-      <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', mb: 4 }}>
-        <CardContent sx={{ p: 4 }}>
+      <Card sx={getCardStyles()}>
+        <CardContent sx={getCardContentStyles()}>
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
             <CloudUploadIcon sx={{ mr: 2, color: '#1976d2', fontSize: 24 }} />
             <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
@@ -148,8 +159,8 @@ const UploadPage = () => {
       </Card>
 
       {/* Document Types Reference Section */}
-      <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', mb: 4 }}>
-        <CardContent sx={{ p: 4, pb: 0 }}>
+      <Card sx={getCardStyles()}>
+        <CardContent sx={getCardContentStyles()}>
           <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a', mb: 1 }}>
             Document Types Reference
           </Typography>
@@ -159,12 +170,8 @@ const UploadPage = () => {
         </CardContent>
         
         <Box sx={{ width: '100%', overflowX: 'auto' }}>
-          <TableContainer component={Paper} sx={{ 
-            boxShadow: 'none', 
-            border: 'none',
-            minWidth: '100%'
-          }}>
-            <Table size="small" sx={{ minWidth: 800 }}>
+          <TableContainer sx={getTableStyles().container}>
+            <Table sx={{ ...getTableStyles().table, minWidth: 800 }}>
               <TableHead>
                 <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
                   <TableCell sx={{ fontWeight: 600, py: 2 }}>Document Type</TableCell>
