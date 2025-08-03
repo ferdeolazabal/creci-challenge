@@ -13,36 +13,41 @@ export const useAdaptiveStyles = () => {
     return sidebarOpen ? window.innerWidth - drawerWidth : window.innerWidth;
   };
 
-  // Adaptar medidas sutilmente según el espacio disponible
+  // Adaptar medidas sutilmente según el espacio disponible (con reducción del 20%)
   const getAdaptiveStyles = () => {
     if (isMobile) {
       return {
-        cardPaddingH: 2, // padding horizontal
-        cardPaddingV: 2, // padding vertical
-        fontSize: "1.75rem",
-        iconSize: 18,
-        tablePadding: 1.5,
-        containerPadding: 2,
-        gap: 1.5,
+        cardPaddingH: 1.6,
+        cardPaddingV: 1.6,
+        fontSize: "1.4rem",
+        iconSize: 14.4,
+        tablePadding: 1.2,
+        containerPadding: 1.6,
+        gap: 1.2,
       };
     }
 
-    // Desktop: adaptación basada en el drawerWidth disponible
-    const extraSpace = sidebarOpen ? 0 : drawerWidth; // Espacio extra cuando sidebar cerrado
-    const scaleFactor = extraSpace / window.innerWidth; // Factor proporcional al tamaño de pantalla
+    // Desktop: valores fijos para evitar scroll horizontal
+    // No escalamos cuando el sidebar está cerrado para mantener el layout controlado
+    const baseCardPaddingH = 2.4;
+    const baseCardPaddingV = 1.6;
+    const baseFontSize = 1.6;
+    const baseIconSize = 16;
+    const baseTablePadding = 1.6;
+    const baseContainerPadding = 3.2;
+    const baseGap = 1.6;
 
     return {
-      cardPaddingH: sidebarOpen ? 3 : 3 + scaleFactor * 8, // Escala según drawerWidth
-      cardPaddingV: 2, // padding vertical FIJO siempre
-      fontSize: sidebarOpen ? "2rem" : `${2 + scaleFactor * 2}rem`, // Escala dinámicamente
-      iconSize: sidebarOpen ? 20 : 20 + scaleFactor * 16, // Escala según espacio
-      tablePadding: sidebarOpen ? 2 : 2 + scaleFactor * 4, // Aumento proporcional
-      containerPadding: 4,
-      gap: sidebarOpen ? 2 : 2 + scaleFactor * 4, // Gap proporcional
+      cardPaddingH: baseCardPaddingH,
+      cardPaddingV: baseCardPaddingV,
+      fontSize: `${baseFontSize}rem`,
+      iconSize: baseIconSize,
+      tablePadding: baseTablePadding,
+      containerPadding: baseContainerPadding,
+      gap: baseGap,
     };
   };
 
-  // Estilos para contenedor principal responsivo
   const getContainerStyles = (customGap) => ({
     flex: 1,
     p: {
@@ -54,6 +59,8 @@ export const useAdaptiveStyles = () => {
     gap: customGap || getAdaptiveStyles().gap,
     width: "100%",
     maxWidth: "100%",
+    overflow: "hidden",
+    boxSizing: "border-box",
   });
 
   // Estilos para cards adaptativas
@@ -67,8 +74,8 @@ export const useAdaptiveStyles = () => {
   const getCardContentStyles = (isHeader = false) => {
     const styles = getAdaptiveStyles();
     return {
-      px: styles.cardPaddingH, // padding horizontal variable
-      py: isHeader ? styles.cardPaddingV : 0, // padding vertical
+      px: styles.cardPaddingH,
+      py: isHeader ? styles.cardPaddingV : 0,
       pt: isHeader ? undefined : 0,
       pb: isHeader ? styles.cardPaddingV / 2 : undefined,
       display: isHeader ? "flex" : undefined,
@@ -110,7 +117,7 @@ export const useAdaptiveStyles = () => {
     };
   };
 
-  // Estilos para tablas adaptativas
+  // Estilos para tablas adaptativas (con reducción del 20%)
   const getTableStyles = () => {
     const styles = getAdaptiveStyles();
     return {
@@ -121,10 +128,10 @@ export const useAdaptiveStyles = () => {
       },
       table: {
         width: "100%",
-        fontSize: "0.875rem",
+        fontSize: "0.7rem", // (0.875 * 0.8)
       },
       headerCell: {
-        height: 48,
+        height: 38.4, // (48 * 0.8)
         px: styles.tablePadding / 1.5,
         verticalAlign: "middle",
         fontWeight: 500,
