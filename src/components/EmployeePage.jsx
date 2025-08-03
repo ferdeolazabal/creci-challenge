@@ -28,13 +28,12 @@ import {
 } from '../helpers/mockEmployeeData';
 
 const EmployeePage = () => {
-  // Hook para estilos adaptativos
+
   const { getContainerStyles ,getTableStyles} = useAdaptiveStyles();
   
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
-  // Filter employees based on search query
   const filteredEmployees = employees.filter(employee =>
     employee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     employee.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -46,7 +45,6 @@ const EmployeePage = () => {
     navigate(`/employee/${employeeId}`);
   };
 
-  // Configuración de columnas de la tabla
   const tableColumns = [
     { key: 'name', label: 'Name' },
     { key: 'contact', label: 'Contact' },
@@ -61,7 +59,6 @@ const EmployeePage = () => {
     { key: 'actions', label: 'Actions' }
   ];
 
-  // Función para renderizar cada fila de la tabla
   const renderEmployeeRow = (employee, index) => (
     <TableRow 
       key={employee.id}
@@ -170,7 +167,6 @@ const EmployeePage = () => {
 
   return (
     <Box sx={getContainerStyles()}>
-      {/* Employee Statistics Cards */}
       <Box sx={{ 
         display: 'grid', 
         gap: 2, 
@@ -205,7 +201,6 @@ const EmployeePage = () => {
         />
       </Box>
 
-      {/* Search Employees Section */}
       <SearchBox
         title="Search Employees"
         placeholder="Search by name, email, dealer, or role..."
@@ -213,12 +208,12 @@ const EmployeePage = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-      {/* Employee Directory Table */}
       <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
         <CardContent sx={{ p: 3 }}>
           <SectionHeader
             title="Employee Directory"
             icon={PersonIcon}
+            subtitle="Complete employee information with performance metrics"
           />
           
           <DataTable
