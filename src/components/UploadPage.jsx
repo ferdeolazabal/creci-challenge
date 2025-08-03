@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import DataTable from '../Ui/DataTable';
+import SectionHeader from '../Ui/SectionHeader';
 import { 
   documentTypes, 
   uploadHistory, 
@@ -46,22 +47,6 @@ const UploadPage = () => {
   } = useAdaptiveStyles();
 
   const [selectedFiles, setSelectedFiles] = useState([]);
-
-  const SectionHeader = ({ icon: Icon, title, subtitle, iconColor = '#1976d2', marginTop = false }) => (
-    <Box sx={{ mb: marginTop ? 3 : 2, mt: marginTop ? 3 : 0 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-        <Icon sx={{ mr: 2, color: iconColor, fontSize: 24 }} />
-        <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-          {title}
-        </Typography>
-      </Box>
-      {subtitle && (
-        <Typography variant="body2" color="textSecondary" sx={{ mb: 3, lineHeight: 1.6 }}>
-          {subtitle}
-        </Typography>
-      )}
-    </Box>
-  );
 
   const StatusChip = ({ status, colorMapping, withIcon = false, getIcon }) => (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -194,7 +179,6 @@ const UploadPage = () => {
             icon={CloudUploadIcon}
             title="Upload Multiple Documents"
             subtitle="Upload multiple commission documents at once. After upload, you'll need to map each document to its type and configure field mappings."
-            marginTop={true}
           />
 
           <Box sx={{ mb: 4 }}>
@@ -278,8 +262,6 @@ const UploadPage = () => {
             icon={HistoryIcon}
             title="Document Types Reference"
             subtitle="Available document types and their mapping requirements"
-            iconColor="#6c757d"
-            marginTop={true}
           />
         </CardContent>
         
@@ -299,7 +281,6 @@ const UploadPage = () => {
             icon={HistoryIcon}
             title="Upload History"
             subtitle="Track all document uploads with timestamps and processing status"
-            iconColor="#6c757d"
           />
         </CardContent>
         
