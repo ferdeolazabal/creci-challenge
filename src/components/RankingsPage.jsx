@@ -34,6 +34,137 @@ const RankingsPage = () => {
   
   const [activeTab, setActiveTab] = useState(0);
   
+  const StatCard = ({ title, value, subtitle, icon: Icon, iconColor = '#6c757d' }) => (
+    <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+      <CardContent sx={{ p: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
+          <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#6c757d' }}>
+            {title}
+          </Typography>
+          <Icon sx={{ width: 16, height: 16, color: iconColor }} />
+        </Box>
+        <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a', mb: 0.5 }}>
+          {value}
+        </Typography>
+        <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
+          {subtitle}
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+
+  const RankBadge = ({ rank, badge }) => {
+    if (badge) {
+      return (
+        <Box sx={{
+          backgroundColor: getBadgeColor(badge),
+          borderRadius: rank === 1 ? '12px 12px 0 12px' : 
+                        rank === 2 ? '12px' : 
+                        '12px 0 12px 12px',
+          width: 48,
+          height: 24,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '0.75rem',
+          fontWeight: 700,
+          color: '#fff',
+          position: 'relative',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
+          '&::before': rank === 1 ? {
+            content: '""',
+            position: 'absolute',
+            top: '-2px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: 0,
+            height: 0,
+            borderLeft: '4px solid transparent',
+            borderRight: '4px solid transparent',
+            borderBottom: `4px solid ${getBadgeColor(badge)}`,
+          } : {}
+        }}>
+          {rank === 1 ? '🏆1st' : rank === 2 ? '🥈2nd' : '🥉3rd'}
+        </Box>
+      );
+    }
+    
+    return (
+      <Box sx={{
+        backgroundColor: '#fff',
+        borderRadius: '12px',
+        width: 32,
+        height: 24,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '0.75rem',
+        fontWeight: 600,
+        color: '#6c757d',
+        border: '1px solid #dee2e6'
+      }}>
+        #{rank}
+      </Box>
+    );
+  };
+
+  // Reusable TableHeader component
+  const TableHeader = ({ columns }) => (
+    <TableHead>
+      <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
+        {columns.map((column) => (
+          <TableCell 
+            key={column.key}
+            sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}
+          >
+            {column.label}
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+
+  const TableDataCell = ({ children, weight = 'normal', color = '#1a1a1a', align = 'left' }) => (
+    <TableCell sx={{ 
+      py: 2, 
+      fontSize: '0.875rem', 
+      fontWeight: weight === 'bold' ? 600 : 'normal',
+      color,
+      textAlign: align
+    }}>
+      {children}
+    </TableCell>
+  );
+
+  const RankingTable = ({ title, subtitle, columns, data, renderRow }) => (
+    <>
+      <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a', display: 'flex', alignItems: 'center', gap: 1 }}>
+        🏆 {title}
+      </Typography>
+      <Typography variant="body2" color="textSecondary" sx={{ mb: 3, fontSize: '0.875rem' }}>
+        {subtitle}
+      </Typography>
+      <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0' }}>
+        <Table size="small">
+          <TableHeader columns={columns} />
+          <TableBody>
+            {data.map((employee) => (
+              <TableRow 
+                key={employee.rank} 
+                sx={{ 
+                  '&:hover': { backgroundColor: '#f8f9fa' },
+                  borderBottom: '1px solid #e9ecef'
+                }}
+              >
+                {renderRow(employee)}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
+  
   const getCurrentData = () => {
     switch (activeTab) {
       case 0: return salesExecutivesData;
@@ -42,6 +173,86 @@ const RankingsPage = () => {
       default: return salesExecutivesData;
     }
   };
+
+  // Table column configurations
+  const salesExecutivesColumns = [
+    { key: 'rank', label: 'Rank' },
+    { key: 'name', label: 'Name' },
+    { key: 'dealer', label: 'Dealer' },
+    { key: 'dealCount', label: 'Deal Count' },
+    { key: 'frontGross', label: 'Front Gross' },
+    { key: 'backGross', label: 'Back Gross' },
+    { key: 'totalGross', label: 'Total Gross' }
+  ];
+
+  const salesManagersColumns = [
+    { key: 'rank', label: 'Rank' },
+    { key: 'name', label: 'Name' },
+    { key: 'dealer', label: 'Dealer' },
+    { key: 'totalCarsSold', label: 'Total Cars Sold' },
+    { key: 'employeeCount', label: 'Employee Count' },
+    { key: 'avgCarsPerEmployee', label: 'Avg Cars/Employee' },
+    { key: 'period', label: 'Period' }
+  ];
+
+  const fiManagersColumns = [
+    { key: 'rank', label: 'Rank' },
+    { key: 'name', label: 'Name' },
+    { key: 'dealer', label: 'Dealer' },
+    { key: 'dealCount', label: 'Deal Count' },
+    { key: 'frontGross', label: 'Front Gross' },
+    { key: 'backGross', label: 'Back Gross' },
+    { key: 'totalGross', label: 'Total Gross' }
+  ];
+
+  // Row renderers for each table type
+  const renderSalesExecutiveRow = (employee) => (
+    <>
+      <TableDataCell>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <RankBadge rank={employee.rank} badge={employee.badge} />
+        </Box>
+      </TableDataCell>
+      <TableDataCell weight="bold" color="#1976d2">{employee.name}</TableDataCell>
+      <TableDataCell color="#1976d2">{employee.dealer}</TableDataCell>
+      <TableDataCell align="center">📊 {employee.dealCount}</TableDataCell>
+      <TableDataCell weight="bold">${employee.frontGross.toLocaleString()}</TableDataCell>
+      <TableDataCell weight="bold">${employee.backGross.toLocaleString()}</TableDataCell>
+      <TableDataCell weight="bold">${employee.totalGross.toLocaleString()}</TableDataCell>
+    </>
+  );
+
+  const renderSalesManagerRow = (employee) => (
+    <>
+      <TableDataCell>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <RankBadge rank={employee.rank} badge={employee.badge} />
+        </Box>
+      </TableDataCell>
+      <TableDataCell weight="bold">{employee.name}</TableDataCell>
+      <TableDataCell color="#1976d2">{employee.dealer}</TableDataCell>
+      <TableDataCell align="center">📊 {employee.totalCarsSold}</TableDataCell>
+      <TableDataCell align="center">{employee.employeeCount}</TableDataCell>
+      <TableDataCell weight="bold">{employee.avgCarsPerEmployee}</TableDataCell>
+      <TableDataCell>{employee.period}</TableDataCell>
+    </>
+  );
+
+  const renderFIManagerRow = (employee) => (
+    <>
+      <TableDataCell>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <RankBadge rank={employee.rank} badge={employee.badge} />
+        </Box>
+      </TableDataCell>
+      <TableDataCell weight="bold">{employee.name}</TableDataCell>
+      <TableDataCell color="#1976d2">{employee.dealer}</TableDataCell>
+      <TableDataCell align="center">📊 {employee.dealCount}</TableDataCell>
+      <TableDataCell weight="bold">${employee.frontGross.toLocaleString()}</TableDataCell>
+      <TableDataCell weight="bold">${employee.backGross.toLocaleString()}</TableDataCell>
+      <TableDataCell weight="bold">${employee.totalGross.toLocaleString()}</TableDataCell>
+    </>
+  );
 
   const getBadgeColor = (badge) => {
     return badgeColors[badge] || 'transparent';
@@ -70,73 +281,34 @@ const RankingsPage = () => {
         mb: 4,
         width: '100%'
       }}>
-        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-          <CardContent sx={{ p: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
-              <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#6c757d' }}>
-                Top Deal Count
-              </Typography>
-              <ReceiptIcon sx={{ width: 16, height: 16, color: '#6c757d' }} />
-            </Box>
-            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a', mb: 0.5 }}>
-              45
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-              John Smith
-            </Typography>
-          </CardContent>
-        </Card>
-
-        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-          <CardContent sx={{ p: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
-              <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#6c757d' }}>
-                Best Manager Efficiency
-              </Typography>
-              <TrendingUpIcon sx={{ width: 16, height: 16, color: '#6c757d' }} />
-            </Box>
-            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a', mb: 0.5 }}>
-              12.0
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-              Cars/Employee - Sarah Johnson
-            </Typography>
-          </CardContent>
-        </Card>
-
-        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-          <CardContent sx={{ p: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
-              <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#6c757d' }}>
-                Highest Back Gross
-              </Typography>
-              <AttachMoneyIcon sx={{ width: 16, height: 16, color: '#6c757d' }} />
-            </Box>
-            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a', mb: 0.5 }}>
-              $85K
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-              Mike Wilson
-            </Typography>
-          </CardContent>
-        </Card>
-
-        <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-          <CardContent sx={{ p: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
-              <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#6c757d' }}>
-                Highest Total Gross
-              </Typography>
-              <EmojiEventsIcon sx={{ width: 16, height: 16, color: '#ffd700' }} />
-            </Box>
-            <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a', mb: 0.5 }}>
-              $237K
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-              Mike Wilson
-            </Typography>
-          </CardContent>
-        </Card>
+        <StatCard 
+          title="Top Deal Count"
+          value="45"
+          subtitle="John Smith"
+          icon={ReceiptIcon}
+        />
+        
+        <StatCard 
+          title="Best Manager Efficiency"
+          value="12.0"
+          subtitle="Cars/Employee - Sarah Johnson"
+          icon={TrendingUpIcon}
+        />
+        
+        <StatCard 
+          title="Highest Back Gross"
+          value="$85K"
+          subtitle="Mike Wilson"
+          icon={AttachMoneyIcon}
+        />
+        
+        <StatCard 
+          title="Highest Total Gross"
+          value="$237K"
+          subtitle="Mike Wilson"
+          icon={EmojiEventsIcon}
+          iconColor="#ffd700"
+        />
       </Box>
 
       {/* Button Group and Rankings Table */}
@@ -200,370 +372,33 @@ const RankingsPage = () => {
 
           {/* Table Content */}
           {activeTab === 0 && (
-            <>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a', display: 'flex', alignItems: 'center', gap: 1 }}>
-                🏆 Sales Executives Rankings
-              </Typography>
-              <Typography variant="body2" color="textSecondary" sx={{ mb: 3, fontSize: '0.875rem' }}>
-                Performance rankings for the last 6 months
-              </Typography>
-              <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0' }}>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Rank
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Name
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Dealer
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Deal Count
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Front Gross
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Back Gross
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Total Gross
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {salesExecutivesData.map((employee) => (
-                      <TableRow 
-                        key={employee.rank} 
-                        sx={{ 
-                          '&:hover': { backgroundColor: '#f8f9fa' },
-                          borderBottom: '1px solid #e9ecef'
-                        }}
-                      >
-                        <TableCell sx={{ py: 2 }}>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            {employee.badge && (
-                              <Box sx={{
-                                backgroundColor: getBadgeColor(employee.badge),
-                                borderRadius: '12px',
-                                width: 48,
-                                height: 24,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '0.75rem',
-                                fontWeight: 700,
-                                color: '#fff',
-                                position: 'relative',
-                                boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
-                                '&::before': employee.rank === 1 ? {
-                                  content: '""',
-                                  position: 'absolute',
-                                  top: '-2px',
-                                  left: '50%',
-                                  transform: 'translateX(-50%)',
-                                  width: 0,
-                                  height: 0,
-                                  borderLeft: '4px solid transparent',
-                                  borderRight: '4px solid transparent',
-                                  borderBottom: `4px solid ${getBadgeColor(employee.badge)}`,
-                                } : {}
-                              }}>
-                                {employee.rank === 1 ? '🏆1st' : employee.rank === 2 ? '🥈2nd' : '🥉3rd'}
-                              </Box>
-                            )}
-                            {!employee.badge && (
-                              <Box sx={{
-                                backgroundColor: '#fff',
-                                borderRadius: '12px',
-                                width: 32,
-                                height: 24,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '0.75rem',
-                                fontWeight: 600,
-                                color: '#6c757d',
-                                border: '1px solid #dee2e6'
-                              }}>
-                                #{employee.rank}
-                              </Box>
-                            )}
-                          </Box>
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600, color: '#1976d2' }}>
-                          {employee.name}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', color: '#1976d2' }}>
-                          {employee.dealer}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', textAlign: 'center' }}>
-                          📊 {employee.dealCount}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
-                          ${employee.frontGross.toLocaleString()}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
-                          ${employee.backGross.toLocaleString()}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
-                          ${employee.totalGross.toLocaleString()}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </>
+            <RankingTable
+              title="Sales Executives Rankings"
+              subtitle="Performance rankings for the last 6 months"
+              columns={salesExecutivesColumns}
+              data={salesExecutivesData}
+              renderRow={renderSalesExecutiveRow}
+            />
           )}
 
           {activeTab === 1 && (
-            <>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a', display: 'flex', alignItems: 'center', gap: 1 }}>
-                🏆 Sales Managers Rankings
-              </Typography>
-              <Typography variant="body2" color="textSecondary" sx={{ mb: 3, fontSize: '0.875rem' }}>
-                Rankings based on average cars sold per employee per month
-              </Typography>
-              <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0' }}>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Rank
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Name
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Dealer
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Total Cars Sold
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Employee Count
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Avg Cars/Employee
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Period
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {salesManagersData.map((employee) => (
-                      <TableRow 
-                        key={employee.rank} 
-                        sx={{ 
-                          '&:hover': { backgroundColor: '#f8f9fa' },
-                          borderBottom: '1px solid #e9ecef'
-                        }}
-                      >
-                        <TableCell sx={{ py: 2 }}>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            {employee.badge && (
-                              <Box sx={{
-                                backgroundColor: getBadgeColor(employee.badge),
-                                borderRadius: employee.rank === 1 ? '12px 12px 0 12px' : 
-                                              employee.rank === 2 ? '12px' : 
-                                              '12px 0 12px 12px',
-                                width: 48,
-                                height: 24,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '0.75rem',
-                                fontWeight: 700,
-                                color: '#fff',
-                                position: 'relative',
-                                boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
-                                '&::before': employee.rank === 1 ? {
-                                  content: '""',
-                                  position: 'absolute',
-                                  top: '-2px',
-                                  left: '50%',
-                                  transform: 'translateX(-50%)',
-                                  width: 0,
-                                  height: 0,
-                                  borderLeft: '4px solid transparent',
-                                  borderRight: '4px solid transparent',
-                                  borderBottom: `4px solid ${getBadgeColor(employee.badge)}`,
-                                } : {}
-                              }}>
-                                {employee.rank === 1 ? '🏆1st' : employee.rank === 2 ? '🥈2nd' : '🥉3rd'}
-                              </Box>
-                            )}
-                            {!employee.badge && (
-                              <Box sx={{
-                                backgroundColor: '#fff',
-                                borderRadius: '12px',
-                                width: 32,
-                                height: 24,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '0.75rem',
-                                fontWeight: 600,
-                                color: '#6c757d',
-                                border: '1px solid #dee2e6'
-                              }}>
-                                #{employee.rank}
-                              </Box>
-                            )}
-                          </Box>
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
-                          {employee.name}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', color: '#1976d2' }}>
-                          {employee.dealer}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', textAlign: 'center' }}>
-                          📊 {employee.totalCarsSold}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', textAlign: 'center' }}>
-                          {employee.employeeCount}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
-                          {employee.avgCarsPerEmployee}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem' }}>
-                          {employee.period}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </>
+            <RankingTable
+              title="Sales Managers Rankings"
+              subtitle="Rankings based on average cars sold per employee per month"
+              columns={salesManagersColumns}
+              data={salesManagersData}
+              renderRow={renderSalesManagerRow}
+            />
           )}
 
           {activeTab === 2 && (
-            <>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a', display: 'flex', alignItems: 'center', gap: 1 }}>
-                🏆 F&I Managers Rankings
-              </Typography>
-              <Typography variant="body2" color="textSecondary" sx={{ mb: 3, fontSize: '0.875rem' }}>
-                Performance rankings for the last 6 months
-              </Typography>
-              <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0' }}>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Rank
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Name
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Dealer
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Deal Count
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Front Gross
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Back Gross
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                        Total Gross
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {fiManagersData.map((employee) => (
-                      <TableRow 
-                        key={employee.rank} 
-                        sx={{ 
-                          '&:hover': { backgroundColor: '#f8f9fa' },
-                          borderBottom: '1px solid #e9ecef'
-                        }}
-                      >
-                        <TableCell sx={{ py: 2 }}>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            {employee.badge && (
-                              <Box sx={{
-                                backgroundColor: getBadgeColor(employee.badge),
-                                borderRadius: employee.rank === 1 ? '12px 12px 0 12px' : 
-                                              employee.rank === 2 ? '12px' : 
-                                              '12px 0 12px 12px',
-                                width: 48,
-                                height: 24,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '0.75rem',
-                                fontWeight: 700,
-                                color: '#fff',
-                                position: 'relative',
-                                boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
-                                '&::before': employee.rank === 1 ? {
-                                  content: '""',
-                                  position: 'absolute',
-                                  top: '-2px',
-                                  left: '50%',
-                                  transform: 'translateX(-50%)',
-                                  width: 0,
-                                  height: 0,
-                                  borderLeft: '4px solid transparent',
-                                  borderRight: '4px solid transparent',
-                                  borderBottom: `4px solid ${getBadgeColor(employee.badge)}`,
-                                } : {}
-                              }}>
-                                {employee.rank === 1 ? '🏆1st' : employee.rank === 2 ? '🥈2nd' : '🥉3rd'}
-                              </Box>
-                            )}
-                            {!employee.badge && (
-                              <Box sx={{
-                                backgroundColor: '#fff',
-                                borderRadius: '12px',
-                                width: 32,
-                                height: 24,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '0.75rem',
-                                fontWeight: 600,
-                                color: '#6c757d',
-                                border: '1px solid #dee2e6'
-                              }}>
-                                #{employee.rank}
-                              </Box>
-                            )}
-                          </Box>
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
-                          {employee.name}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', color: '#1976d2' }}>
-                          {employee.dealer}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', textAlign: 'center' }}>
-                          📊 {employee.dealCount}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
-                          ${employee.frontGross.toLocaleString()}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
-                          ${employee.backGross.toLocaleString()}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
-                          ${employee.totalGross.toLocaleString()}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </>
+            <RankingTable
+              title="F&I Managers Rankings"
+              subtitle="Performance rankings for the last 6 months"
+              columns={fiManagersColumns}
+              data={fiManagersData}
+              renderRow={renderFIManagerRow}
+            />
           )}
         </CardContent>
       </Card>
