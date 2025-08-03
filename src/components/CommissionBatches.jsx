@@ -29,6 +29,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import StatCard from '../Ui/StatCard';
 import DataTable from '../Ui/DataTable';
+import SectionHeader from '../Ui/SectionHeader';
 import commissionBatches from "../helpers/mockCommissionBatches";
 
 const statusColors = {
@@ -38,7 +39,7 @@ const statusColors = {
 };
 
 const CommissionBatches = () => {
-  // Hook para estilos adaptativos
+
   const {
     getContainerStyles,
     getCardStyles,
@@ -49,12 +50,10 @@ const CommissionBatches = () => {
     getGridStyles
   } = useAdaptiveStyles();
 
-  // Estados para filtros
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('All Brands');
   const [selectedStatus, setSelectedStatus] = useState('All Statuses');
 
-  // Datos filtrados
   const filteredBatches = useMemo(() => {
     return commissionBatches.filter(batch => {
       const matchesSearch = !searchQuery || 
@@ -70,34 +69,10 @@ const CommissionBatches = () => {
   }, [searchQuery, selectedBrand, selectedStatus]);
 
   const statsCards = [
-    {
-      title: "Total Brands",
-      value: "10",
-      icon: BusinessIcon,
-      iconColor: "#3b82f6",
-      subtitle: "Active automotive brands"
-    },
-    {
-      title: "Active Batches",
-      value: "24",
-      icon: TrendingUpIcon,
-      iconColor: "#10b981",
-      subtitle: "Currently processing"
-    },
-    {
-      title: "Total Employees",
-      value: "96",
-      icon: PeopleIcon,
-      iconColor: "#f59e0b",
-      subtitle: "Receiving commissions"
-    },
-    {
-      title: "Total Commissions",
-      value: "$336,734.55",
-      icon: AttachMoneyIcon,
-      iconColor: "#ef4444",
-      subtitle: "This period"
-    }
+    { title: "Total Batches", value: "6", icon: BusinessIcon },
+    { title: "Total Commissions", value: "$230.832,7", icon: AttachMoneyIcon },
+    { title: "Total Employees", value: "64", icon: PeopleIcon },
+    { title: "Total Deals", value: "723", icon: TrendingUpIcon },
   ];
 
   const renderStatCard = (cardData, index) => (
@@ -106,8 +81,6 @@ const CommissionBatches = () => {
       title={cardData.title}
       value={cardData.value}
       icon={cardData.icon}
-      iconColor={cardData.iconColor}
-      subtitle={cardData.subtitle}
     />
   );
 
@@ -182,15 +155,8 @@ const CommissionBatches = () => {
       <TableCell sx={{ textAlign: 'left', fontWeight: 600, color: '#1976d2' }}>
         {batch.batchId}
       </TableCell>
-      
-      <TableCell sx={{ textAlign: 'left', fontWeight: 600 }}>
-        {batch.brand}
-      </TableCell>
-      
-      <TableCell sx={{ textAlign: 'center' }}>
-        {batch.period}
-      </TableCell>
-      
+      <TableCell sx={{ textAlign: 'left', fontWeight: 600 }}>{batch.brand}</TableCell>
+      <TableCell sx={{ textAlign: 'center' }}>{batch.period}</TableCell>
       <TableCell sx={{ textAlign: 'left' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
           <Box sx={{ 
@@ -199,9 +165,7 @@ const CommissionBatches = () => {
             borderRadius: '50%', 
             backgroundColor: '#3b82f6' 
           }} />
-          <Typography sx={{ fontSize: '0.875rem' }}>
-            {batch.createdDate}
-          </Typography>
+          <Typography sx={{ fontSize: '0.875rem' }}>{batch.createdDate}</Typography>
         </Box>
       </TableCell>
       
@@ -214,47 +178,25 @@ const CommissionBatches = () => {
               borderRadius: '50%', 
               backgroundColor: '#10b981' 
             }} />
-            <Typography sx={{ fontSize: '0.875rem' }}>
-              {batch.processedDate}
-            </Typography>
+            <Typography sx={{ fontSize: '0.875rem' }}>{batch.processedDate}</Typography>
           </Box>
         ) : (
-          <Typography sx={{ fontSize: '0.875rem', color: '#6b7280' }}>
-            Not processed
-          </Typography>
+          <Typography sx={{ fontSize: '0.875rem', color: '#6b7280' }}>Not processed</Typography>
         )}
       </TableCell>
-      
-      <TableCell sx={{ textAlign: 'center' }}>
-        {batch.employees}
-      </TableCell>
-      
-      <TableCell sx={{ textAlign: 'center' }}>
-        {batch.deals}
-      </TableCell>
-      
+      <TableCell sx={{ textAlign: 'center' }}>{batch.employees}</TableCell>
+      <TableCell sx={{ textAlign: 'center' }}>{batch.deals}</TableCell>
       <TableCell sx={{ textAlign: 'center', fontWeight: 600 }}>
         ${batch.totalCommission.toLocaleString()}
       </TableCell>
-      
-      <TableCell sx={{ textAlign: 'center' }}>
-        ${batch.avgCommission.toFixed(2)}
-      </TableCell>
-      
-      <TableCell sx={{ textAlign: 'left' }}>
-        {batch.createdBy}
-      </TableCell>
-      
+      <TableCell sx={{ textAlign: 'center' }}>${batch.avgCommission.toFixed(2)}</TableCell>
+      <TableCell sx={{ textAlign: 'left' }}>{batch.createdBy}</TableCell>
       <TableCell sx={{ textAlign: 'center' }}>
         <Chip
           label={batch.status}
           size="small"
           color={statusColors[batch.status]}
-          sx={{ 
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            textTransform: 'capitalize'
-          }}
+          sx={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'capitalize' }}
         />
       </TableCell>
       
@@ -317,33 +259,28 @@ const CommissionBatches = () => {
 
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2, flexWrap: 'wrap' }}>
-            <SearchIcon sx={{ color: '#6c757d' }} />
-            <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a', flexShrink: 0, mt: 3 }}>
-              Search & Filter Batches
-            </Typography>
-            {(searchQuery || selectedBrand !== 'All Brands' || selectedStatus !== 'All Statuses') && (
+          <SectionHeader
+            title="Search & Filter Batches"
+            icon={SearchIcon}
+            sx={{ mb: 1 , mt:2}}
+          />
+          {(searchQuery || selectedBrand !== 'All Brands' || selectedStatus !== 'All Statuses') && (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
               <Chip
                 label={`${filteredBatches.length} de ${commissionBatches.length} registros`}
                 size="small"
                 color="primary"
                 variant="outlined"
               />
-            )}
-            {(searchQuery || selectedBrand !== 'All Brands' || selectedStatus !== 'All Statuses') && (
               <Button
                 size="small"
                 onClick={clearFilters}
-                sx={{ 
-                  textTransform: 'none',
-                  color: '#6c757d',
-                  fontSize: '0.875rem'
-                }}
+                sx={{ textTransform: 'none', color: '#6c757d', fontSize: '0.875rem' }}
               >
                 Limpiar filtros
               </Button>
-            )}
-          </Box>
+            </Box>
+          )}
           <Box sx={{ 
             display: 'flex', 
             gap: 2, 
@@ -429,12 +366,12 @@ const CommissionBatches = () => {
 
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
-          <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a', mt: 3 }}>
-            Commission Batches
-          </Typography>
-          <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-            Manage and track commission batch processing across all brands
-          </Typography>
+          <SectionHeader
+            title="Commission Batches"
+            subtitle="Manage and track commission batch processing across all brands"
+            icon={BusinessIcon}
+            sx={{ mb: 3, mt: 2 }}
+          />
         </CardContent>
         <Box sx={{ width: '100%', overflowX: 'auto' }}>
           {filteredBatches.length > 0 ? (
@@ -452,10 +389,7 @@ const CommissionBatches = () => {
               <Button
                 size="small"
                 onClick={clearFilters}
-                sx={{ 
-                  textTransform: 'none',
-                  mt: 1
-                }}
+                sx={{ textTransform: 'none', mt: 1 }}
               >
                 Limpiar filtros
               </Button>
