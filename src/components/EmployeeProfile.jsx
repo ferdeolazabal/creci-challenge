@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import StatCard from '../Ui/StatCard';
+import SectionHeader from '../Ui/SectionHeader';
 import { employees, employeeDeals, employeeCommissions, employeeAdjustments } from '../helpers/mockEmployeeData';
 
 import PersonIcon from '@mui/icons-material/Person';
@@ -56,26 +57,6 @@ const EmployeeProfile = () => {
           {subLabel}
         </Typography>
       </Box>
-    </Box>
-  );
-
-  const SectionHeader = ({ icon, title, subtitle }) => (
-    <Box sx={{ mb: 3 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: subtitle ? 1 : 3 }}>
-        {typeof icon === 'string' ? (
-          <Typography component="span" sx={{ fontSize: '1.2rem' }}>{icon}</Typography>
-        ) : (
-          React.createElement(icon, { sx: { color: '#6c757d' } })
-        )}
-        <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-          {title}
-        </Typography>
-      </Box>
-      {subtitle && (
-        <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem', mb: 3 }}>
-          {subtitle}
-        </Typography>
-      )}
     </Box>
   );
 
@@ -233,7 +214,7 @@ const EmployeeProfile = () => {
       <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)', mb: 3 }}>
         <CardContent sx={{ p: 3 }}>
           <SectionHeader
-            icon="📋"
+            icon={BusinessIcon}
             title="Pay Plan"
             subtitle="Current compensation structure and commission plan"
           />
@@ -318,7 +299,7 @@ const EmployeeProfile = () => {
           {activeTab === 0 && (
             <Box>
               <SectionHeader
-                icon="🚗"
+                icon={ReceiptIcon}
                 title="Employee Deals"
                 subtitle="All deals associated with this employee"
               />
@@ -387,7 +368,7 @@ const EmployeeProfile = () => {
           {activeTab === 1 && (
             <Box>
               <SectionHeader
-                icon="💰"
+                icon={AttachMoneyIcon}
                 title="Commission History"
                 subtitle="Monthly commission payments and details"
               />
@@ -459,7 +440,7 @@ const EmployeeProfile = () => {
           {activeTab === 2 && (
             <Box>
               <SectionHeader
-                icon="📝"
+                icon={PendingIcon}
                 title="Adjustment History"
                 subtitle="Commission adjustments and corrections"
               />
