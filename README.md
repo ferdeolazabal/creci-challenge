@@ -2,6 +2,12 @@
 
 Una aplicación web moderna para la gestión integral de comisiones de ventas en concesionarios automotrices, desarrollada con React + Vite y Material-UI.
 
+## 🌐 Demo en Vivo
+
+🚀 **[Ver aplicación en funcionamiento](https://creci-ferdeolazabal.netlify.app/)**
+
+La aplicación está desplegada y disponible para pruebas en Netlify. Puedes explorar todas las funcionalidades sin necesidad de instalación local.
+
 ## 🚀 Características Principales
 
 ### 📊 Dashboard de Comisiones
@@ -178,6 +184,10 @@ Layout principal con navegación lateral responsiva.
 
 ## 🚀 Despliegue
 
+### Demo en Producción
+La aplicación está desplegada en **Netlify** y disponible en:
+**🌐 [https://creci-ferdeolazabal.netlify.app/](https://creci-ferdeolazabal.netlify.app/)**
+
 ### Build para Producción
 ```bash
 npm run build
@@ -193,6 +203,12 @@ Puedes servir la aplicación usando cualquier servidor web estático:
 npm install -g serve
 serve -s dist
 ```
+
+### Despliegue en Netlify
+1. Conecta tu repositorio a Netlify
+2. Configura el build command: `npm run build`
+3. Configura el publish directory: `dist`
+4. Deploy automático en cada push al branch principal
 
 ## 🔧 Configuración
 
