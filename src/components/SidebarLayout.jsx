@@ -73,7 +73,7 @@ const SidebarLayout = ({ children } = {}) => {
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
             <ListItem 
-              button 
+              component="button"
               sx={{ 
                 height: '32px',
                 backgroundColor: location.pathname === '/' ? '#e3f2fd' : 'transparent',
@@ -100,7 +100,7 @@ const SidebarLayout = ({ children } = {}) => {
               </Typography>
             </ListItem>
             <ListItem 
-              button 
+              component="button"
               sx={{ 
                 height: '32px',
                 backgroundColor: location.pathname === '/batches' ? '#e3f2fd' : 'transparent',
@@ -147,7 +147,7 @@ const SidebarLayout = ({ children } = {}) => {
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
             <ListItem 
-              button 
+              component="button"
               sx={{ 
                 height: '32px',
                 backgroundColor: location.pathname === '/uploads' ? '#e3f2fd' : 'transparent',
@@ -174,7 +174,7 @@ const SidebarLayout = ({ children } = {}) => {
               </Typography>
             </ListItem>
             <ListItem 
-              button 
+              component="button"
               sx={{ 
                 height: '32px',
                 backgroundColor: location.pathname === '/employees' ? '#e3f2fd' : 'transparent',
@@ -201,7 +201,7 @@ const SidebarLayout = ({ children } = {}) => {
               </Typography>
             </ListItem>
             <ListItem 
-              button 
+              component="button"
               sx={{ 
                 height: '32px',
                 backgroundColor: location.pathname === '/deals' ? '#e3f2fd' : 'transparent',
@@ -248,7 +248,7 @@ const SidebarLayout = ({ children } = {}) => {
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
             <ListItem 
-              button 
+              component="button"
               sx={{ 
                 height: '32px',
                 backgroundColor: location.pathname === '/rankings' ? '#e3f2fd' : 'transparent',
