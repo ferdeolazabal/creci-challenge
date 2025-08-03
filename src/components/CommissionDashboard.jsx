@@ -18,6 +18,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import StatCard from '../Ui/StatCard';
 import DataTable from '../Ui/DataTable';
+import SectionHeader from '../Ui/SectionHeader';
 import brandCommissions from "../helpers/mockBrandCommissions";
 
 const stats = {
@@ -48,26 +49,10 @@ const CommissionDashboard = (props = {}) => {
   } = useAdaptiveStyles();
 
   const statsCards = [
-    {
-      title: "Total Brands",
-      value: stats.totalBrands,
-      icon: BusinessIcon
-    },
-    {
-      title: "Active Batches", 
-      value: stats.activeBatches,
-      icon: TrendingUpIcon
-    },
-    {
-      title: "Total Employees",
-      value: stats.totalEmployees,
-      icon: PeopleIcon
-    },
-    {
-      title: "Total Commissions",
-      value: `$${stats.totalCommissions.toLocaleString()}`,
-      icon: AttachMoneyIcon
-    }
+    { title: "Total Brands", value: stats.totalBrands, icon: BusinessIcon },
+    { title: "Active Batches", value: stats.activeBatches, icon: TrendingUpIcon },
+    { title: "Total Employees", value: stats.totalEmployees, icon: PeopleIcon },
+    { title: "Total Commissions", value: `$${stats.totalCommissions.toLocaleString()}`, icon: AttachMoneyIcon }
   ];
 
   const tableColumns = [
@@ -83,32 +68,13 @@ const CommissionDashboard = (props = {}) => {
   const renderRow = (row, index) => (
     <TableRow 
       key={index} 
-      sx={{ 
-        borderBottom: '1px solid #e2e8f0',
-        transition: 'colors',
-        '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' }
-      }}
+      sx={{ borderBottom: '1px solid #e2e8f0', transition: 'colors', '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' } }}
     >
-      <TableCell sx={{ textAlign: 'left', fontWeight: 500 }}>
-        {row.brand}
-      </TableCell>
-      
-      <TableCell sx={{ textAlign: 'center' }}>
-        {row.activeBatches}
-      </TableCell>
-      
-      <TableCell sx={{ textAlign: 'center' }}>
-        {row.employees}
-      </TableCell>
-      
-      <TableCell sx={{ textAlign: 'center', fontWeight: 500 }}>
-        ${row.totalCommissions.toLocaleString()}
-      </TableCell>
-      
-      <TableCell sx={{ textAlign: 'center' }}>
-        ${row.avgCommission.toFixed(2)}
-      </TableCell>
-      
+      <TableCell sx={{ textAlign: 'left', fontWeight: 500 }}>{row.brand}</TableCell>
+      <TableCell sx={{ textAlign: 'center' }}>{row.activeBatches}</TableCell>
+      <TableCell sx={{ textAlign: 'center' }}>{row.employees}</TableCell>
+      <TableCell sx={{ textAlign: 'center', fontWeight: 500 }}>${row.totalCommissions.toLocaleString()}</TableCell>
+      <TableCell sx={{ textAlign: 'center' }}>${row.avgCommission.toFixed(2)}</TableCell>
       <TableCell sx={{ textAlign: 'center' }}>
         <Chip
           label={row.status}
@@ -122,7 +88,6 @@ const CommissionDashboard = (props = {}) => {
           }}
         />
       </TableCell>
-      
       <TableCell sx={{ textAlign: 'center' }}>
         <Button 
           size="small" 
@@ -159,18 +124,12 @@ const CommissionDashboard = (props = {}) => {
 
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
-          <Typography sx={{ 
-            fontSize: '1.5rem',
-            fontWeight: 600,
-            lineHeight: 1,
-            letterSpacing: '-0.025em',
-            mt: 3
-          }}>
-            Brand Commission Overview
-          </Typography>
-          <Typography sx={{ fontSize: '0.875rem',color: '#6b7280',mt:1, mb: 2}}>
-            Commission batches and performance by automotive brand
-          </Typography>
+          <SectionHeader
+            title="Brand Commission Overview"
+            subtitle="Commission batches and performance by automotive brand"
+            icon={BusinessIcon}
+            sx={{ mb: 3, mt: 2 }}
+          />
         </CardContent>
         <CardContent sx={{ ...getCardContentStyles(), pt: 0 }}>
           <DataTable
