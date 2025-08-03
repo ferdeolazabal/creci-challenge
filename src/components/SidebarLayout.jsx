@@ -281,7 +281,12 @@ const SidebarLayout = ({ children } = {}) => {
   );
 
   return (
-    <Box sx={{ display: 'flex'}}>
+    <Box sx={{ 
+      display: 'flex',
+      width: '100%',
+      height: '100vh',
+      overflow: 'hidden'
+    }}>
       {/* Sidebar para desktop */}
       {!isMobile && (
         <Drawer
@@ -313,9 +318,7 @@ const SidebarLayout = ({ children } = {}) => {
           variant="temporary"
           open={mobileOpen}
           onClose={toggleMobile}
-          ModalProps={{
-            keepMounted: true, // Mejor rendimiento en mobile
-          }}
+          ModalProps={{ keepMounted: true }}
           sx={{
             [`& .MuiDrawer-paper`]: {
               width: drawerWidth,
@@ -338,14 +341,23 @@ const SidebarLayout = ({ children } = {}) => {
         component="main" 
         sx={{ 
           flexGrow: 1, 
-          width: isMobile ? '100%' : `calc(100% - ${sidebarOpen ? drawerWidth : 0}px)`,
+          width: 0,
+          height: '100vh',
+          overflow: 'hidden',
           transition: theme.transitions.create(['width'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
           }),
         }}
       >
-        {children}
+        <Box sx={{
+          width: '100%',
+          height: '100%',
+          overflow: 'auto',
+          overflowX: 'hidden'
+        }}>
+          {children}
+        </Box>
       </Box>
     </Box>
   );
