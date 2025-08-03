@@ -7,30 +7,21 @@ import {
   Typography,
   Button,
   Chip,
-  Paper,
-  TextField,
-  InputAdornment,
-  IconButton,
-  Select,
-  MenuItem,
-  FormControl,
   TableCell,
   TableRow,
 } from "@mui/material";
+import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
+import DataTable from '../Ui/DataTable';
+import SearchAndFilter from '../Ui/SearchAndFilter';
+import SectionHeader from '../Ui/SectionHeader';
+import StatCard from '../Ui/StatCard';
+import commissionBatches from "../helpers/mockCommissionBatches";
+
 import SearchIcon from '@mui/icons-material/Search';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import GetAppIcon from '@mui/icons-material/GetApp';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import EditIcon from '@mui/icons-material/Edit';
 import BusinessIcon from '@mui/icons-material/Business';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PeopleIcon from '@mui/icons-material/People';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
-import StatCard from '../Ui/StatCard';
-import DataTable from '../Ui/DataTable';
-import SectionHeader from '../Ui/SectionHeader';
-import commissionBatches from "../helpers/mockCommissionBatches";
 
 const statusColors = {
   "Processed": "success",
@@ -257,111 +248,44 @@ const CommissionBatches = () => {
         {statsCards.map((cardData, index) => renderStatCard(cardData, index))}
       </Box>
 
-      <Card sx={getCardStyles()}>
-        <CardContent sx={getCardContentStyles()}>
-          <SectionHeader
-            title="Search & Filter Batches"
-            icon={SearchIcon}
-          />
-          {(searchQuery || selectedBrand !== 'All Brands' || selectedStatus !== 'All Statuses') && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-              <Chip
-                label={`${filteredBatches.length} de ${commissionBatches.length} registros`}
-                size="small"
-                color="primary"
-                variant="outlined"
-              />
-              <Button
-                size="small"
-                onClick={clearFilters}
-                sx={{ textTransform: 'none', color: '#6c757d', fontSize: '0.875rem' }}
-              >
-                Limpiar filtros
-              </Button>
-            </Box>
-          )}
-          <Box sx={{ 
-            display: 'flex', 
-            gap: 2, 
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            '& > *': { flex: { xs: '1 1 100%', sm: '1 1 auto' } }
-          }}>
-            <Box sx={{ 
-              display: 'flex', 
-              gap: 2, 
-              alignItems: 'center',
-              flex: { xs: '1 1 100%', md: '1 1 auto' },
-              minWidth: { xs: '100%', md: 300 }
-            }}>
-              <TextField
-                size="small"
-                placeholder="Search by Batch ID, Brand, or Creator..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon sx={{ color: '#9ca3af', fontSize: 20 }} />
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{ 
-                  flex: 1,
-                  minWidth: { xs: '100%', sm: 250 },
-                  '& .MuiOutlinedInput-root': {
-                    backgroundColor: '#f8f9fa'
-                  }
-                }}
-              />
-            </Box>
-            <Box sx={{ 
-              display: 'flex', 
-              gap: 1, 
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              flex: { xs: '1 1 100%', sm: '0 0 auto' }
-            }}>
-              <FormControl size="small" sx={{ minWidth: 120, flex: { xs: '1 1 45%', sm: '0 0 auto' } }}>
-                <Select
-                  value={selectedBrand}
-                  onChange={(e) => setSelectedBrand(e.target.value)}
-                  displayEmpty
-                  sx={{ textTransform: 'none' }}
-                >
-                  <MenuItem value="All Brands">All Brands</MenuItem>
-                  <MenuItem value="Honda">Honda</MenuItem>
-                  <MenuItem value="Acura">Acura</MenuItem>
-                  <MenuItem value="Ford">Ford</MenuItem>
-                  <MenuItem value="Mazda">Mazda</MenuItem>
-                  <MenuItem value="Jeep">Jeep</MenuItem>
-                  <MenuItem value="Volkswagen">Volkswagen</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl size="small" sx={{ minWidth: 120, flex: { xs: '1 1 45%', sm: '0 0 auto' } }}>
-                <Select
-                  value={selectedStatus}
-                  onChange={(e) => setSelectedStatus(e.target.value)}
-                  displayEmpty
-                  sx={{ textTransform: 'none' }}
-                >
-                  <MenuItem value="All Statuses">All Statuses</MenuItem>
-                  <MenuItem value="Processed">Processed</MenuItem>
-                  <MenuItem value="Processing">Processing</MenuItem>
-                  <MenuItem value="Pending Review">Pending Review</MenuItem>
-                </Select>
-              </FormControl>
-              <IconButton 
-                sx={{ color: '#6c757d' }}
-                onClick={clearFilters}
-                title="Limpiar filtros"
-              >
-                <FilterListIcon />
-              </IconButton>
-            </Box>
-          </Box>
-        </CardContent>
-      </Card>
+      <SearchAndFilter
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        searchPlaceholder="Search by Batch ID, Brand, or Creator..."
+        title="Search & Filter Batches"
+        icon={SearchIcon}
+        filters={[
+          {
+            key: 'brand',
+            value: selectedBrand,
+            onChange: (e) => setSelectedBrand(e.target.value),
+            options: [
+              'All Brands', 'Honda', 'Acura', 'Ford', 'Mazda', 'Jeep', 'Volkswagen'
+            ],
+            minWidth: 120
+          },
+          {
+            key: 'status',
+            value: selectedStatus,
+            onChange: (e) => setSelectedStatus(e.target.value),
+            options: [
+              'All Statuses', 'Processed', 'Processing', 'Pending Review'
+            ],
+            minWidth: 120
+          }
+        ]}
+        onClearFilters={clearFilters}
+        defaultFilters={{
+          search: '',
+          brand: 'All Brands',
+          status: 'All Statuses'
+        }}
+        showResultsCount={true}
+        totalResults={filteredBatches.length}
+        totalRecords={commissionBatches.length}
+        cardStyles={getCardStyles()}
+        cardContentStyles={getCardContentStyles()}
+      />
 
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
