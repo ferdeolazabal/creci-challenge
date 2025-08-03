@@ -21,16 +21,19 @@ import {
   Select,
   FormControl,
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import StatCard from '../Ui/StatCard';
+import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
+
+import { deals, dealsStatusColors } from "../helpers/mockDealsData";
+
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ReceiptIcon from '@mui/icons-material/Receipt';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import SearchIcon from '@mui/icons-material/Search';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
-import StatCard from '../Ui/StatCard';
-import { deals, dealsStatusColors } from "../helpers/mockDealsData";
+
 const DealsPage = () => {
   // Hook para estilos adaptativos
   const { 
