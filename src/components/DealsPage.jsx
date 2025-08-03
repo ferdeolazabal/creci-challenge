@@ -44,6 +44,103 @@ const DealsPage = () => {
   const [brandFilter, setBrandFilter] = useState('All Brands');
   const [employeeFilter, setEmployeeFilter] = useState('All Employees');
 
+  // Data arrays for filters
+  const brandOptions = ['All Brands', 'Honda', 'Acura', 'Ford', 'Mazda', 'Jeep'];
+  const employeeOptions = [
+    'All Employees', 'John Smith', 'Lisa Chen', 'Tom Rodriguez', 'Sarah Johnson',
+    'David Brown', 'Jessica Lee', 'Jennifer Wilson', 'Robert Kim', 'Chris Johnson',
+    'Mark Thompson', 'Maria Garcia', 'Rachel Green', 'Kevin Chang'
+  ];
+
+  // Default filter values
+  const defaultFilters = {
+    search: '',
+    brand: brandOptions[0], // 'All Brands'
+    employee: employeeOptions[0] // 'All Employees'
+  };
+
+  // Reusable MenuItem component
+  const FilterMenuItem = ({ value }) => (
+    <MenuItem value={value} sx={{ fontSize: '0.875rem' }}>
+      {value}
+    </MenuItem>
+  );
+
+  // Reusable FilterSelect component
+  const FilterSelect = ({ value, onChange, options, minWidth = 100 }) => (
+    <FormControl size="small" sx={{ minWidth }}>
+      <Select
+        value={value}
+        onChange={onChange}
+        displayEmpty
+        sx={{ 
+          height: '36px',
+          backgroundColor: '#fff',
+          fontSize: '0.875rem',
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#e0e0e0',
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#1976d2',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#1976d2',
+          },
+          '& .MuiSelect-select': {
+            py: 1
+          }
+        }}
+        IconComponent={KeyboardArrowDownIcon}
+      >
+        {options.map((option) => (
+          <FilterMenuItem key={option} value={option} />
+        ))}
+      </Select>
+    </FormControl>
+  );
+
+  const TableHeaderCell = ({ children, align = 'left' }) => (
+    <TableCell sx={{ 
+      fontWeight: 600, 
+      color: '#495057', 
+      fontSize: '0.875rem', 
+      py: 2,
+      textAlign: align
+    }}>
+      {children}
+    </TableCell>
+  );
+
+  const TableDataCell = ({ children, align = 'left', weight = 'normal', color = '#1a1a1a', fontFamily }) => (
+    <TableCell sx={{ 
+      py: 2, 
+      fontSize: '0.875rem', 
+      fontWeight: weight === 'bold' ? 600 : weight === 'medium' ? 500 : 'normal',
+      color: color,
+      textAlign: align,
+      fontFamily: fontFamily || (color === '#6c757d' ? 'monospace' : 'inherit')
+    }}>
+      {children}
+    </TableCell>
+  );
+
+  // Table column definitions for better organization
+  const tableColumns = [
+    { key: 'dealNo', label: 'Deal No', align: 'left' },
+    { key: 'date', label: 'Date', align: 'left' },
+    { key: 'customer', label: 'Customer', align: 'left' },
+    { key: 'vehicle', label: 'Vehicle', align: 'left' },
+    { key: 'vin', label: 'VIN', align: 'center' },
+    { key: 'dealer', label: 'Dealer', align: 'left' },
+    { key: 'salesPerson', label: 'Sales Person', align: 'left' },
+    { key: 'salesManager', label: 'Sales Manager', align: 'left' },
+    { key: 'fi', label: 'F&I', align: 'left' },
+    { key: 'price', label: 'Price', align: 'center' },
+    { key: 'cost', label: 'Cost', align: 'center' },
+    { key: 'gross', label: 'Gross', align: 'center' },
+    { key: 'status', label: 'Status', align: 'center' }
+  ];
+
   // Filter deals based on search and filters
   const filteredDeals = deals.filter(deal => {
     const matchesSearch = searchQuery === '' || 
@@ -95,19 +192,18 @@ const DealsPage = () => {
 
   return (
     <Box sx={getContainerStyles()}>
-      {/* Header Section */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 600, color: '#333', mb: 1 }}>
-          🔍 Search & Filter Deals
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-          Search by deal number, customer name, VIN, make, model, or dealer; filter by brand and employee.
-        </Typography>
-      </Box>
-
       {/* Search and Filter Section */}
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
+          {/* Header Section */}
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="h5" sx={{ fontWeight: 600, color: '#333', mb: 1 , mt:3}}>
+              🔍 Search & Filter Deals
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
+              Search by deal number, customer name, VIN, make, model, or dealer; filter by brand and employee.
+            </Typography>
+          </Box>
           {/* Search Bar */}
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
             <TextField
@@ -165,87 +261,27 @@ const DealsPage = () => {
             alignItems: 'center',
             flexWrap: 'wrap'
           }}>
-            <FormControl size="small" sx={{ minWidth: 100 }}>
-              <Select
-                value={brandFilter}
-                onChange={(e) => setBrandFilter(e.target.value)}
-                displayEmpty
-                sx={{ 
-                  height: '36px',
-                  backgroundColor: '#fff',
-                  fontSize: '0.875rem',
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#e0e0e0',
-                  },
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#1976d2',
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#1976d2',
-                  },
-                  '& .MuiSelect-select': {
-                    py: 1
-                  }
-                }}
-                IconComponent={KeyboardArrowDownIcon}
-              >
-                <MenuItem value="All Brands" sx={{ fontSize: '0.875rem' }}>All Brands</MenuItem>
-                <MenuItem value="Honda" sx={{ fontSize: '0.875rem' }}>Honda</MenuItem>
-                <MenuItem value="Acura" sx={{ fontSize: '0.875rem' }}>Acura</MenuItem>
-                <MenuItem value="Ford" sx={{ fontSize: '0.875rem' }}>Ford</MenuItem>
-                <MenuItem value="Mazda" sx={{ fontSize: '0.875rem' }}>Mazda</MenuItem>
-                <MenuItem value="Jeep" sx={{ fontSize: '0.875rem' }}>Jeep</MenuItem>
-              </Select>
-            </FormControl>
+            <FilterSelect
+              value={brandFilter}
+              onChange={(e) => setBrandFilter(e.target.value)}
+              options={brandOptions}
+              minWidth={100}
+            />
 
-            <FormControl size="small" sx={{ minWidth: 120 }}>
-              <Select
-                value={employeeFilter}
-                onChange={(e) => setEmployeeFilter(e.target.value)}
-                displayEmpty
-                sx={{ 
-                  height: '36px',
-                  backgroundColor: '#fff',
-                  fontSize: '0.875rem',
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#e0e0e0',
-                  },
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#1976d2',
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#1976d2',
-                  },
-                  '& .MuiSelect-select': {
-                    py: 1
-                  }
-                }}
-                IconComponent={KeyboardArrowDownIcon}
-              >
-                <MenuItem value="All Employees" sx={{ fontSize: '0.875rem' }}>All Employees</MenuItem>
-                <MenuItem value="John Smith" sx={{ fontSize: '0.875rem' }}>John Smith</MenuItem>
-                <MenuItem value="Lisa Chen" sx={{ fontSize: '0.875rem' }}>Lisa Chen</MenuItem>
-                <MenuItem value="Tom Rodriguez" sx={{ fontSize: '0.875rem' }}>Tom Rodriguez</MenuItem>
-                <MenuItem value="Sarah Johnson" sx={{ fontSize: '0.875rem' }}>Sarah Johnson</MenuItem>
-                <MenuItem value="David Brown" sx={{ fontSize: '0.875rem' }}>David Brown</MenuItem>
-                <MenuItem value="Jessica Lee" sx={{ fontSize: '0.875rem' }}>Jessica Lee</MenuItem>
-                <MenuItem value="Jennifer Wilson" sx={{ fontSize: '0.875rem' }}>Jennifer Wilson</MenuItem>
-                <MenuItem value="Robert Kim" sx={{ fontSize: '0.875rem' }}>Robert Kim</MenuItem>
-                <MenuItem value="Chris Johnson" sx={{ fontSize: '0.875rem' }}>Chris Johnson</MenuItem>
-                <MenuItem value="Mark Thompson" sx={{ fontSize: '0.875rem' }}>Mark Thompson</MenuItem>
-                <MenuItem value="Maria Garcia" sx={{ fontSize: '0.875rem' }}>Maria Garcia</MenuItem>
-                <MenuItem value="Rachel Green" sx={{ fontSize: '0.875rem' }}>Rachel Green</MenuItem>
-                <MenuItem value="Kevin Chang" sx={{ fontSize: '0.875rem' }}>Kevin Chang</MenuItem>
-              </Select>
-            </FormControl>
+            <FilterSelect
+              value={employeeFilter}
+              onChange={(e) => setEmployeeFilter(e.target.value)}
+              options={employeeOptions}
+              minWidth={120}
+            />
 
             <Button
               variant="text"
               startIcon={<span style={{ fontSize: '0.9rem' }}>✕</span>}
               onClick={() => {
-                setSearchQuery('');
-                setBrandFilter('All Brands');
-                setEmployeeFilter('All Employees');
+                setSearchQuery(defaultFilters.search);
+                setBrandFilter(defaultFilters.brand);
+                setEmployeeFilter(defaultFilters.employee);
               }}
               sx={{
                 textTransform: 'none',
@@ -327,45 +363,11 @@ const DealsPage = () => {
               <Table sx={{ ...getTableStyles().table, minWidth: 1200 }}>
                 <TableHead>
                   <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      Deal No
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      Date
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      Customer
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      Vehicle
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      VIN
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      Dealer
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      Sales Person
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      Sales Manager
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      F&I
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      Price
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      Cost
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      Gross
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}>
-                      Status
-                    </TableCell>
+                    {tableColumns.map((column) => (
+                      <TableHeaderCell key={column.key} align={column.align}>
+                        {column.label}
+                      </TableHeaderCell>
+                    ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -378,16 +380,12 @@ const DealsPage = () => {
                           borderBottom: '1px solid #e9ecef'
                         }}
                       >
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600, color: '#1976d2' }}>
+                        <TableDataCell weight="bold" color="#1976d2">
                           {deal.dealNo}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem' }}>
-                          {deal.date}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 500 }}>
-                          {deal.customer}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem' }}>
+                        </TableDataCell>
+                        <TableDataCell>{deal.date}</TableDataCell>
+                        <TableDataCell weight="medium">{deal.customer}</TableDataCell>
+                        <TableDataCell>
                           <Box>
                             <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
                               {deal.vehicle}
@@ -396,32 +394,18 @@ const DealsPage = () => {
                               {deal.vehicleCondition}
                             </Typography>
                           </Box>
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', color: '#6c757d', fontFamily: 'monospace' }}>
+                        </TableDataCell>
+                        <TableDataCell color="#6c757d" fontFamily="monospace">
                           {deal.vin}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem' }}>
-                          {deal.dealer}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem' }}>
-                          {deal.salesPerson}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem' }}>
-                          {deal.salesManager}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem' }}>
-                          {deal.fi}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
-                          {deal.price}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem' }}>
-                          {deal.cost}
-                        </TableCell>
-                        <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
-                          {deal.gross}
-                        </TableCell>
-                        <TableCell sx={{ py: 2 }}>
+                        </TableDataCell>
+                        <TableDataCell>{deal.dealer}</TableDataCell>
+                        <TableDataCell>{deal.salesPerson}</TableDataCell>
+                        <TableDataCell>{deal.salesManager}</TableDataCell>
+                        <TableDataCell>{deal.fi}</TableDataCell>
+                        <TableDataCell weight="bold">{deal.price}</TableDataCell>
+                        <TableDataCell>{deal.cost}</TableDataCell>
+                        <TableDataCell weight="bold">{deal.gross}</TableDataCell>
+                        <TableDataCell>
                           <Chip
                             label={deal.status}
                             color={dealsStatusColors[deal.status] || "default"}
@@ -432,7 +416,7 @@ const DealsPage = () => {
                               minWidth: '70px'
                             }}
                           />
-                        </TableCell>
+                        </TableDataCell>
                       </TableRow>
                     ))
                   ) : (
