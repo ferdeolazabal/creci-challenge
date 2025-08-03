@@ -103,8 +103,8 @@ const CommissionDashboard = (props = {}) => {
     { label: "Brand", align: "left", key: "brand", fontWeight: 500 },
     { label: "Active Batches", align: "center", key: "activeBatches" },
     { label: "Employees", align: "center", key: "employees" },
-    { label: "Total Commissions", align: "right", key: "totalCommissions", fontWeight: 500, format: (value) => `$${value.toLocaleString()}` },
-    { label: "Avg Commission", align: "right", key: "avgCommission", format: (value) => `$${value.toFixed(2)}` },
+    { label: "Total Commissions", align: "center", key: "totalCommissions", fontWeight: 500, format: (value) => `$${value.toLocaleString()}` },
+    { label: "Avg Commission", align: "center", key: "avgCommission", format: (value) => `$${value.toFixed(2)}` },
     { label: "Status", align: "center", key: "status", isChip: true },
     { label: "Actions", align: "center", key: "actions", isAction: true }
   ];
@@ -181,7 +181,8 @@ const CommissionDashboard = (props = {}) => {
             fontSize: '1.5rem',
             fontWeight: 600,
             lineHeight: 1,
-            letterSpacing: '-0.025em'
+            letterSpacing: '-0.025em',
+            mt: 3
           }}>
             Brand Commission Overview
           </Typography>
