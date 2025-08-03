@@ -17,7 +17,7 @@ const SectionHeader = ({
   title, 
   subtitle, 
   icon: IconComponent, 
-  sx = {} 
+  sx= { mb: 3, mt: 2 }
 }) => {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: subtitle ? 2 : 3, ...sx }}>
