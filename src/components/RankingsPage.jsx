@@ -19,6 +19,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PeopleIcon from '@mui/icons-material/People';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import { 
   salesExecutivesData, 
   salesManagersData,
@@ -28,6 +29,9 @@ import {
 } from '../helpers/mockRankingsData';
 
 const RankingsPage = () => {
+
+  const { getContainerStyles } = useAdaptiveStyles();
+  
   const [activeTab, setActiveTab] = useState(0);
   
   const getCurrentData = () => {
@@ -53,7 +57,7 @@ const RankingsPage = () => {
   };
 
   return (
-    <Box sx={{ p: 3, width: '100%', maxWidth: '100%' }}>
+    <Box sx={getContainerStyles()}>
       {/* Performance Statistics */}
       <Box sx={{ 
         display: 'grid', 
