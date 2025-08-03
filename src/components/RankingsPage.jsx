@@ -5,17 +5,14 @@ import {
   Card,
   CardContent,
   Typography,
-  Table,
-  TableBody,
   TableCell,
-  TableContainer,
-  TableHead,
   TableRow,
   Button,
   ButtonGroup,
 } from '@mui/material';
 import StatCard from '../Ui/StatCard';
 import SectionHeader from '../Ui/SectionHeader';
+import DataTable from '../Ui/DataTable';
 import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import { 
   salesExecutivesData, 
@@ -92,70 +89,108 @@ const RankingsPage = () => {
     );
   };
 
-  // Reusable TableHeader component
-  const TableHeader = ({ columns }) => (
-    <TableHead>
-      <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
-        {columns.map((column) => (
-          <TableCell 
-            key={column.key}
-            sx={{ fontWeight: 600, color: '#495057', fontSize: '0.875rem', py: 2 }}
-          >
-            {column.label}
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
+  // Row renderers for each table type - return complete TableRow
+  const renderSalesExecutiveRow = (employee) => (
+    <TableRow 
+      key={employee.rank} 
+      sx={{ 
+        '&:hover': { backgroundColor: '#f8f9fa' },
+        borderBottom: '1px solid #e9ecef'
+      }}
+    >
+      <TableCell sx={{ py: 2, fontSize: '0.875rem' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <RankBadge rank={employee.rank} badge={employee.badge} />
+        </Box>
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600, color: '#1976d2' }}>
+        {employee.name}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', color: '#1976d2' }}>
+        {employee.dealer}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', textAlign: 'center' }}>
+        📊 {employee.dealCount}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
+        ${employee.frontGross.toLocaleString()}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
+        ${employee.backGross.toLocaleString()}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
+        ${employee.totalGross.toLocaleString()}
+      </TableCell>
+    </TableRow>
   );
 
-  const TableDataCell = ({ children, weight = 'normal', color = '#1a1a1a', align = 'left' }) => (
-    <TableCell sx={{ 
-      py: 2, 
-      fontSize: '0.875rem', 
-      fontWeight: weight === 'bold' ? 600 : 'normal',
-      color,
-      textAlign: align
-    }}>
-      {children}
-    </TableCell>
+  const renderSalesManagerRow = (employee) => (
+    <TableRow 
+      key={employee.rank} 
+      sx={{ 
+        '&:hover': { backgroundColor: '#f8f9fa' },
+        borderBottom: '1px solid #e9ecef'
+      }}
+    >
+      <TableCell sx={{ py: 2, fontSize: '0.875rem' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <RankBadge rank={employee.rank} badge={employee.badge} />
+        </Box>
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
+        {employee.name}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', color: '#1976d2' }}>
+        {employee.dealer}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', textAlign: 'center' }}>
+        📊 {employee.totalCarsSold}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', textAlign: 'center' }}>
+        {employee.employeeCount}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
+        {employee.avgCarsPerEmployee}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem' }}>
+        {employee.period}
+      </TableCell>
+    </TableRow>
   );
 
-  const RankingTable = ({ title, subtitle, columns, data, renderRow }) => (
-    <>
-      <SectionHeader 
-        title={title}
-        subtitle={subtitle}
-        icon={EmojiEventsIcon}
-      />
-      <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0' }}>
-        <Table size="small">
-          <TableHeader columns={columns} />
-          <TableBody>
-            {data.map((employee) => (
-              <TableRow 
-                key={employee.rank} 
-                sx={{ 
-                  '&:hover': { backgroundColor: '#f8f9fa' },
-                  borderBottom: '1px solid #e9ecef'
-                }}
-              >
-                {renderRow(employee)}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
+  const renderFIManagerRow = (employee) => (
+    <TableRow 
+      key={employee.rank} 
+      sx={{ 
+        '&:hover': { backgroundColor: '#f8f9fa' },
+        borderBottom: '1px solid #e9ecef'
+      }}
+    >
+      <TableCell sx={{ py: 2, fontSize: '0.875rem' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <RankBadge rank={employee.rank} badge={employee.badge} />
+        </Box>
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
+        {employee.name}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', color: '#1976d2' }}>
+        {employee.dealer}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', textAlign: 'center' }}>
+        📊 {employee.dealCount}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
+        ${employee.frontGross.toLocaleString()}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
+        ${employee.backGross.toLocaleString()}
+      </TableCell>
+      <TableCell sx={{ py: 2, fontSize: '0.875rem', fontWeight: 600 }}>
+        ${employee.totalGross.toLocaleString()}
+      </TableCell>
+    </TableRow>
   );
-  
-  const getCurrentData = () => {
-    switch (activeTab) {
-      case 0: return salesExecutivesData;
-      case 1: return salesManagersData;
-      case 2: return fiManagersData;
-      default: return salesExecutivesData;
-    }
-  };
 
   // Table column configurations
   const salesExecutivesColumns = [
@@ -188,66 +223,8 @@ const RankingsPage = () => {
     { key: 'totalGross', label: 'Total Gross' }
   ];
 
-  // Row renderers for each table type
-  const renderSalesExecutiveRow = (employee) => (
-    <>
-      <TableDataCell>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <RankBadge rank={employee.rank} badge={employee.badge} />
-        </Box>
-      </TableDataCell>
-      <TableDataCell weight="bold" color="#1976d2">{employee.name}</TableDataCell>
-      <TableDataCell color="#1976d2">{employee.dealer}</TableDataCell>
-      <TableDataCell align="center">📊 {employee.dealCount}</TableDataCell>
-      <TableDataCell weight="bold">${employee.frontGross.toLocaleString()}</TableDataCell>
-      <TableDataCell weight="bold">${employee.backGross.toLocaleString()}</TableDataCell>
-      <TableDataCell weight="bold">${employee.totalGross.toLocaleString()}</TableDataCell>
-    </>
-  );
-
-  const renderSalesManagerRow = (employee) => (
-    <>
-      <TableDataCell>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <RankBadge rank={employee.rank} badge={employee.badge} />
-        </Box>
-      </TableDataCell>
-      <TableDataCell weight="bold">{employee.name}</TableDataCell>
-      <TableDataCell color="#1976d2">{employee.dealer}</TableDataCell>
-      <TableDataCell align="center">📊 {employee.totalCarsSold}</TableDataCell>
-      <TableDataCell align="center">{employee.employeeCount}</TableDataCell>
-      <TableDataCell weight="bold">{employee.avgCarsPerEmployee}</TableDataCell>
-      <TableDataCell>{employee.period}</TableDataCell>
-    </>
-  );
-
-  const renderFIManagerRow = (employee) => (
-    <>
-      <TableDataCell>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <RankBadge rank={employee.rank} badge={employee.badge} />
-        </Box>
-      </TableDataCell>
-      <TableDataCell weight="bold">{employee.name}</TableDataCell>
-      <TableDataCell color="#1976d2">{employee.dealer}</TableDataCell>
-      <TableDataCell align="center">📊 {employee.dealCount}</TableDataCell>
-      <TableDataCell weight="bold">${employee.frontGross.toLocaleString()}</TableDataCell>
-      <TableDataCell weight="bold">${employee.backGross.toLocaleString()}</TableDataCell>
-      <TableDataCell weight="bold">${employee.totalGross.toLocaleString()}</TableDataCell>
-    </>
-  );
-
   const getBadgeColor = (badge) => {
     return badgeColors[badge] || 'transparent';
-  };
-
-  const getRankIcon = (rank) => {
-    if (rank <= 3) {
-      const currentData = getCurrentData();
-      const employee = currentData.find(emp => emp.rank === rank);
-      return <EmojiEventsIcon sx={{ color: getBadgeColor(employee?.badge), fontSize: '1.2rem' }} />;
-    }
-    return <Typography variant="body2" sx={{ fontWeight: 600, color: '#666' }}>{rank}</Typography>;
   };
 
   return (
@@ -346,33 +323,54 @@ const RankingsPage = () => {
       <Card sx={getCardStyles()}>
         <CardContent sx={{ ...getCardContentStyles(), p: 0, mx: 2 }}>
           {activeTab === 0 && (
-            <RankingTable
-              title="Sales Executives Rankings"
-              subtitle="Performance rankings for the last 6 months"
-              columns={salesExecutivesColumns}
-              data={salesExecutivesData}
-              renderRow={renderSalesExecutiveRow}
-            />
+            <>
+              <SectionHeader 
+                title="Sales Executives Rankings"
+                subtitle="Performance rankings for the last 6 months"
+                icon={EmojiEventsIcon}
+              />
+              <DataTable
+                columns={salesExecutivesColumns}
+                data={salesExecutivesData}
+                renderRow={renderSalesExecutiveRow}
+                sx={{ size: 'small' }}
+                headerBackgroundColor="#f8f9fa"
+              />
+            </>
           )}
 
           {activeTab === 1 && (
-            <RankingTable
-              title="Sales Managers Rankings"
-              subtitle="Rankings based on average cars sold per employee per month"
-              columns={salesManagersColumns}
-              data={salesManagersData}
-              renderRow={renderSalesManagerRow}
-            />
+            <>
+              <SectionHeader 
+                title="Sales Managers Rankings"
+                subtitle="Rankings based on average cars sold per employee per month"
+                icon={EmojiEventsIcon}
+              />
+              <DataTable
+                columns={salesManagersColumns}
+                data={salesManagersData}
+                renderRow={renderSalesManagerRow}
+                sx={{ size: 'small' }}
+                headerBackgroundColor="#f8f9fa"
+              />
+            </>
           )}
 
           {activeTab === 2 && (
-            <RankingTable
-              title="F&I Managers Rankings"
-              subtitle="Performance rankings for the last 6 months"
-              columns={fiManagersColumns}
-              data={fiManagersData}
-              renderRow={renderFIManagerRow}
-            />
+            <>
+              <SectionHeader 
+                title="F&I Managers Rankings"
+                subtitle="Performance rankings for the last 6 months"
+                icon={EmojiEventsIcon}
+              />
+              <DataTable
+                columns={fiManagersColumns}
+                data={fiManagersData}
+                renderRow={renderFIManagerRow}
+                sx={{ size: 'small' }}
+                headerBackgroundColor="#f8f9fa"
+              />
+            </>
           )}
         </CardContent>
       </Card>
