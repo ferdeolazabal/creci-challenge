@@ -54,208 +54,236 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
 
   const drawerContent = (
     <Box sx={{ backgroundColor: '#f8f9fa', overflowX: 'hidden' }}>
-      <Toolbar >
-        <DashboardIcon sx={{ mr: 1, color: '#6c757d' }} />
-        <Typography variant="h6" fontWeight="600" sx={{ color: '#495057',p: 2 }}>
-          Commissions
-          Dashboard
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, px: 4, py: 2 }}>
+        <DashboardIcon sx={{ color: '#6c757d', width: 24, height: 24 }} />
+        <Typography fontWeight="600" sx={{ color: '#495057', fontSize: '0.875rem' }}>
+          Commissions Dashboard
         </Typography>
-      </Toolbar>
+      </Box>
       
-      <List sx={{ py: 0, mb: 2 }}>
-        <Typography 
-          variant="overline" 
-          sx={{ 
-            pl: 2, 
-            pt: 2, 
-            pb: 0.5, 
-            color: '#6c757d',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            letterSpacing: '0.5px'
-          }}
-        >
-          Dashboard
-        </Typography>
-        <ListItem 
-          button 
-          sx={{ 
-            py: 0.5,
-            backgroundColor: location.pathname === '/' ? '#e3f2fd' : 'transparent',
-            '&:hover': { backgroundColor: location.pathname === '/' ? '#e3f2fd' : '#f8f9fa' },
-            borderRadius: 1,
-            mx: 1,
-            cursor: 'pointer'
-          }}
-          onClick={() => handleNavigation('/')}
-        >
-          <ListItemIcon sx={{ minWidth: 40, color: location.pathname === '/' ? '#1976d2' : '#6c757d' }}>
-            <HomeIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText 
-            primary="Home" 
-            primaryTypographyProps={{ 
-              fontSize: '0.875rem',
-              color: location.pathname === '/' ? '#1976d2' : '#495057',
-              fontWeight: location.pathname === '/' ? 600 : 400
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2 }}>
+        <Box>
+          <Typography 
+            variant="overline" 
+            sx={{ 
+              display: 'flex',
+              height: '32px',
+              alignItems: 'center',
+              px: 2, 
+              color: '#6c757d',
+              fontSize: '0.75rem',
+              fontWeight: 500,
+              letterSpacing: '0.5px'
             }}
-          />
-        </ListItem>
-        <ListItem 
-          button 
-          sx={{ 
-            py: 0.5,
-            backgroundColor: location.pathname === '/batches' ? '#e3f2fd' : 'transparent',
-            '&:hover': { backgroundColor: location.pathname === '/batches' ? '#e3f2fd' : '#f8f9fa' },
-            borderRadius: 1,
-            mx: 1,
-            cursor: 'pointer'
-          }}
-          onClick={() => handleNavigation('/batches')}
-        >
-          <ListItemIcon sx={{ minWidth: 40, color: location.pathname === '/batches' ? '#1976d2' : '#6c757d' }}>
-            <AssignmentIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText 
-            primary="Commission Batches" 
-            primaryTypographyProps={{ 
-              fontSize: '0.875rem',
-              color: location.pathname === '/batches' ? '#1976d2' : '#495057',
-              fontWeight: location.pathname === '/batches' ? 600 : 400
-            }}
-          />
-        </ListItem>
-      </List>
+          >
+            Dashboard
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+            <ListItem 
+              button 
+              sx={{ 
+                height: '32px',
+                backgroundColor: location.pathname === '/' ? '#e3f2fd' : 'transparent',
+                '&:hover': { backgroundColor: location.pathname === '/' ? '#e3f2fd' : '#f8f9fa' },
+                borderRadius: 1,
+                px: 2,
+                py: 0,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2
+              }}
+              onClick={() => handleNavigation('/')}
+            >
+              <HomeIcon sx={{ width: 16, height: 16, color: location.pathname === '/' ? '#1976d2' : '#6c757d' }} />
+              <Typography
+                sx={{ 
+                  fontSize: '0.875rem',
+                  color: location.pathname === '/' ? '#1976d2' : '#495057',
+                  fontWeight: location.pathname === '/' ? 500 : 400
+                }}
+              >
+                Home
+              </Typography>
+            </ListItem>
+            <ListItem 
+              button 
+              sx={{ 
+                height: '32px',
+                backgroundColor: location.pathname === '/batches' ? '#e3f2fd' : 'transparent',
+                '&:hover': { backgroundColor: location.pathname === '/batches' ? '#e3f2fd' : '#f8f9fa' },
+                borderRadius: 1,
+                px: 2,
+                py: 0,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2
+              }}
+              onClick={() => handleNavigation('/batches')}
+            >
+              <AssignmentIcon sx={{ width: 16, height: 16, color: location.pathname === '/batches' ? '#1976d2' : '#6c757d' }} />
+              <Typography
+                sx={{ 
+                  fontSize: '0.875rem',
+                  color: location.pathname === '/batches' ? '#1976d2' : '#495057',
+                  fontWeight: location.pathname === '/batches' ? 500 : 400
+                }}
+              >
+                Commission Batches
+              </Typography>
+            </ListItem>
+          </Box>
+        </Box>
 
-      <List sx={{ py: 0, mb: 2 }}>
-        <Typography 
-          variant="overline" 
-          sx={{ 
-            pl: 2, 
-            pt: 2, 
-            pb: 0.5, 
-            color: '#6c757d',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            letterSpacing: '0.5px'
-          }}
-        >
-          Management
-        </Typography>
-        <ListItem 
-          button 
-          sx={{ 
-            py: 0.5,
-            backgroundColor: location.pathname === '/uploads' ? '#e3f2fd' : 'transparent',
-            '&:hover': { backgroundColor: location.pathname === '/uploads' ? '#e3f2fd' : '#f8f9fa' },
-            borderRadius: 1,
-            mx: 1,
-            cursor: 'pointer'
-          }}
-          onClick={() => handleNavigation('/uploads')}
-        >
-          <ListItemIcon sx={{ minWidth: 40, color: location.pathname === '/uploads' ? '#1976d2' : '#6c757d' }}>
-            <UploadIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText 
-            primary="Uploads" 
-            primaryTypographyProps={{ 
-              fontSize: '0.875rem',
-              color: location.pathname === '/uploads' ? '#1976d2' : '#495057',
-              fontWeight: location.pathname === '/uploads' ? 600 : 400
+        <Box>
+          <Typography 
+            variant="overline" 
+            sx={{ 
+              display: 'flex',
+              height: '32px',
+              alignItems: 'center',
+              px: 2, 
+              color: '#6c757d',
+              fontSize: '0.75rem',
+              fontWeight: 500,
+              letterSpacing: '0.5px'
             }}
-          />
-        </ListItem>
-        <ListItem 
-          button 
-          sx={{ 
-            py: 0.5,
-            backgroundColor: location.pathname === '/employees' ? '#e3f2fd' : 'transparent',
-            '&:hover': { backgroundColor: location.pathname === '/employees' ? '#e3f2fd' : '#f8f9fa' },
-            borderRadius: 1,
-            mx: 1,
-            cursor: 'pointer'
-          }}
-          onClick={() => handleNavigation('/employees')}
-        >
-          <ListItemIcon sx={{ minWidth: 40, color: location.pathname === '/employees' ? '#1976d2' : '#6c757d' }}>
-            <PeopleIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText 
-            primary="Employees" 
-            primaryTypographyProps={{ 
-              fontSize: '0.875rem',
-              color: location.pathname === '/employees' ? '#1976d2' : '#495057',
-              fontWeight: location.pathname === '/employees' ? 600 : 400
-            }}
-          />
-        </ListItem>
-        <ListItem 
-          button 
-          sx={{ 
-            py: 0.5,
-            backgroundColor: location.pathname === '/deals' ? '#e3f2fd' : 'transparent',
-            '&:hover': { backgroundColor: location.pathname === '/deals' ? '#e3f2fd' : '#f8f9fa' },
-            borderRadius: 1,
-            mx: 1,
-            cursor: 'pointer'
-          }}
-          onClick={() => handleNavigation('/deals')}
-        >
-          <ListItemIcon sx={{ minWidth: 40, color: location.pathname === '/deals' ? '#1976d2' : '#6c757d' }}>
-            <HandshakeIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText 
-            primary="Deals" 
-            primaryTypographyProps={{ 
-              fontSize: '0.875rem',
-              color: location.pathname === '/deals' ? '#1976d2' : '#495057',
-              fontWeight: location.pathname === '/deals' ? 600 : 400
-            }}
-          />
-        </ListItem>
-      </List>
+          >
+            Management
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+            <ListItem 
+              button 
+              sx={{ 
+                height: '32px',
+                backgroundColor: location.pathname === '/uploads' ? '#e3f2fd' : 'transparent',
+                '&:hover': { backgroundColor: location.pathname === '/uploads' ? '#e3f2fd' : '#f8f9fa' },
+                borderRadius: 1,
+                px: 2,
+                py: 0,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2
+              }}
+              onClick={() => handleNavigation('/uploads')}
+            >
+              <UploadIcon sx={{ width: 16, height: 16, color: location.pathname === '/uploads' ? '#1976d2' : '#6c757d' }} />
+              <Typography
+                sx={{ 
+                  fontSize: '0.875rem',
+                  color: location.pathname === '/uploads' ? '#1976d2' : '#495057',
+                  fontWeight: location.pathname === '/uploads' ? 500 : 400
+                }}
+              >
+                Uploads
+              </Typography>
+            </ListItem>
+            <ListItem 
+              button 
+              sx={{ 
+                height: '32px',
+                backgroundColor: location.pathname === '/employees' ? '#e3f2fd' : 'transparent',
+                '&:hover': { backgroundColor: location.pathname === '/employees' ? '#e3f2fd' : '#f8f9fa' },
+                borderRadius: 1,
+                px: 2,
+                py: 0,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2
+              }}
+              onClick={() => handleNavigation('/employees')}
+            >
+              <PeopleIcon sx={{ width: 16, height: 16, color: location.pathname === '/employees' ? '#1976d2' : '#6c757d' }} />
+              <Typography
+                sx={{ 
+                  fontSize: '0.875rem',
+                  color: location.pathname === '/employees' ? '#1976d2' : '#495057',
+                  fontWeight: location.pathname === '/employees' ? 500 : 400
+                }}
+              >
+                Employees
+              </Typography>
+            </ListItem>
+            <ListItem 
+              button 
+              sx={{ 
+                height: '32px',
+                backgroundColor: location.pathname === '/deals' ? '#e3f2fd' : 'transparent',
+                '&:hover': { backgroundColor: location.pathname === '/deals' ? '#e3f2fd' : '#f8f9fa' },
+                borderRadius: 1,
+                px: 2,
+                py: 0,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2
+              }}
+              onClick={() => handleNavigation('/deals')}
+            >
+              <HandshakeIcon sx={{ width: 16, height: 16, color: location.pathname === '/deals' ? '#1976d2' : '#6c757d' }} />
+              <Typography
+                sx={{ 
+                  fontSize: '0.875rem',
+                  color: location.pathname === '/deals' ? '#1976d2' : '#495057',
+                  fontWeight: location.pathname === '/deals' ? 500 : 400
+                }}
+              >
+                Deals
+              </Typography>
+            </ListItem>
+          </Box>
+        </Box>
 
-      <List sx={{ py: 0, mb: 2 }}>
-        <Typography 
-          variant="overline" 
-          sx={{ 
-            pl: 2, 
-            pt: 3, 
-            pb: 0.5, 
-            color: '#6c757d',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            letterSpacing: '0.5px'
-          }}
-        >
-          Analytics
-        </Typography>
-        <ListItem 
-          button 
-          sx={{ 
-            py: 0.5,
-            backgroundColor: location.pathname === '/rankings' ? '#e3f2fd' : 'transparent',
-            '&:hover': { backgroundColor: location.pathname === '/rankings' ? '#e3f2fd' : '#f8f9fa' },
-            borderRadius: 1,
-            mx: 1,
-            cursor: 'pointer'
-          }}
-          onClick={() => handleNavigation('/rankings')}
-        >
-          <ListItemIcon sx={{ minWidth: 40, color: location.pathname === '/rankings' ? '#1976d2' : '#6c757d' }}>
-            <EmojiEventsIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText 
-            primary="Rankings" 
-            primaryTypographyProps={{ 
-              fontSize: '0.875rem',
-              color: location.pathname === '/rankings' ? '#1976d2' : '#495057',
-              fontWeight: location.pathname === '/rankings' ? 600 : 400
+        <Box>
+          <Typography 
+            variant="overline" 
+            sx={{ 
+              display: 'flex',
+              height: '32px',
+              alignItems: 'center',
+              px: 2, 
+              color: '#6c757d',
+              fontSize: '0.75rem',
+              fontWeight: 500,
+              letterSpacing: '0.5px'
             }}
-          />
-        </ListItem>
-      </List>
+          >
+            Analytics
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+            <ListItem 
+              button 
+              sx={{ 
+                height: '32px',
+                backgroundColor: location.pathname === '/rankings' ? '#e3f2fd' : 'transparent',
+                '&:hover': { backgroundColor: location.pathname === '/rankings' ? '#e3f2fd' : '#f8f9fa' },
+                borderRadius: 1,
+                px: 2,
+                py: 0,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2
+              }}
+              onClick={() => handleNavigation('/rankings')}
+            >
+              <EmojiEventsIcon sx={{ width: 16, height: 16, color: location.pathname === '/rankings' ? '#1976d2' : '#6c757d' }} />
+              <Typography
+                sx={{ 
+                  fontSize: '0.875rem',
+                  color: location.pathname === '/rankings' ? '#1976d2' : '#495057',
+                  fontWeight: location.pathname === '/rankings' ? 500 : 400
+                }}
+              >
+                Rankings
+              </Typography>
+            </ListItem>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 
@@ -282,12 +310,9 @@ const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) =
             >
               <MenuIcon />
             </IconButton>
-            <DashboardIcon sx={{ mr: 1, color: '#6c757d' }} />
-            <Typography variant="h6" fontWeight="600" sx={{ color: '#495057' }}>
-              Commissions
-            </Typography>
-            <Typography variant="h6" fontWeight="400" sx={{ color: '#6c757d', ml: 0.5 }}>
-              Dashboard
+            <DashboardIcon sx={{ color: '#6c757d', width: 24, height: 24 }} />
+            <Typography fontWeight="600" sx={{ color: '#495057', fontSize: '0.875rem' }}>
+              Commissions Dashboard
             </Typography>
           </Toolbar>
         </AppBar>
