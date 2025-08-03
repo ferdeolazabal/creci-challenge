@@ -137,13 +137,13 @@ const CommissionBatches = () => {
   const tableColumns = [
     { label: "Batch ID", align: "left", key: "batchId", fontWeight: 600, color: '#1976d2' },
     { label: "Brand", align: "left", key: "brand", fontWeight: 600 },
-    { label: "Period", align: "left", key: "period" },
+    { label: "Period", align: "center", key: "period" },
     { label: "Created Date", align: "left", key: "createdDate", isDate: true },
     { label: "Processed Date", align: "left", key: "processedDate", isProcessedDate: true },
     { label: "Employees", align: "center", key: "employees" },
     { label: "Deals", align: "center", key: "deals" },
-    { label: "Total Commission", align: "right", key: "totalCommission", fontWeight: 600, format: (value) => `$${value.toLocaleString()}` },
-    { label: "Avg Commission", align: "right", key: "avgCommission", format: (value) => `$${value.toFixed(2)}` },
+    { label: "Total Commission", align: "center", key: "totalCommission", fontWeight: 600, format: (value) => `$${value.toLocaleString()}` },
+    { label: "Avg Commission", align: "center", key: "avgCommission", format: (value) => `$${value.toFixed(2)}` },
     { label: "Created By", align: "left", key: "createdBy" },
     { label: "Status", align: "center", key: "status", isChip: true },
     { label: "Actions", align: "center", key: "actions", isAction: true }
@@ -266,7 +266,7 @@ const CommissionBatches = () => {
         <CardContent sx={getCardContentStyles()}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2, flexWrap: 'wrap' }}>
             <SearchIcon sx={{ color: '#6c757d' }} />
-            <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a', flexShrink: 0 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a', flexShrink: 0 ,mt:3}}>
               Search & Filter Batches
             </Typography>
             {(searchQuery || selectedBrand !== 'All Brands' || selectedStatus !== 'All Statuses') && (
@@ -367,7 +367,7 @@ const CommissionBatches = () => {
       {/* Tabla de Commission Batches */}
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
-          <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a' }}>
+          <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a' ,mt:3}}>
             Commission Batches
           </Typography>
           <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
