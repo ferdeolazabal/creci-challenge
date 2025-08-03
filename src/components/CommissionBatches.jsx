@@ -262,7 +262,6 @@ const CommissionBatches = () => {
           <SectionHeader
             title="Search & Filter Batches"
             icon={SearchIcon}
-            sx={{ mb: 1 , mt:2}}
           />
           {(searchQuery || selectedBrand !== 'All Brands' || selectedStatus !== 'All Statuses') && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
@@ -370,7 +369,6 @@ const CommissionBatches = () => {
             title="Commission Batches"
             subtitle="Manage and track commission batch processing across all brands"
             icon={BusinessIcon}
-            sx={{ mb: 3, mt: 2 }}
           />
         </CardContent>
         <Box sx={{ width: '100%', overflowX: 'auto' }}>

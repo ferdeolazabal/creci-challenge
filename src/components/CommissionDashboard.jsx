@@ -128,7 +128,6 @@ const CommissionDashboard = (props = {}) => {
             title="Brand Commission Overview"
             subtitle="Commission batches and performance by automotive brand"
             icon={BusinessIcon}
-            sx={{ mb: 3, mt: 2 }}
           />
         </CardContent>
         <CardContent sx={{ ...getCardContentStyles(), pt: 0 }}>
