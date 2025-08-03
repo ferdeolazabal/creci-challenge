@@ -29,6 +29,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
+import StatCard from '../Ui/StatCard';
 import { deals, dealsStatusColors } from "../helpers/mockDealsData";
 const DealsPage = () => {
   // Hook para estilos adaptativos
@@ -172,23 +173,6 @@ const DealsPage = () => {
       Math.round(filteredDeals.reduce((sum, deal) => sum + parseInt(deal.price.replace(/[$,]/g, '')), 0) / filteredDeals.length) : 0,
     thisMonth: filteredDeals.length
   };
-
-  // Component for statistics cards
-  const StatCard = ({ title, value, icon: Icon, format = 'number' }) => (
-    <Card sx={getCardStyles()}>
-      <CardContent sx={getCardContentStyles()}>
-        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mx: 2 ,mt:3}}>
-          <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#6c757d', }}>
-            {title}
-          </Typography>
-          <Icon sx={{ width: 16, height: 16, color: '#6c757d' }} />
-        </Box>
-        <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
-          {format === 'currency' ? `$${value.toLocaleString()}` : value.toLocaleString()}
-        </Typography>
-      </CardContent>
-    </Card>
-  );
 
   return (
     <Box sx={getContainerStyles()}>

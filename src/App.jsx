@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SidebarProvider } from './contexts/SidebarContext';
-import SidebarLayout from './components/SidebarLayout';
+import SidebarLayout from './Ui/SidebarLayout';
 import BatchesScreen from './screens/BatchesScreen';
 import CommissionsScreen from "./screens/CommissionsScreen";
 import DealsScreen from './screens/DealsScreen';

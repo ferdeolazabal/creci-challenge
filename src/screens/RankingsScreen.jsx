@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
-import DashboardHeader from '../components/DashboardHeader';
+import DashboardHeader from '../Ui/DashboardHeader';
 import RankingsPage from '../components/RankingsPage';
 
 const RankingsScreen = () => {

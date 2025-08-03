@@ -31,6 +31,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PeopleIcon from '@mui/icons-material/People';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
+import StatCard from '../Ui/StatCard';
 import commissionBatches from "../helpers/mockCommissionBatches";
 
 const statusColors = {
@@ -109,29 +110,14 @@ const CommissionBatches = () => {
   ];
 
   // Función para renderizar una card de estadística
-  const renderStatCard = (cardData, index) => {
-    const IconComponent = cardData.icon;
-    
-    return (
-      <Card key={index} sx={getCardStyles()}>
-        <CardContent sx={getCardContentStyles(true)}>
-          <Typography sx={{ 
-            fontSize: '0.875rem',
-            fontWeight: 500,
-            letterSpacing: '-0.025em'
-          }}>
-            {cardData.title}
-          </Typography>
-          <IconComponent sx={getIconStyles()} />
-        </CardContent>
-        <CardContent sx={getCardContentStyles()}>
-          <Typography sx={getMainTextStyles()}>
-            {cardData.value}
-          </Typography>
-        </CardContent>
-      </Card>
-    );
-  };
+  const renderStatCard = (cardData, index) => (
+    <StatCard
+      key={index}
+      title={cardData.title}
+      value={cardData.value}
+      icon={cardData.icon}
+    />
+  );
 
   // Configuración de columnas de la tabla
   const tableColumns = [

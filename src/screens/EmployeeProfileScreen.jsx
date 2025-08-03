@@ -2,7 +2,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMediaQuery, useTheme, Button } from '@mui/material';
-import DashboardHeader from '../components/DashboardHeader';
+import DashboardHeader from '../Ui/DashboardHeader';
 import EmployeeProfile from '../components/EmployeeProfile';
 import { employees } from '../helpers/mockEmployeeData';
 

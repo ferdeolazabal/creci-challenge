@@ -20,6 +20,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
+import StatCard from '../Ui/StatCard';
 import { 
   salesExecutivesData, 
   salesManagersData,
@@ -34,25 +35,6 @@ const RankingsPage = () => {
   
   const [activeTab, setActiveTab] = useState(0);
   
-  const StatCard = ({ title, value, subtitle, icon: Icon, iconColor = '#6c757d' }) => (
-    <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-      <CardContent sx={{ p: 3 }}>
-        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
-          <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#6c757d' }}>
-            {title}
-          </Typography>
-          <Icon sx={{ width: 16, height: 16, color: iconColor }} />
-        </Box>
-        <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a1a1a', mb: 0.5 }}>
-          {value}
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-          {subtitle}
-        </Typography>
-      </CardContent>
-    </Card>
-  );
-
   const RankBadge = ({ rank, badge }) => {
     if (badge) {
       return (

@@ -1,6 +1,6 @@
 import { useMediaQuery, useTheme } from '@mui/material';
 import CommissionDashboard from "../components/CommissionDashboard";
-import DashboardHeader from "../components/DashboardHeader";
+import DashboardHeader from "../Ui/DashboardHeader";
 
 const CommissionsScreen = () => {
   const theme = useTheme();
