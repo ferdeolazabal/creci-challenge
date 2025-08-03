@@ -29,7 +29,15 @@ const DashboardHeader = ({
   backText,
   rightContent
 }) => {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, toggleMobile, isMobile: isMobileContext } = useSidebar();
+
+  const handleToggle = () => {
+    if (isMobileContext) {
+      toggleMobile();
+    } else {
+      toggleSidebar();
+    }
+  };
   return (
     <Box sx={{ width: '100%', backgroundColor: '#fff' }}>
       {/* Título con botón de toggle */}
@@ -43,20 +51,18 @@ const DashboardHeader = ({
         width: '100%'
       }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          {!isMobile && (
-            <IconButton
-              onClick={toggleSidebar}
-              sx={{
-                color: '#6c757d',
-                p: 1,
-                '&:hover': {
-                  backgroundColor: '#f8f9fa',
-                },
-              }}
-            >
-              <ViewModuleIcon />
-            </IconButton>
-          )}
+          <IconButton
+            onClick={handleToggle}
+            sx={{
+              color: '#6c757d',
+              p: 1,
+              '&:hover': {
+                backgroundColor: '#f8f9fa',
+              },
+            }}
+          >
+            <ViewModuleIcon />
+          </IconButton>
           {onBackClick && (
             <Button
               onClick={onBackClick}

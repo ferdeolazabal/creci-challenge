@@ -34,21 +34,16 @@ const drawerWidth = 240;
  * @param {React.ReactNode} props.children - Child components to render
  */
 const SidebarLayout = ({ children } = {}) => {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const { sidebarOpen } = useSidebar();
+  const { sidebarOpen, mobileOpen, isMobile, toggleMobile } = useSidebar();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
   const handleNavigation = (path) => {
     navigate(path);
-    if (isMobile) {
-      handleDrawerToggle();
+    // Cerrar sidebar móvil después de navegar
+    if (isMobile && mobileOpen) {
+      toggleMobile();
     }
   };
 
@@ -289,73 +284,64 @@ const SidebarLayout = ({ children } = {}) => {
 
   return (
     <Box sx={{ display: 'flex'}}>
-      {/* AppBar para mobile */}
-      {isMobile && (
-        <AppBar
-          position="fixed"
+      {/* Sidebar para desktop */}
+      {!isMobile && (
+        <Drawer
+          variant="persistent"
+          open={sidebarOpen}
           sx={{
-            zIndex: theme.zIndex.drawer + 1,
-            backgroundColor: '#f8f9fa',
-            color: '#495057',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-          }}
-        >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="abrir menú"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <DashboardIcon sx={{ color: '#6c757d', width: 24, height: 24 }} />
-            <Typography fontWeight="600" sx={{ color: '#495057', fontSize: '0.875rem' }}>
-              Commissions Dashboard
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      )}
-
-      {/* Sidebar */}
-      <Drawer
-        variant={isMobile ? "temporary" : "persistent"}
-        open={isMobile ? mobileOpen : sidebarOpen}
-        onClose={isMobile ? handleDrawerToggle : undefined}
-        ModalProps={{
-          keepMounted: true, // Mejor rendimiento en mobile
-        }}
-        sx={{
-          width: sidebarOpen ? drawerWidth : 0,
-          transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
-          [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-            backgroundColor: '#f8f9fa',
-            borderRight: '1px solid #e9ecef',
-            overflowX: 'hidden',
-            transition: theme.transitions.create('transform', {
+            width: sidebarOpen ? drawerWidth : 0,
+            flexShrink: 0,
+            transition: theme.transitions.create('width', {
               easing: theme.transitions.easing.sharp,
               duration: theme.transitions.duration.leavingScreen,
             }),
-          },
-        }}
-      >
-        {drawerContent}
-      </Drawer>
+            [`& .MuiDrawer-paper`]: {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+              backgroundColor: '#f8f9fa',
+              borderRight: '1px solid #e9ecef',
+              overflowX: 'hidden',
+            },
+          }}
+        >
+          {drawerContent}
+        </Drawer>
+      )}
+
+      {/* Sidebar para mobile */}
+      {isMobile && (
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={toggleMobile}
+          ModalProps={{
+            keepMounted: true, // Mejor rendimiento en mobile
+          }}
+          sx={{
+            [`& .MuiDrawer-paper`]: {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+              backgroundColor: '#f8f9fa',
+              borderRight: '1px solid #e9ecef',
+              overflowX: 'hidden',
+            },
+            [`& .MuiBackdrop-root`]: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            },
+          }}
+        >
+          {drawerContent}
+        </Drawer>
+      )}
 
       {/* Contenido principal */}
       <Box 
         component="main" 
         sx={{ 
           flexGrow: 1, 
-          width: '100%',
-          marginTop: isMobile ? '64px' : 0, // Espacio para AppBar en mobile
-          transition: theme.transitions.create(['margin-left'], {
+          width: isMobile ? '100%' : `calc(100% - ${sidebarOpen ? drawerWidth : 0}px)`,
+          transition: theme.transitions.create(['width'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
           }),
