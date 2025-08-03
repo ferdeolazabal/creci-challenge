@@ -39,7 +39,7 @@ const DataTable = ({
                 key={column.key || index}
                 sx={{ 
                   fontWeight: 600, 
-                  color: '#495057', 
+                  color: '#6b7280', 
                   borderBottom: '1px solid #dee2e6',
                   textAlign: column.align || 'left',
                   ...column.headerStyle
