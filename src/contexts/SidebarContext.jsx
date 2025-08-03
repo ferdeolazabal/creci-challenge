@@ -1,12 +1,16 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useTheme, useMediaQuery } from '@mui/material';
 
+// Constante global para el ancho del sidebar
+const DRAWER_WIDTH = 240;
+
 const SidebarContext = createContext({
   sidebarOpen: true,
   mobileOpen: false,
   toggleSidebar: () => {},
   toggleMobile: () => {},
-  isMobile: false
+  isMobile: false,
+  drawerWidth: DRAWER_WIDTH
 });
 
 export const useSidebar = () => {
@@ -37,7 +41,8 @@ export const SidebarProvider = ({ children }) => {
       mobileOpen, 
       toggleSidebar, 
       toggleMobile, 
-      isMobile 
+      isMobile,
+      drawerWidth: DRAWER_WIDTH
     }}>
       {children}
     </SidebarContext.Provider>

@@ -26,15 +26,13 @@ import HomeIcon from '@mui/icons-material/Home';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const drawerWidth = 240;
-
 /**
  * SidebarLayout component
  * @param {Object} props
  * @param {React.ReactNode} props.children - Child components to render
  */
 const SidebarLayout = ({ children } = {}) => {
-  const { sidebarOpen, mobileOpen, isMobile, toggleMobile } = useSidebar();
+  const { sidebarOpen, mobileOpen, isMobile, toggleMobile, drawerWidth } = useSidebar();
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
