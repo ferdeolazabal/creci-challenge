@@ -27,12 +27,16 @@ import PendingIcon from '@mui/icons-material/Pending';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
 import { 
   employees, 
   employeeStats
 } from '../helpers/mockEmployeeData';
 
 const EmployeePage = () => {
+  // Hook para estilos adaptativos
+  const { getContainerStyles ,getTableStyles} = useAdaptiveStyles();
+  
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
@@ -49,7 +53,7 @@ const EmployeePage = () => {
   };
 
   return (
-    <Box sx={{ p: 3, width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+    <Box sx={getContainerStyles()}>
       {/* Employee Statistics Cards */}
       <Box sx={{ 
         display: 'grid', 
@@ -157,7 +161,9 @@ const EmployeePage = () => {
           </Box>
           
           <TableContainer sx={{ borderRadius: 1, border: '1px solid #e0e0e0' }}>
-            <Table>
+            {/* <Table> */}
+            <Table sx={{ ...getTableStyles().table, minWidth: 1200 }}>
+
               <TableHead>
                 <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
                   <TableCell sx={{ fontWeight: 600, color: '#495057', borderBottom: '1px solid #dee2e6' }}>
