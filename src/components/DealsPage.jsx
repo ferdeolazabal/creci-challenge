@@ -5,13 +5,8 @@ import {
   Card,
   CardContent,
   Typography,
-  Table,
-  TableBody,
   TableCell,
-  TableContainer,
-  TableHead,
   TableRow,
-  Paper,
   Chip,
   Button,
   TextField,
@@ -22,8 +17,8 @@ import {
   FormControl,
 } from '@mui/material';
 import StatCard from '../Ui/StatCard';
+import DataTable from '../Ui/DataTable';
 import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
-
 import { deals, dealsStatusColors } from "../helpers/mockDealsData";
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -35,7 +30,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 
 const DealsPage = () => {
-  // Hook para estilos adaptativos
+  
   const { 
     getContainerStyles,
     getCardStyles,
@@ -103,34 +98,9 @@ const DealsPage = () => {
     </FormControl>
   );
 
-  const TableHeaderCell = ({ children, align = 'left' }) => (
-    <TableCell sx={{ 
-      fontWeight: 600, 
-      color: '#495057', 
-      fontSize: '0.875rem', 
-      py: 2,
-      textAlign: align
-    }}>
-      {children}
-    </TableCell>
-  );
-
-  const TableDataCell = ({ children, align = 'left', weight = 'normal', color = '#1a1a1a', fontFamily }) => (
-    <TableCell sx={{ 
-      py: 2, 
-      fontSize: '0.875rem', 
-      fontWeight: weight === 'bold' ? 600 : weight === 'medium' ? 500 : 'normal',
-      color: color,
-      textAlign: align,
-      fontFamily: fontFamily || (color === '#6c757d' ? 'monospace' : 'inherit')
-    }}>
-      {children}
-    </TableCell>
-  );
-
   // Table column definitions for better organization
   const tableColumns = [
-    { key: 'dealNo', label: 'Deal No', align: 'left' },
+    { key: 'dealNo', label: 'Deal No', align: 'left', headerStyle: { fontWeight: 600 } },
     { key: 'date', label: 'Date', align: 'left' },
     { key: 'customer', label: 'Customer', align: 'left' },
     { key: 'vehicle', label: 'Vehicle', align: 'left' },
@@ -144,6 +114,72 @@ const DealsPage = () => {
     { key: 'gross', label: 'Gross', align: 'center' },
     { key: 'status', label: 'Status', align: 'center' }
   ];
+
+  const renderDealsRow = (deal, index) => (
+    <TableRow 
+      key={index}
+      sx={{ 
+        '&:hover': { backgroundColor: '#f8f9fa' },
+        borderBottom: '1px solid #e9ecef'
+      }}
+    >
+      <TableCell sx={{ textAlign: 'left', fontWeight: 600, color: '#1976d2' }}>
+        {deal.dealNo}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'left' }}>
+        {deal.date}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'left', fontWeight: 500 }}>
+        {deal.customer}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'left' }}>
+        <Box>
+          <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+            {deal.vehicle}
+          </Typography>
+          <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#6c757d' }}>
+            {deal.vehicleCondition}
+          </Typography>
+        </Box>
+      </TableCell>
+      <TableCell sx={{ textAlign: 'center', color: '#6c757d', fontFamily: 'monospace' }}>
+        {deal.vin}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'left' }}>
+        {deal.dealer}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'left' }}>
+        {deal.salesPerson}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'left' }}>
+        {deal.salesManager}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'left' }}>
+        {deal.fi}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'center', fontWeight: 600 }}>
+        {deal.price}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'center' }}>
+        {deal.cost}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'center', fontWeight: 600 }}>
+        {deal.gross}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'center' }}>
+        <Chip
+          label={deal.status}
+          color={dealsStatusColors[deal.status] || "default"}
+          size="small"
+          sx={{ 
+            fontSize: '0.75rem', 
+            fontWeight: 500,
+            minWidth: '70px'
+          }}
+        />
+      </TableCell>
+    </TableRow>
+  );
 
   // Filter deals based on search and filters
   const filteredDeals = deals.filter(deal => {
@@ -346,78 +382,20 @@ const DealsPage = () => {
           </Typography>
           
           <Box sx={{ width: '100%', overflowX: 'auto' }}>
-            <TableContainer sx={getTableStyles().container}>
-              <Table sx={{ ...getTableStyles().table, minWidth: 1200 }}>
-                <TableHead>
-                  <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
-                    {tableColumns.map((column) => (
-                      <TableHeaderCell key={column.key} align={column.align}>
-                        {column.label}
-                      </TableHeaderCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filteredDeals.length > 0 ? (
-                    filteredDeals.map((deal, index) => (
-                      <TableRow 
-                        key={index}
-                        sx={{ 
-                          '&:hover': { backgroundColor: '#f8f9fa' },
-                          borderBottom: '1px solid #e9ecef'
-                        }}
-                      >
-                        <TableDataCell weight="bold" color="#1976d2">
-                          {deal.dealNo}
-                        </TableDataCell>
-                        <TableDataCell>{deal.date}</TableDataCell>
-                        <TableDataCell weight="medium">{deal.customer}</TableDataCell>
-                        <TableDataCell>
-                          <Box>
-                            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
-                              {deal.vehicle}
-                            </Typography>
-                            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#6c757d' }}>
-                              {deal.vehicleCondition}
-                            </Typography>
-                          </Box>
-                        </TableDataCell>
-                        <TableDataCell color="#6c757d" fontFamily="monospace">
-                          {deal.vin}
-                        </TableDataCell>
-                        <TableDataCell>{deal.dealer}</TableDataCell>
-                        <TableDataCell>{deal.salesPerson}</TableDataCell>
-                        <TableDataCell>{deal.salesManager}</TableDataCell>
-                        <TableDataCell>{deal.fi}</TableDataCell>
-                        <TableDataCell weight="bold">{deal.price}</TableDataCell>
-                        <TableDataCell>{deal.cost}</TableDataCell>
-                        <TableDataCell weight="bold">{deal.gross}</TableDataCell>
-                        <TableDataCell>
-                          <Chip
-                            label={deal.status}
-                            color={dealsStatusColors[deal.status] || "default"}
-                            size="small"
-                            sx={{ 
-                              fontSize: '0.75rem', 
-                              fontWeight: 500,
-                              minWidth: '70px'
-                            }}
-                          />
-                        </TableDataCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={13} sx={{ py: 4, textAlign: 'center' }}>
-                        <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
-                          No deals found matching your search criteria
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            {filteredDeals.length > 0 ? (
+              <DataTable
+                columns={tableColumns}
+                data={filteredDeals}
+                renderRow={renderDealsRow}
+                minWidth={1200}
+              />
+            ) : (
+              <Box sx={{ py: 4, textAlign: 'center' }}>
+                <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.875rem' }}>
+                  No deals found matching your search criteria
+                </Typography>
+              </Box>
+            )}
           </Box>
         </CardContent>
       </Card>
