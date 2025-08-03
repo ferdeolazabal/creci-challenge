@@ -264,9 +264,9 @@ const CommissionBatches = () => {
       {/* Barra de búsqueda y filtros */}
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2, flexWrap: 'wrap' }}>
             <SearchIcon sx={{ color: '#6c757d' }} />
-            <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a', flexShrink: 0 }}>
               Search & Filter Batches
             </Typography>
             {(searchQuery || selectedBrand !== 'All Brands' || selectedStatus !== 'All Statuses') && (
@@ -291,7 +291,12 @@ const CommissionBatches = () => {
               </Button>
             )}
           </Box>
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
+          <Box sx={{ 
+            display: 'flex', 
+            gap: 2, 
+            alignItems: 'center', 
+            flexWrap: { xs: 'wrap', md: 'nowrap' }
+          }}>
             <TextField
               placeholder="Search by batch ID, brand, period, or creator..."
               variant="outlined"
@@ -300,7 +305,7 @@ const CommissionBatches = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               sx={{ 
                 flexGrow: 1, 
-                minWidth: { xs: '100%', sm: '300px', md: '400px' },
+                minWidth: { xs: '100%', sm: '250px', md: '300px' },
                 mb: { xs: 1, md: 0 }
               }}
               InputProps={{
@@ -371,7 +376,7 @@ const CommissionBatches = () => {
         </CardContent>
         <Box sx={{ width: '100%', overflowX: 'auto' }}>
           <TableContainer sx={getTableStyles().container}>
-            <Table sx={{ ...getTableStyles().table, minWidth: 1200 }}>
+            <Table sx={{ ...getTableStyles().table, minWidth: 1000 }}>
               <TableHead>
                 <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
                   {tableColumns.map((column) => (
