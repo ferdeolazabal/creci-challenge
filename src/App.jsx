@@ -4,6 +4,7 @@ import CommissionsScreen from "./components/CommissionsScreen";
 import DealsScreen from './components/DealsScreen';
 import EmployeeProfileScreen from './components/EmployeeProfileScreen';
 import EmployeeScreen from './components/EmployeeScreen';
+import RankingsScreen from './components/RankingsScreen';
 import UploadScreen from './components/UploadScreen';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/employees" element={<EmployeeScreen />} />
         <Route path="/employee/:id" element={<EmployeeProfileScreen />} />
         <Route path="/deals" element={<DealsScreen />} />
+        <Route path="/rankings" element={<RankingsScreen />} />
       </Routes>
     </Router>
   )
