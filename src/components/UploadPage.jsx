@@ -6,18 +6,23 @@ import {
   CardContent,
   Typography,
   Button,
-  Grid,
   Paper,
-  Table,
-  TableBody,
   TableCell,
-  TableContainer,
-  TableHead,
   TableRow,
   Chip,
-  Divider,
   IconButton,
 } from '@mui/material';
+import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
+import DataTable from '../Ui/DataTable';
+import { 
+  documentTypes, 
+  uploadHistory, 
+  uploadStats, 
+  supportedFormats,
+  statusColors,
+  mappingStatusColors 
+} from '../helpers/mockUploadData';
+
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import HistoryIcon from '@mui/icons-material/History';
@@ -28,18 +33,9 @@ import ProcessingIcon from '@mui/icons-material/Sync';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import PersonIcon from '@mui/icons-material/Person';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import { useAdaptiveStyles } from '../hooks/useAdaptiveStyles';
-import { 
-  documentTypes, 
-  uploadHistory, 
-  uploadStats, 
-  supportedFormats,
-  statusColors,
-  mappingStatusColors 
-} from '../helpers/mockUploadData';
 
 const UploadPage = () => {
-  // Hook para estilos adaptativos
+
   const {
     getContainerStyles,
     getCardStyles,
@@ -51,7 +47,6 @@ const UploadPage = () => {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
 
-  // Reusable SectionHeader component
   const SectionHeader = ({ icon: Icon, title, subtitle, iconColor = '#1976d2', marginTop = false }) => (
     <Box sx={{ mb: marginTop ? 3 : 2, mt: marginTop ? 3 : 0 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
@@ -68,31 +63,6 @@ const UploadPage = () => {
     </Box>
   );
 
-  // Reusable TableHeader component
-  const TableHeader = ({ columns }) => (
-    <TableHead>
-      <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-        {columns.map((column) => (
-          <TableCell key={column.key} sx={{ fontWeight: 600, py: 2 }}>
-            {column.label}
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-
-  // Reusable TableDataCell component
-  const TableDataCell = ({ children, weight = 'normal', color = '#1a1a1a' }) => (
-    <TableCell sx={{ 
-      py: 2,
-      fontWeight: weight === 'bold' ? 600 : weight === 'medium' ? 500 : 'normal',
-      color
-    }}>
-      {children}
-    </TableCell>
-  );
-
-  // Reusable StatusChip component
   const StatusChip = ({ status, colorMapping, withIcon = false, getIcon }) => (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
       {withIcon && getIcon && getIcon(status)}
@@ -106,7 +76,6 @@ const UploadPage = () => {
   );
 
   const handleFileSelect = () => {
-    // Simular selección de archivos
     console.log('File selection triggered');
   };
 
@@ -121,27 +90,104 @@ const UploadPage = () => {
     }
   };
 
-  // Table column configurations
+  const renderDocumentTypeRow = (docType, index) => (
+    <TableRow key={index} sx={{ '&:hover': { backgroundColor: '#f9f9f9' } }}>
+      <TableCell sx={{ textAlign: 'left', fontWeight: 600, color: '#1976d2' }}>
+        {docType.documentType}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'left' }}>{docType.description}</TableCell>
+      <TableCell sx={{ textAlign: 'left' }}>
+        <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+          {docType.requiredFields.map((field, fieldIndex) => (
+            <Chip 
+              key={fieldIndex}
+              label={field}
+              size="small"
+              variant="outlined"
+              sx={{ fontSize: '0.75rem' }}
+            />
+          ))}
+        </Box>
+      </TableCell>
+      <TableCell sx={{ textAlign: 'center' }}>
+        <Chip
+          label="Yes"
+          size="small"
+          color="error"
+          sx={{ 
+            backgroundColor: '#f44336',
+            color: 'white',
+            fontWeight: 500,
+            fontSize: '0.75rem'
+          }}
+        />
+      </TableCell>
+    </TableRow>
+  );
+
+  const renderUploadHistoryRow = (upload, index) => (
+    <TableRow key={index} sx={{ '&:hover': { backgroundColor: '#f9f9f9' } }}>
+      <TableCell sx={{ textAlign: 'left', fontWeight: 600, color: '#1976d2' }}>
+        {upload.filename}
+      </TableCell>
+      <TableCell sx={{ textAlign: 'left', fontWeight: 500 }}>{upload.type}</TableCell>
+      <TableCell sx={{ textAlign: 'left' }}>{upload.description}</TableCell>
+      <TableCell sx={{ textAlign: 'left' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <PersonIcon sx={{ fontSize: 16, color: '#6c757d' }} />
+          <Typography variant="body2">
+            {upload.uploadedBy}
+          </Typography>
+        </Box>
+      </TableCell>
+      <TableCell sx={{ textAlign: 'left' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <AccessTimeIcon sx={{ fontSize: 16, color: '#6c757d' }} />
+          <Typography variant="body2">
+            {upload.timestamp.split(' ')[0]}
+            <br />
+            <span style={{ fontSize: '0.75rem', color: '#6c757d' }}>
+              {upload.timestamp.split(' ')[1]}
+            </span>
+          </Typography>
+        </Box>
+      </TableCell>
+      <TableCell>
+        <StatusChip 
+          status={upload.status}
+          colorMapping={statusColors}
+          withIcon={true}
+          getIcon={getStatusIcon}
+        />
+      </TableCell>
+      <TableCell>
+        <StatusChip 
+          status={upload.mappingStatus}
+          colorMapping={mappingStatusColors}
+        />
+      </TableCell>
+    </TableRow>
+  );
+
   const documentTypesColumns = [
-    { key: 'documentType', label: 'Document Type' },
-    { key: 'description', label: 'Description' },
-    { key: 'requiredFields', label: 'Required Mapping Fields' },
-    { key: 'mappingRequired', label: 'Mapping Required' }
+    { key: 'documentType', label: 'Document Type', align: 'left', headerStyle: { fontWeight: 600 } },
+    { key: 'description', label: 'Description', align: 'left' },
+    { key: 'requiredFields', label: 'Required Mapping Fields', align: 'left'},
+    { key: 'mappingRequired', label: 'Mapping Required', align: 'center' }
   ];
 
   const uploadHistoryColumns = [
-    { key: 'filename', label: 'Filename' },
-    { key: 'type', label: 'Type' },
-    { key: 'description', label: 'Description' },
-    { key: 'uploadedBy', label: 'Uploaded By' },
-    { key: 'timestamp', label: 'Timestamp' },
-    { key: 'status', label: 'Status' },
-    { key: 'mappingStatus', label: 'Mapping Status' }
+    { key: 'filename', label: 'Filename', align: 'left', headerStyle: { fontWeight: 600 } },
+    { key: 'type', label: 'Type', align: 'left' },
+    { key: 'description', label: 'Description', align: 'left' },
+    { key: 'uploadedBy', label: 'Uploaded By', align: 'left' },
+    { key: 'timestamp', label: 'Timestamp', align: 'left' },
+    { key: 'status', label: 'Status', align: 'center' },
+    { key: 'mappingStatus', label: 'Mapping Status', align: 'center' }
   ];
 
   return (
     <Box sx={getContainerStyles()}>
-      {/* Upload Multiple Documents Section */}
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
           <SectionHeader
@@ -226,7 +272,6 @@ const UploadPage = () => {
         </CardContent>
       </Card>
 
-      {/* Document Types Reference Section */}
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
           <SectionHeader
@@ -239,53 +284,15 @@ const UploadPage = () => {
         </CardContent>
         
         <Box sx={{ width: '100%', overflowX: 'auto' }}>
-          <TableContainer sx={getTableStyles().container}>
-            <Table sx={{ ...getTableStyles().table, minWidth: 800 }}>
-              <TableHeader columns={documentTypesColumns} />
-              <TableBody>
-                {documentTypes.map((docType) => (
-                  <TableRow key={docType.id} sx={{ '&:hover': { backgroundColor: '#f9f9f9' } }}>
-                    <TableDataCell weight="bold" color="#1976d2">
-                      {docType.documentType}
-                    </TableDataCell>
-                    <TableDataCell>
-                      {docType.description}
-                    </TableDataCell>
-                    <TableDataCell>
-                      <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
-                        {docType.requiredFields.map((field, index) => (
-                          <Chip 
-                            key={index}
-                            label={field}
-                            size="small"
-                            variant="outlined"
-                            sx={{ fontSize: '0.75rem' }}
-                          />
-                        ))}
-                      </Box>
-                    </TableDataCell>
-                    <TableDataCell>
-                      <Chip
-                        label="Yes"
-                        size="small"
-                        color="error"
-                        sx={{ 
-                          backgroundColor: '#f44336',
-                          color: 'white',
-                          fontWeight: 500,
-                          fontSize: '0.75rem'
-                        }}
-                      />
-                    </TableDataCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <DataTable
+            columns={documentTypesColumns}
+            data={documentTypes}
+            renderRow={renderDocumentTypeRow}
+            minWidth={800}
+          />
         </Box>
       </Card>
 
-      {/* Upload History Section */}
       <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
         <CardContent sx={{ p: 4, pb: 0 }}>
           <SectionHeader
@@ -297,60 +304,12 @@ const UploadPage = () => {
         </CardContent>
         
         <Box sx={{ width: '100%', overflowX: 'auto' }}>
-          <TableContainer component={Paper} sx={{ 
-            boxShadow: 'none', 
-            border: 'none',
-            minWidth: '100%'
-          }}>
-            <Table size="small" sx={{ minWidth: 1000 }}>
-              <TableHeader columns={uploadHistoryColumns} />
-              <TableBody>
-                {uploadHistory.map((upload) => (
-                  <TableRow key={upload.id} sx={{ '&:hover': { backgroundColor: '#f9f9f9' } }}>
-                    <TableDataCell weight="bold" color="#1976d2">
-                      {upload.filename}
-                    </TableDataCell>
-                    <TableDataCell weight="medium">{upload.type}</TableDataCell>
-                    <TableDataCell>{upload.description}</TableDataCell>
-                    <TableDataCell>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <PersonIcon sx={{ fontSize: 16, color: '#6c757d' }} />
-                        <Typography variant="body2">
-                          {upload.uploadedBy}
-                        </Typography>
-                      </Box>
-                    </TableDataCell>
-                    <TableDataCell>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <AccessTimeIcon sx={{ fontSize: 16, color: '#6c757d' }} />
-                        <Typography variant="body2">
-                          {upload.timestamp.split(' ')[0]}
-                          <br />
-                          <span style={{ fontSize: '0.75rem', color: '#6c757d' }}>
-                            {upload.timestamp.split(' ')[1]}
-                          </span>
-                        </Typography>
-                      </Box>
-                    </TableDataCell>
-                    <TableDataCell>
-                      <StatusChip 
-                        status={upload.status}
-                        colorMapping={statusColors}
-                        withIcon={true}
-                        getIcon={getStatusIcon}
-                      />
-                    </TableDataCell>
-                    <TableDataCell>
-                      <StatusChip 
-                        status={upload.mappingStatus}
-                        colorMapping={mappingStatusColors}
-                      />
-                    </TableDataCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <DataTable
+            columns={uploadHistoryColumns}
+            data={uploadHistory}
+            renderRow={renderUploadHistoryRow}
+            minWidth={1000}
+          />
         </Box>
       </Card>
     </Box>
