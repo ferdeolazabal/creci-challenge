@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useSidebar } from '../contexts/SidebarContext';
 import {
   Box,
   Drawer,
@@ -31,11 +32,10 @@ const drawerWidth = 240;
  * SidebarLayout component
  * @param {Object} props
  * @param {React.ReactNode} props.children - Child components to render
- * @param {boolean} [props.sidebarOpen] - Whether the sidebar is open (for desktop)
- * @param {Function} [props.onToggleSidebar] - Optional callback when sidebar is toggled
  */
-const SidebarLayout = ({ children, sidebarOpen = true, onToggleSidebar } = {}) => {
+const SidebarLayout = ({ children } = {}) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { sidebarOpen } = useSidebar();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();

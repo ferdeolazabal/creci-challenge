@@ -1,5 +1,6 @@
 // @ts-nocheck
 import React from 'react';
+import { useSidebar } from '../contexts/SidebarContext';
 import {
   Box,
   Typography,
@@ -13,7 +14,6 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 /**
  * DashboardHeader component
  * @param {Object} props
- * @param {Function} [props.onToggleSidebar] - Optional callback to toggle sidebar
  * @param {boolean} [props.isMobile] - Whether the device is mobile
  * @param {string} [props.title] - Header title
  * @param {boolean} [props.showCreateButton] - Whether to show the Create New Batch button
@@ -22,7 +22,6 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
  * @param {React.ReactNode} [props.rightContent] - Optional content for right side
  */
 const DashboardHeader = ({ 
-  onToggleSidebar, 
   isMobile = false, 
   title = "Commission Batches Overview", 
   showCreateButton = false,
@@ -30,6 +29,7 @@ const DashboardHeader = ({
   backText,
   rightContent
 }) => {
+  const { toggleSidebar } = useSidebar();
   return (
     <Box sx={{ width: '100%', backgroundColor: '#fff' }}>
       {/* Título con botón de toggle */}
@@ -45,7 +45,7 @@ const DashboardHeader = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {!isMobile && (
             <IconButton
-              onClick={onToggleSidebar}
+              onClick={toggleSidebar}
               sx={{
                 color: '#6c757d',
                 p: 1,
