@@ -51,6 +51,60 @@ const UploadPage = () => {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
 
+  // Reusable SectionHeader component
+  const SectionHeader = ({ icon: Icon, title, subtitle, iconColor = '#1976d2', marginTop = false }) => (
+    <Box sx={{ mb: marginTop ? 3 : 2, mt: marginTop ? 3 : 0 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+        <Icon sx={{ mr: 2, color: iconColor, fontSize: 24 }} />
+        <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
+          {title}
+        </Typography>
+      </Box>
+      {subtitle && (
+        <Typography variant="body2" color="textSecondary" sx={{ mb: 3, lineHeight: 1.6 }}>
+          {subtitle}
+        </Typography>
+      )}
+    </Box>
+  );
+
+  // Reusable TableHeader component
+  const TableHeader = ({ columns }) => (
+    <TableHead>
+      <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
+        {columns.map((column) => (
+          <TableCell key={column.key} sx={{ fontWeight: 600, py: 2 }}>
+            {column.label}
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+
+  // Reusable TableDataCell component
+  const TableDataCell = ({ children, weight = 'normal', color = '#1a1a1a' }) => (
+    <TableCell sx={{ 
+      py: 2,
+      fontWeight: weight === 'bold' ? 600 : weight === 'medium' ? 500 : 'normal',
+      color
+    }}>
+      {children}
+    </TableCell>
+  );
+
+  // Reusable StatusChip component
+  const StatusChip = ({ status, colorMapping, withIcon = false, getIcon }) => (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      {withIcon && getIcon && getIcon(status)}
+      <Chip
+        label={status}
+        size="small"
+        color={colorMapping[status]}
+        sx={{ fontSize: '0.75rem' }}
+      />
+    </Box>
+  );
+
   const handleFileSelect = () => {
     // Simular selección de archivos
     console.log('File selection triggered');
@@ -67,21 +121,35 @@ const UploadPage = () => {
     }
   };
 
+  // Table column configurations
+  const documentTypesColumns = [
+    { key: 'documentType', label: 'Document Type' },
+    { key: 'description', label: 'Description' },
+    { key: 'requiredFields', label: 'Required Mapping Fields' },
+    { key: 'mappingRequired', label: 'Mapping Required' }
+  ];
+
+  const uploadHistoryColumns = [
+    { key: 'filename', label: 'Filename' },
+    { key: 'type', label: 'Type' },
+    { key: 'description', label: 'Description' },
+    { key: 'uploadedBy', label: 'Uploaded By' },
+    { key: 'timestamp', label: 'Timestamp' },
+    { key: 'status', label: 'Status' },
+    { key: 'mappingStatus', label: 'Mapping Status' }
+  ];
+
   return (
     <Box sx={getContainerStyles()}>
       {/* Upload Multiple Documents Section */}
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <CloudUploadIcon sx={{ mr: 2, color: '#1976d2', fontSize: 24 }} />
-            <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-              Upload Multiple Documents
-            </Typography>
-          </Box>
-          
-          <Typography variant="body2" color="textSecondary" sx={{ mb: 4, lineHeight: 1.6 }}>
-            Upload multiple commission documents at once. After upload, you'll need to map each document to its type and configure field mappings.
-          </Typography>
+          <SectionHeader
+            icon={CloudUploadIcon}
+            title="Upload Multiple Documents"
+            subtitle="Upload multiple commission documents at once. After upload, you'll need to map each document to its type and configure field mappings."
+            marginTop={true}
+          />
 
           <Box sx={{ mb: 4 }}>
             <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2, color: '#1a1a1a' }}>
@@ -161,39 +229,29 @@ const UploadPage = () => {
       {/* Document Types Reference Section */}
       <Card sx={getCardStyles()}>
         <CardContent sx={getCardContentStyles()}>
-          <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a', mb: 1 }}>
-            Document Types Reference
-          </Typography>
-          <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-            Available document types and their mapping requirements
-          </Typography>
+          <SectionHeader
+            icon={HistoryIcon}
+            title="Document Types Reference"
+            subtitle="Available document types and their mapping requirements"
+            iconColor="#6c757d"
+            marginTop={true}
+          />
         </CardContent>
         
         <Box sx={{ width: '100%', overflowX: 'auto' }}>
           <TableContainer sx={getTableStyles().container}>
             <Table sx={{ ...getTableStyles().table, minWidth: 800 }}>
-              <TableHead>
-                <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                  <TableCell sx={{ fontWeight: 600, py: 2 }}>Document Type</TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 2 }}>Description</TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 2 }}>Required Mapping Fields</TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 2 }}>Mapping Required</TableCell>
-                </TableRow>
-              </TableHead>
+              <TableHeader columns={documentTypesColumns} />
               <TableBody>
                 {documentTypes.map((docType) => (
                   <TableRow key={docType.id} sx={{ '&:hover': { backgroundColor: '#f9f9f9' } }}>
-                    <TableCell sx={{ py: 2 }}>
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#1976d2' }}>
-                        {docType.documentType}
-                      </Typography>
-                    </TableCell>
-                    <TableCell sx={{ py: 2 }}>
-                      <Typography variant="body2">
-                        {docType.description}
-                      </Typography>
-                    </TableCell>
-                    <TableCell sx={{ py: 2 }}>
+                    <TableDataCell weight="bold" color="#1976d2">
+                      {docType.documentType}
+                    </TableDataCell>
+                    <TableDataCell>
+                      {docType.description}
+                    </TableDataCell>
+                    <TableDataCell>
                       <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
                         {docType.requiredFields.map((field, index) => (
                           <Chip 
@@ -205,8 +263,8 @@ const UploadPage = () => {
                           />
                         ))}
                       </Box>
-                    </TableCell>
-                    <TableCell sx={{ py: 2 }}>
+                    </TableDataCell>
+                    <TableDataCell>
                       <Chip
                         label="Yes"
                         size="small"
@@ -218,7 +276,7 @@ const UploadPage = () => {
                           fontSize: '0.75rem'
                         }}
                       />
-                    </TableCell>
+                    </TableDataCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -230,15 +288,12 @@ const UploadPage = () => {
       {/* Upload History Section */}
       <Card sx={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
         <CardContent sx={{ p: 4, pb: 0 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-            <HistoryIcon sx={{ mr: 2, color: '#6c757d' }} />
-            <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-              Upload History
-            </Typography>
-          </Box>
-          <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-            Track all document uploads with timestamps and processing status
-          </Typography>
+          <SectionHeader
+            icon={HistoryIcon}
+            title="Upload History"
+            subtitle="Track all document uploads with timestamps and processing status"
+            iconColor="#6c757d"
+          />
         </CardContent>
         
         <Box sx={{ width: '100%', overflowX: 'auto' }}>
@@ -248,44 +303,24 @@ const UploadPage = () => {
             minWidth: '100%'
           }}>
             <Table size="small" sx={{ minWidth: 1000 }}>
-              <TableHead>
-                <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                  <TableCell sx={{ fontWeight: 600, py: 2 }}>Filename</TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 2 }}>Type</TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 2 }}>Description</TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 2 }}>Uploaded By</TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 2 }}>Timestamp</TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 2 }}>Status</TableCell>
-                  <TableCell sx={{ fontWeight: 600, py: 2 }}>Mapping Status</TableCell>
-                </TableRow>
-              </TableHead>
+              <TableHeader columns={uploadHistoryColumns} />
               <TableBody>
                 {uploadHistory.map((upload) => (
                   <TableRow key={upload.id} sx={{ '&:hover': { backgroundColor: '#f9f9f9' } }}>
-                    <TableCell sx={{ py: 2 }}>
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#1976d2' }}>
-                        {upload.filename}
-                      </Typography>
-                    </TableCell>
-                    <TableCell sx={{ py: 2 }}>
-                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                        {upload.type}
-                      </Typography>
-                    </TableCell>
-                    <TableCell sx={{ py: 2 }}>
-                      <Typography variant="body2">
-                        {upload.description}
-                      </Typography>
-                    </TableCell>
-                    <TableCell sx={{ py: 2 }}>
+                    <TableDataCell weight="bold" color="#1976d2">
+                      {upload.filename}
+                    </TableDataCell>
+                    <TableDataCell weight="medium">{upload.type}</TableDataCell>
+                    <TableDataCell>{upload.description}</TableDataCell>
+                    <TableDataCell>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         <PersonIcon sx={{ fontSize: 16, color: '#6c757d' }} />
                         <Typography variant="body2">
                           {upload.uploadedBy}
                         </Typography>
                       </Box>
-                    </TableCell>
-                    <TableCell sx={{ py: 2 }}>
+                    </TableDataCell>
+                    <TableDataCell>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         <AccessTimeIcon sx={{ fontSize: 16, color: '#6c757d' }} />
                         <Typography variant="body2">
@@ -296,26 +331,21 @@ const UploadPage = () => {
                           </span>
                         </Typography>
                       </Box>
-                    </TableCell>
-                    <TableCell sx={{ py: 2 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {getStatusIcon(upload.status)}
-                        <Chip
-                          label={upload.status}
-                          size="small"
-                          color={statusColors[upload.status]}
-                          sx={{ fontSize: '0.75rem' }}
-                        />
-                      </Box>
-                    </TableCell>
-                    <TableCell sx={{ py: 2 }}>
-                      <Chip
-                        label={upload.mappingStatus}
-                        size="small"
-                        color={mappingStatusColors[upload.mappingStatus]}
-                        sx={{ fontSize: '0.75rem' }}
+                    </TableDataCell>
+                    <TableDataCell>
+                      <StatusChip 
+                        status={upload.status}
+                        colorMapping={statusColors}
+                        withIcon={true}
+                        getIcon={getStatusIcon}
                       />
-                    </TableCell>
+                    </TableDataCell>
+                    <TableDataCell>
+                      <StatusChip 
+                        status={upload.mappingStatus}
+                        colorMapping={mappingStatusColors}
+                      />
+                    </TableDataCell>
                   </TableRow>
                 ))}
               </TableBody>
