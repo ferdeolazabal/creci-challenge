@@ -177,8 +177,8 @@ const DealsPage = () => {
   const StatCard = ({ title, value, icon: Icon, format = 'number' }) => (
     <Card sx={getCardStyles()}>
       <CardContent sx={getCardContentStyles()}>
-        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mx: 2 }}>
-          <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#6c757d' }}>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mx: 2 ,mt:3}}>
+          <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: '#6c757d', }}>
             {title}
           </Typography>
           <Icon sx={{ width: 16, height: 16, color: '#6c757d' }} />
