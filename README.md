@@ -6,7 +6,7 @@ Una aplicación web moderna para la gestión integral de comisiones de ventas en
 
 🚀 **[Ver aplicación en funcionamiento](https://creci-ferdeolazabal.netlify.app/)**
 
-La aplicación está desplegada y disponible para pruebas en Netlify. Puedes explorar todas las funcionalidades sin necesidad de instalación local.
+La aplicación está desplegada y disponible para pruebas en Netlify. Podés explorar todas las funcionalidades sin necesidad de instalación local.
 
 ## 🚀 Características Principales
 
@@ -47,9 +47,9 @@ La aplicación está desplegada y disponible para pruebas en Netlify. Puedes exp
 
 ## 🛠️ Tecnologías Utilizadas
 
-- **Frontend Framework**: React 18
+- **Frontend Framework**: React 19
 - **Build Tool**: Vite
-- **UI Library**: Material-UI (MUI)
+- **UI Library**: Material-UI (MUI) v7
 - **Routing**: React Router DOM
 - **State Management**: React Context API
 - **Icons**: Material-UI Icons
